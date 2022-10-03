@@ -9,6 +9,8 @@
   --error-color: #FC5A5A;
   --secondary-blue: #50B5FF;
   --border-bottom: 2px solid #657786;
+  --input-bg: #F5F8FA;
+  --border-style: 2px solid #657786;
 }
 
 /* basic setting */
@@ -214,6 +216,40 @@ $spacers: (
 .mr-auto{
   margin-right: auto;
 }
+
+// input
+.input-style{
+  background: var(--input-bg);
+  border-bottom: var(--border-style);
+  position: relative;
+  padding: 24px 16px 4px 16px;
+  &.active{
+    border-color: var(--secondary-blue);
+  }
+  &.error{
+    border-color: var(--error-color);
+  }
+  label{
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-size: 14px;
+  }
+}
+
+// button
+.btn{
+  color: #fff;
+  background: var(--brand-color);
+  padding: 8px 16px;
+  line-height: 24px;
+  border-radius: 50px;
+  &.unfollow{
+    background-color: transparent;
+    color: var(--brand-color);
+  }
+}
+
 
 
 
