@@ -232,7 +232,7 @@ $spacers: (
   border-bottom: var(--border-style);
   position: relative;
   padding: 24px 16px 4px 16px;
-  &.active{
+  &:focus{
     border-color: var(--secondary-blue);
   }
   &.error{

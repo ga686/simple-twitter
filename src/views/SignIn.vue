@@ -40,13 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/sass/reset.scss';
-
-:root {
-  --main-color: #FF6600;
-  --label-font-family: 'Noto Sans TC';
-}
-
 .container {
   width: 375px;
   height: 100vh;
