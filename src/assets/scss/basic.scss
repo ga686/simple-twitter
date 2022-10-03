@@ -8,9 +8,18 @@
   --warning-color: #FFC542;
   --error-color: #FC5A5A;
   --secondary-blue: #50B5FF;
-  --border-bottom: 2px solid #657786;
   --input-bg: #F5F8FA;
   --border-style: 2px solid #657786;
+  --dark-100: #171725;
+  --dark-90: #44444F;
+  --dark-80: #696974;
+  --dark-70: #92929D;
+  --dark-60: #B5B5BE;
+  --dark-50: #D5D5DC;
+  --dark-40: #E2E2EA;
+  --dark-30: #F1F1F5;
+  --dark-20: #FAFAFB;
+  --dark-0: #FFFFFF;
 }
 
 /* basic setting */
@@ -234,12 +243,13 @@ $spacers: (
     top: 2px;
     left: 16px;
     font-size: 14px;
+    color:var(--dark-80);
   }
 }
 
 // button
 .btn{
-  color: #fff;
+  color: var(--dark-0);
   background: var(--brand-color);
   padding: 8px 16px;
   line-height: 24px;
