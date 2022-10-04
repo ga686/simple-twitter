@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import SignIn from '../views/SignIn.vue'
+import Home from '../views/Home.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -22,9 +23,9 @@ const routes = [
     component: ()=> import('../views/SignUp.vue'),
   },
   {
-    path: "/homepage",
-    name: "home-page",
-    component: ()=> import('../views/HomePage.vue'),
+    path: "/home",
+    name: "home",
+    component: Home
   },
   {
     path: "/adminsignin",

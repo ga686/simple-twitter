@@ -150,6 +150,39 @@ export default {
         })
         return
       }
+      dummyData.users.forEach((user) => {
+        if (user.email === this.email) {
+          Toast.fire({
+            icon: 'warning',
+            title: 'Email已被註冊，請再輸入一次'
+          })
+          this.emailDuplicated = true
+        }
+        return
+      })
+
+      if(this.name.length >= 50){
+        Toast.fire({
+          icon: 'warning',
+          title: '字數超出上限！'
+        })
+        this.overlimit = true
+      }
+
+      if(!this.password || !this.passwordCheck){
+        this.errorPassword = false
+        return
+      }
+
+      if(this.passwordCheck !== this.password || this.password !== this.passwordCheck){
+        Toast.fire({
+          icon: 'warning',
+          title: '密碼輸入錯誤，請再試一次！'
+        })
+        this.errorPassword = true
+        return 
+      }
+      
 
       Toast.fire({
         icon: 'success',

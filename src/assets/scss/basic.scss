@@ -30,6 +30,17 @@ $max:40;
   }
 }
 
+main{
+  max-width: 1440px;
+  height: 100vh;
+}
+
+.main-view{
+  display: grid;
+  grid-template-columns: 1fr 639px 1fr;
+
+}
+
 
 /* 使用@each 產出css spacer設定 */
 // font
@@ -226,27 +237,31 @@ $spacers: (
   margin-right: auto;
 }
 
-// .input-style{
-//   height: 26px;
-//   line-height: 26px;
-//   border: unset;
-//   background: var(--input-bg);
-//   border-bottom: var(--border-style);
-//   position: relative;
-//   &:focus{
-//     border-color: var(--secondary-blue);
-//   }
-//   &.error{
-//     border-color: var(--error-color);
-//   }
-//   label{
-//     position: absolute;
-//     top: 2px;
-//     left: 16px;
-//     font-size: 14px;
-//     color:var(--dark-80);
-//   }
-// }
+.my-auto{
+  margin: auto 0;
+}
+
+.input-style{
+  height: 26px;
+  line-height: 26px;
+  border: unset;
+  background: var(--input-bg);
+  border-bottom: var(--border-style);
+  position: relative;
+  &:focus{
+    border-color: var(--secondary-blue);
+  }
+  &.error{
+    border-color: var(--error-color);
+  }
+  label{
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-size: 14px;
+    color:var(--dark-80);
+  }
+}
 
 // button
 .btn{
@@ -255,12 +270,23 @@ $spacers: (
   padding: 8px 16px;
   line-height: 24px;
   border-radius: 50px;
+  text-align: center;
+  height: 40px;
   &.unfollow{
     background-color: transparent;
     color: var(--brand-color);
   }
 }
 
+// image
+.avatar_image{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 50px;
+  margin-right: 8px;
+}
 
 
 
