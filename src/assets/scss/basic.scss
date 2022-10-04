@@ -226,26 +226,27 @@ $spacers: (
   margin-right: auto;
 }
 
-// input
-.input-style{
-  background: var(--input-bg);
-  border-bottom: var(--border-style);
-  position: relative;
-  padding: 24px 16px 4px 16px;
-  &:focus{
-    border-color: var(--secondary-blue);
-  }
-  &.error{
-    border-color: var(--error-color);
-  }
-  label{
-    position: absolute;
-    top: 2px;
-    left: 16px;
-    font-size: 14px;
-    color:var(--dark-80);
-  }
-}
+// .input-style{
+//   height: 26px;
+//   line-height: 26px;
+//   border: unset;
+//   background: var(--input-bg);
+//   border-bottom: var(--border-style);
+//   position: relative;
+//   &:focus{
+//     border-color: var(--secondary-blue);
+//   }
+//   &.error{
+//     border-color: var(--error-color);
+//   }
+//   label{
+//     position: absolute;
+//     top: 2px;
+//     left: 16px;
+//     font-size: 14px;
+//     color:var(--dark-80);
+//   }
+// }
 
 // button
 .btn{
