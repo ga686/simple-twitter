@@ -1,38 +1,38 @@
 <template>
   <div class="container">
     <div class="header">
-      <img src="./../assets/photos/acLogo.png" alt="" class="logo">
+      <img src="./../assets/logo.png" alt="" class="logo">
       <h3>建立你的帳號</h3>
     </div>
     <form class="" @submit.prevent.stop="handleSubmit">
-      <div class="form-label-group">
-        <label for="name">帳號</label>
-        <input id="name" name="email" autofocus v-model="name" type="name" class="form-control" placeholder="請輸入帳號"
-          autocomplete="name" required>
+      <div :class="['form-label-group',{'accountDuplicated':accountDuplicated}]">
+        <label for="account">帳號</label>
+        <input :blur="checkAccount(account)" id="account" name="account" autofocus v-model="account" type="name"
+          placeholder="請輸入帳號" autocomplete="account" required>
       </div>
-      <div class="form-label-group">
-        <label for="nickname">名稱</label>
-        <input id="nickname" name="email" v-model="nickName" type="name" class="form-control" placeholder="請輸入使用者名稱"
-          autocomplete="name" required>
+      <div :class="['form-label-group',{'overLimit':overlimit}]">
+        <label for="name">名稱</label>
+        <input :blur="checkNameLength()" id="name" name="name" v-model="name" type="name" placeholder="請輸入使用者名稱" autocomplete="name"
+          maxlength="50" required>
       </div>
-      <div class="form-label-group">
+      <div :class="['form-label-group',{'emailDuplicated':emailDuplicated}]">
         <label for="email">Email</label>
-        <input id="email" name="email" v-model="email" type="email" class="form-control" placeholder="請輸入Email"
+        <input :blur="checkEmail(email)" id="email" name="email" v-model="email" type="email" placeholder="請輸入Email"
           autocomplete="email" required>
       </div>
-      <div class="form-label-group">
+      <div :class="['form-label-group']">
         <label for="password">密碼</label>
-        <input id="password" name="password" v-model="password" type="password" class="form-control" placeholder="請輸入密碼"
-          autocomplete="name" required>
+        <input id="password" name="password" v-model="password" type="password" placeholder="請輸入密碼"
+          autocomplete="password" required>
       </div>
-      <div class="form-label-group">
+      <div :class="['form-label-group',{'errorPassword': errorPassword}]">
         <label for="passwordCheck">密碼確認</label>
-        <input id="passwordCheck" name="passwordCheck" v-model="passwordCheck" type="password" class="form-control"
-          placeholder="請再次輸入密碼" autocomplete="passwordCheck" required>
+        <input :blur="checkPassword()" id="passwordCheck" name="passwordCheck" v-model="passwordCheck" type="password" placeholder="請再次輸入密碼"
+          autocomplete="passwordCheck" required>
       </div>
       <button class="btn">註冊</button>
     </form>
-    <div class="other-link">
+    <div class="other-link d-flex justify-content-center">
       <router-link to='/signIn'>
         <div class="btn-cancel"><u>取消重填</u></div>
       </router-link>
@@ -41,133 +41,141 @@
 </template>
 
 <script>
+import { Toast } from '../utils/helpers'
+
+const dummyData = {
+  users: [
+    {
+      id: 1,
+      account: 'user1',
+      email: 'user1@example.com',
+      name: 'ellenlee',
+      password: '12345678'
+    },
+    {
+      id: 2,
+      account: 'user2',
+      email: 'user2@example.com',
+      name: 'darrenlin',
+      password: '12345678'
+    },
+    {
+      id: 3,
+      account: 'user3',
+      email: 'user3@example.com',
+      name: 'davidlin',
+      password: '12345678'
+    },
+    {
+      id: 4,
+      account: 'user4',
+      email: 'user4@example.com',
+      name: 'penny',
+      password: '12345678'
+    },
+    {
+      id: 4,
+      account: 'user5',
+      email: 'user5@example.com',
+      name: 'alley',
+      password: '12345678'
+    }
+  ]
+}
+
 export default {
   data() {
     return {
-      name: '',
+      account: '',
       email: '',
-      nickName: '',
+      name: '',
       password: '',
       passwordCheck: '',
+      accountDuplicated: false,
+      emailDuplicated: false,
+      errorPassword: false,
+      overlimit: false
+    }
+  },
+  methods: {
+    checkAccount(account) {
+      dummyData.users.forEach((user) => {
+        if (user.account === account) {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號已被註冊，請再輸入一次'
+          })
+          this.accountDuplicated = true
+        }
+      })
+    },
+    checkNameLength(){
+      if(this.name.length >= 50){
+        Toast.fire({
+          icon: 'warning',
+          title: '字數超出上限！'
+        })
+        this.overlimit = true
+      }
+    },
+    checkEmail(email) {
+      dummyData.users.forEach((user) => {
+        if (user.email === email) {
+          Toast.fire({
+            icon: 'warning',
+            title: 'Email已被註冊，請再輸入一次'
+          })
+          this.emailDuplicated = true
+        }
+      })
+    },
+    checkPassword(){
+      if(!this.password || !this.passwordCheck){
+        this.errorPassword = false
+        return
+      }
+      if(this.passwordCheck !== this.password || this.password !== this.passwordCheck){
+        Toast.fire({
+          icon: 'warning',
+          title: '密碼輸入錯誤，請再試一次！'
+        })
+        this.errorPassword = true
+      }
+    },
+    handleSubmit() {
+      if(!this.account || !this.email || !this.name ||!this.password || !this.passwordCheck){
+        Toast.fire({
+          icon: 'warning',
+          title: '請確認已填寫所有欄位'
+        })
+        return
+      }
+
+      Toast.fire({
+        icon: 'success',
+        title: '註冊成功！'
+      })
+
+      this.$router.push('/signIn')
+    },
+  },
+  watch: {
+    account() {
+      this.accountDuplicated = false
+    },
+    name(){
+      this.overlimit = false
+    },  
+    email() {
+      this.emailDuplicated = false
+    },
+    passwordCheck(){
+      this.errorPassword = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
-:root {
-  --main-color: #FF6600;
-  --label-font-family: 'Noto Sans TC';
-}
-
-.container {
-  width: 375px;
-  height: 100vh;
-  padding: 0 24px;
-  margin: 0 auto;
-}
-
-.header {
-  width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 29px;
-
-  .logo {
-    width: 50px;
-    height: 50px;
-    margin: 40px auto;
-  }
-
-  h3 {
-    font-size: 26px;
-    font-weight: 700;
-    font-family: 'Noto Sans TC';
-  }
-}
-
-.form-label-group {
-  width: 100%;
-  height: 54px;
-  border-radius: 2px;
-  background-color: #F5F8FA;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 2rem;
-  padding: 0 10.5px;
-  border-bottom: 2px solid #657786;
-
-  & ::placeholder {
-    color: #B5B5BE;
-  }
-
-  & label {
-    font-size: 14px;
-    height: 22px;
-    line-height: 22px;
-    font-weight: 400;
-    font-family: 'Noto Sans TC';
-    color: #696974;
-  }
-
-  & input {
-    border: unset;
-    font-size: 16px;
-    height: 26px;
-    line-height: 26px;
-    font-weight: 400;
-    font-family: 'Noto Sans TC';
-    color: #171725;
-  }
-}
-
-.form-label-group:hover {
-  border-bottom: 2px solid #50B5FF;
-}
-
-.btn {
-  width: 100%;
-  height: 46px;
-  border-radius: 50px;
-  background-color: #FF6600;
-  font-family: 'Noto Sans TC';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 20px;
-  color: #FFFFFF;
-}
-
-.other-link {
-  width: 100%;
-  height: 36px;
-  margin-top: 1rem;
-  padding: 6px 12px;
-  display: flex;
-  justify-content: center;
-  .btn-cancel {
-    font-family: 'Noto Sans TC';
-    font-style: normal;
-    font-weight: 400;
-    color: #0062FF;
-    cursor: pointer;
-  }
-}
-
-@media screen and (min-width: 992px) and (max-width: 1199px) {
-  .container {
-    width: 404px;
-    margin: 0 auto;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .container {
-    width: 404px;
-    margin: 0 auto;
-  }
-}
+@import '../assets/scss/admin-signIn-Up/basic.scss';
 </style>
