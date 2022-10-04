@@ -12,7 +12,7 @@
         </div>
         <button></button>
       </form>
-      <NewestComments />
+      <NewestTweets :tweets = "tweets" />
     </div>
     <SuggestUser />
   </main>
@@ -20,13 +20,75 @@
 <script>
 import Navbar from '../components/Navbar'
 import SuggestUser from '../components/SuggestUser'
-import NewestComments from '../components/NewestComments'
+import NewestTweets from '../components/NewestTweets'
+
+const dummyData = {
+  tweets: [
+    {
+      id: 0,
+      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
+      video: null,
+      createAt: '2022-10-04',
+      account: 'root',
+      name: 'root',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: false
+    },
+    {
+      id: 1,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: 'root',
+      name: 'root',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true
+    },
+    {
+      id: 2,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: 'root',
+      name: 'root',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true
+    },
+    {
+      id: 3,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: 'root',
+      name: 'root',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: false
+    }
+  ]
+}
 
 export default{
+  data(){
+    return {
+      tweets: []
+    }
+  },
   components: {
     Navbar,
     SuggestUser,
-    NewestComments
+    NewestTweets
+  },
+  methods: {
+    fetchComments () {
+      return this.tweets = dummyData.tweets 
+    }
+  },
+  created () {
+    this.fetchComments()
   }
 }
 </script>
@@ -35,6 +97,7 @@ export default{
 .tweet_list_home{
   border-right: 1px solid #E6ECF0;
   border-left: 1px solid #E6ECF0;
+  overflow: scroll;
   &-title{
     padding: 24px 25px;
     border-bottom: 1px solid #E6ECF0;
