@@ -18,6 +18,11 @@ const routes = [
     component: SignIn,
   },
   {
+    path: "/home",
+    name: "home",
+    component: Home
+  },
+  {
     path: "/signup",
     name: "sign-up",
     component: ()=> import('../views/SignUp.vue'),
@@ -42,6 +47,7 @@ const routes = [
     name: "not-found",
     component: NotFound,
   },
+
 ]
 
 const router = new VueRouter({

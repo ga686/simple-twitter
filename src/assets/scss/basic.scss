@@ -62,17 +62,17 @@ h2{
 
 h3{
   font-size: 28px;
-  font-weight: medium;
+  font-weight: 500;
 }
 
 h4{
   font-size: 24px;
-  font-weight: medium;
+  font-weight: 500;
 }
 
 h5{
   font-size: 18px;
-  font-weight: medium;
+  font-weight: 500;
 }
 
 .number-wrap{
@@ -95,6 +95,10 @@ h5{
 }
 .d-flex {
   display: flex;
+}
+
+.flex-fill{
+  flex: 1 0 0;
 }
 
 .flex-column {
@@ -241,6 +245,7 @@ $spacers: (
   margin: auto 0;
 }
 
+// input
 .input-style{
   height: 26px;
   line-height: 26px;
@@ -273,6 +278,7 @@ $spacers: (
   text-align: center;
   height: 40px;
   &.unfollow{
+    border: 1px solid var(--brand-color);
     background-color: transparent;
     color: var(--brand-color);
   }
