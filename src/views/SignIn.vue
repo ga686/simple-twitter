@@ -34,7 +34,7 @@ const dummyData = {
   id: 1,
   account: 'user1',
   password: '12345678',
-  isAdmin: true,
+  isAdmin: false,
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9e1vstA8ybc930xrvOcF8denO4ImYK8',
 }
 
@@ -96,7 +96,7 @@ export default {
         icon: 'success',
         title: '登入成功！'
       })
-      this.$router.push('/HomePage')
+      this.$router.push('/Home')
     }
   },
   watch: {
