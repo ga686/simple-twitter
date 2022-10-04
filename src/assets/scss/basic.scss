@@ -37,7 +37,7 @@ main{
 
 .main-view{
   display: grid;
-  grid-template-columns: 1fr 639px 1fr;
+  grid-template-columns: 332px auto 427px;
 
 }
 
@@ -276,6 +276,7 @@ $spacers: (
   line-height: 24px;
   border-radius: 50px;
   text-align: center;
+  cursor: pointer;
   height: 40px;
   &.unfollow{
     border: 1px solid var(--brand-color);
