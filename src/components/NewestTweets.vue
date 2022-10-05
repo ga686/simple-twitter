@@ -1,13 +1,13 @@
 <template>
   <div>
     <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex" >
-      <div class="avatar_image"><img :src="tweet.avatar" /></div>
+      <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{tweet.name}}</h5>
-          <p class="size-14">{{tweet.account}}</p>
+          <p class="size-14">{{tweet.account | account}}</p>
           ・
-          <span class="size-14">{{tweet.createAt}}</span>
+          <span class="size-14">{{tweet.createAt | fromNow }}</span>
         </div>
         <div class="comment_wrap_body--content mb-3">{{tweet.content}}</div>
         <div class="comment_wrap_footer d-flex">
@@ -26,6 +26,10 @@
 </template>
 
 <script>
+import { fromNowFilter } from './../utils/mixins'
+import { emptyImageFilter } from './../utils/mixins'
+import { accountFilter } from './../utils/mixins'
+
 export default{
   props: {
     tweets:{
@@ -33,6 +37,7 @@ export default{
       required: true
     }
   },
+  mixins: [fromNowFilter, emptyImageFilter,accountFilter],
 }
 </script>
 
@@ -58,6 +63,7 @@ export default{
       width: 14px;
       height: 14px;
       margin-right: 9.5px;
+      cursor: pointer;
     }
   }
 }
