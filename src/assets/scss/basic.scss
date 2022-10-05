@@ -278,11 +278,17 @@ $spacers: (
   text-align: center;
   cursor: pointer;
   height: 40px;
+  flex: 0 0 auto;
   &.unfollow{
     border: 1px solid var(--brand-color);
     background-color: transparent;
     color: var(--brand-color);
   }
+}
+
+.cancel-btn{
+  color: var(--brand-color);
+  cursor: pointer;
 }
 
 // image
