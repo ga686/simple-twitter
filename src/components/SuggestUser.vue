@@ -9,7 +9,7 @@
         <h5>{{followship.name}}</h5>
         <div class="account_name size-14">{{followship.account | account}}</div>
       </div>
-      <div class="btn my-auto" :class="{unfollow: !followship.isFollowed}">{{ followship.isFollowed ? '正在跟隨' : '跟隨'}}</div>
+      <div class="btn my-auto" :class="{unfollow: !followship.isFollowed}" @click.prevent.stop="toggleFollow(followship.id)">{{ followship.isFollowed ? '正在跟隨' : '跟隨'}}</div>
     </div>
   </div>
 </template>
@@ -62,6 +62,13 @@ export default{
   methods: {
     fetchFollowShips () {
       return this.followships = dummyData.followships
+    },
+    toggleFollow (userId) {
+      this.followships.filter((followship)=>{
+        if( followship.id === userId ){
+          followship.isFollowed = !followship.isFollowed
+        }
+      })
     }
   },
   mixins: [emptyImageFilter,accountFilter],
