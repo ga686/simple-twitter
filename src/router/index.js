@@ -28,11 +28,6 @@ const routes = [
     component: ()=> import('../views/SignUp.vue'),
   },
   {
-    path: "/home",
-    name: "home",
-    component: Home
-  },
-  {
     path: "/adminsignin",
     name: "admin-sign-in",
     component: ()=> import('../views/AdminSignIn.vue'),
