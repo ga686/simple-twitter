@@ -20,6 +20,15 @@
   --dark-30: #F1F1F5;
   --dark-20: #FAFAFB;
   --dark-0: #FFFFFF;
+  // image
+  --icon-home: url('~@/assets/icon_home.png');
+  --icon-home-active: url('~@/assets/icon_home_active.png');
+  --icon-user: url('~@/assets/icon_user.png');
+  --icon-user-active: url('~@/assets/icon_user_active.png');
+  --icon-setting: url('~@/assets/icon_setting.png');
+  --icon-setting-active: url('~@/assets/icon_setting_active.png');
+  --icon-logout: url('~@/assets/icon_logout.png');
+  --icon-logout-active: url('~@/assets/icon_logout_active.png');
 }
 
 /* basic setting */
