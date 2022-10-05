@@ -1,0 +1,318 @@
+@import './reset';
+
+:root{
+  --brand-color: #FF6600;
+  --primary-color: #0062FF;
+  --secondary-color: #6C757D;
+  --success-color: #3DD598;
+  --warning-color: #FFC542;
+  --error-color: #FC5A5A;
+  --secondary-blue: #50B5FF;
+  --input-bg: #F5F8FA;
+  --border-style: 2px solid #657786;
+  --dark-100: #171725;
+  --dark-90: #44444F;
+  --dark-80: #696974;
+  --dark-70: #92929D;
+  --dark-60: #B5B5BE;
+  --dark-50: #D5D5DC;
+  --dark-40: #E2E2EA;
+  --dark-30: #F1F1F5;
+  --dark-20: #FAFAFB;
+  --dark-0: #FFFFFF;
+  // image
+  --icon-home: url('~@/assets/icon_home.png');
+  --icon-home-active: url('~@/assets/icon_home_active.png');
+  --icon-user: url('~@/assets/icon_user.png');
+  --icon-user-active: url('~@/assets/icon_user_active.png');
+  --icon-setting: url('~@/assets/icon_setting.png');
+  --icon-setting-active: url('~@/assets/icon_setting_active.png');
+  --icon-logout: url('~@/assets/icon_logout.png');
+  --icon-logout-active: url('~@/assets/icon_logout_active.png');
+  --icon-liked: url('~@/assets/icon_liked.png');
+  --icon-liked-active: url('~@/assets/icon_liked_active.png');
+  --icon-comment: url('~@/assets/icon_comment.png')
+}
+
+/* basic setting */
+$max:40;
+@for $i from 1 to $max {
+  .size-#{$i * 2} {
+    font-size: ($i * 2)+px;
+  }
+}
+
+main{
+  max-width: 1440px;
+  height: 100vh;
+}
+
+.main-view{
+  display: grid;
+  grid-template-columns: 332px auto 427px;
+
+}
+
+
+/* 使用@each 產出css spacer設定 */
+// font
+html {
+  font-size: 16px;
+  height: 100%;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+h1{
+  font-size: 68px;
+  font-weight: bold;
+}
+
+h2{
+  font-size: 42px;
+  font-weight: bold;
+}
+
+h3{
+  font-size: 28px;
+  font-weight: 500;
+}
+
+h4{
+  font-size: 24px;
+  font-weight: 500;
+}
+
+h5{
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.number-wrap{
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+// display
+.d-none {
+  display: none;
+}
+.d-inline {
+  display: inline;
+}
+.d-inline-block {
+  display: inline-block;
+}
+.d-block {
+  display: block;
+}
+.d-flex {
+  display: flex;
+}
+
+.flex-fill{
+  flex: 1 0 0;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+.justify-content-start {
+  justify-content: flex-start;
+}
+.justify-content-end {
+  justify-content: flex-end;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.justify-content-between {
+  justify-content: space-between;
+}
+.justify-content-around {
+  justify-content: space-around;
+}
+.align-content-start {
+  align-content: flex-start;
+}
+.align-content-end {
+  align-content: flex-end;
+}
+.align-content-center {
+  align-content: center;
+}
+.align-items-start {
+  align-items: flex-start;
+}
+.align-items-end {
+  align-items: flex-end;
+}
+.align-items-center {
+  align-items: center;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// width, margin, padding
+$sizes: (
+  10: 10%,
+  20: 20%,
+  30: 40%,
+  50: 50%,
+  60: 60%,
+  70: 70%,
+  80: 80%,
+  90: 90%,
+  100: 100%
+);
+@each $prop, $abbrev in (width: w,height: h) {
+ @each $num, $val in $sizes {
+   .#{$abbrev}-#{$num} {
+     #{$prop}: $val !important;
+   }
+ }
+}
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: (
+    $spacer * 0.25
+  ),
+  2: (
+    $spacer * 0.5
+  ),
+  3: (
+    $spacer * 0.75
+  ),
+  4: $spacer,
+  5: (
+    $spacer * 1.25
+  ),
+  6: (
+    $spacer * 1.5
+  ),
+  7: (
+    $spacer * 1.75
+  ),
+  8: (
+    $spacer * 2
+  ),
+  9: (
+    $spacer * 2.25
+  ),
+  10: (
+    $spacer * 2.5
+  )
+);
+@each $prop, $abbrev in (margin: m, padding: p) {
+  @each $num, $val in $spacers {
+    .#{$abbrev}-#{$num} {
+      #{$prop}: $val !important;
+    }
+    .#{$abbrev}t-#{$num} {
+      #{$prop}-top: $val !important;
+    }
+    .#{$abbrev}r-#{$num} {
+      #{$prop}-right: $val !important;
+    }
+    .#{$abbrev}b-#{$num} {
+      #{$prop}-bottom: $val !important;
+    }
+    .#{$abbrev}l-#{$num} {
+      #{$prop}-left: $val !important;
+    }
+    .#{$abbrev}x-#{$num} {
+      #{$prop}-left: $val !important;
+      #{$prop}-right: $val !important;
+    }
+    .#{$abbrev}y-#{$num} {
+      #{$prop}-top: $val !important;
+      #{$prop}-bottom: $val !important;
+    }
+  }
+}
+
+.mx-auto{
+  margin: 0 auto;
+}
+
+.ml-auto{
+  margin-left: auto;
+}
+
+.mr-auto{
+  margin-right: auto;
+}
+
+.my-auto{
+  margin: auto 0;
+}
+
+// input
+.input-style{
+  height: 26px;
+  line-height: 26px;
+  border: unset;
+  background: var(--input-bg);
+  border-bottom: var(--border-style);
+  position: relative;
+  &:focus{
+    border-color: var(--secondary-blue);
+  }
+  &.error{
+    border-color: var(--error-color);
+  }
+  label{
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-size: 14px;
+    color:var(--dark-80);
+  }
+}
+
+// button
+.btn{
+  color: var(--dark-0);
+  background: var(--brand-color);
+  padding: 8px 16px;
+  line-height: 24px;
+  border-radius: 50px;
+  text-align: center;
+  cursor: pointer;
+  height: 40px;
+  flex: 0 0 auto;
+  &.unfollow{
+    border: 1px solid var(--brand-color);
+    background-color: transparent;
+    color: var(--brand-color);
+  }
+}
+
+.cancel-btn{
+  color: var(--brand-color);
+  cursor: pointer;
+}
+
+// image
+.avatar_image{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: 0 0 50px;
+  margin-right: 8px;
+}
+
+
+
+
