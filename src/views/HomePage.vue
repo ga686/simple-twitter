@@ -1,6 +1,6 @@
 <template>
-  <main class="main-view">
-    <NavbarLeft/>
+  <main class="main-view mx-auto">
+    <NavbarLeft />
     <div class="tweet_list_home">
       <div class="tweet_list_home-title">
         <h4>首頁</h4>
@@ -12,7 +12,7 @@
         </div>
         <button class="btn ml-auto">推文</button>
       </form>
-      <NewestTweets :tweets = "tweets" />
+      <NewestTweets :tweets="tweets" />
     </div>
     <SuggestUser />
   </main>
@@ -21,6 +21,7 @@
 import NavbarLeft from '../components/NavbarLeft'
 import SuggestUser from '../components/SuggestUser'
 import NewestTweets from '../components/NewestTweets'
+import {mapState} from 'vuex'
 
 
 const dummyData = {
@@ -72,8 +73,8 @@ const dummyData = {
   ]
 }
 
-export default{
-  data(){
+export default {
+  data() {
     return {
       tweets: [],
       modalIsShow: false,
@@ -83,37 +84,44 @@ export default{
     NavbarLeft,
     SuggestUser,
     NewestTweets,
-},
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
-    fetchComments () {
-      return this.tweets = dummyData.tweets 
+    fetchComments() {
+      return this.tweets = dummyData.tweets
     }
   },
-  created () {
+  created() {
     this.fetchComments()
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.tweet_list_home{
+.tweet_list_home {
   border-right: 1px solid #E6ECF0;
   border-left: 1px solid #E6ECF0;
   overflow: scroll;
-  &-title{
+
+  &-title {
     padding: 24px 25px;
     border-bottom: 1px solid #E6ECF0;
   }
-  &-box{
+
+  &-box {
     padding: 26px 16px;
     border-bottom: 10px solid #E6ECF0;
     flex-direction: column;
-    textarea{
+
+    textarea {
       border-width: 0px;
       height: fit-content;
       font-size: 18px;
       resize: none;
-      &::placeholder{
+
+      &::placeholder {
         font-size: 18px;
         font-weight: bold;
         color: var(--secondary-color)

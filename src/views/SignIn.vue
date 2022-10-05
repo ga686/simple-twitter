@@ -7,7 +7,7 @@
     <form class="" @submit.prevent.stop="handleSubmit">
       <div :class="['form-label-group',{'errorAccount': errorAccount}]">
         <label for="account">帳號</label>
-        <input id="account" name="account" autofocus v-model="account" type="name" placeholder="請輸入帳號"
+        <input id="account" name="account" autofocus v-model="account" type="email" placeholder="請輸入帳號"
           autocomplete="account">
       </div>
       <div :class="['form-label-group',{'errorPassword': errorPassword}]">
@@ -21,7 +21,7 @@
       <router-link to='/signUp'>
         <div class="signup-link"><u>註冊</u></div>
       </router-link>&#x2022;
-      <router-link to='/adminsignin'>
+      <router-link to="/adminsignin">
         <div class="admin-link"><u>後台登入</u></div>
       </router-link>
     </div>
@@ -29,12 +29,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { Toast } from '../utils/helpers'
 const dummyData = {
-  id: 1,
-  account: 'user1',
-  password: '12345678',
-  isAdmin: false,
+  user: {
+    id: 1,
+    account: 'user1',
+    email: 'user1@example.com',
+    password: '12345678',
+    image: '../assets/UserPhoto.png',
+    isAdmin: false,
+  },
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9e1vstA8ybc930xrvOcF8denO4ImYK8',
 }
 
@@ -48,6 +53,9 @@ export default {
       errorPassword: false
     }
   },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
   methods: {
     handleSubmit() {
       if (!this.account || !this.password) {
@@ -59,24 +67,25 @@ export default {
         return
       }
 
-      const user = dummyData
+      const user = dummyData.user
       this.isProcessing = true
 
-      if(user.isAdmin === true){
+      if (user.isAdmin === true) {
         Toast.fire({
           icon: 'error',
           title: '管理者請由後台登入'
         })
         this.account = ''
         this.password = ''
-        return 
+        return
       }
 
-      if (user.account !== this.account) {
+      if (user.email !== this.account) {
         Toast.fire({
           icon: 'error',
           title: '帳號不存在！'
         })
+        console.log(user)
         this.errorAccount = true
         this.isProcessing = false
         return
@@ -90,13 +99,14 @@ export default {
         return
       }
 
+      this.$store.commit('setCurrentUser', user)
       localStorage.setItem('token', dummyData.token)
 
       Toast.fire({
         icon: 'success',
         title: '登入成功！'
       })
-      this.$router.push('/Home')
+      this.$router.push('/homepage')
     }
   },
   watch: {
