@@ -41,9 +41,14 @@ export default{
   methods: {
     toggleLiked (tweetId) {
       this.tweets.filter((tweet)=>{
-        if(tweet.id === tweetId){
-          tweet.isFavorite = !tweet.isFavorite
+        if(tweet.id === tweetId && tweet.isFavorite === false){
+          tweet.isFavorite = true
+          tweet.likedLength = tweet.likedLength + 1
+        }else if(tweet.id === tweetId && tweet.isFavorite === true){
+          tweet.isFavorite = false
+          tweet.likedLength = tweet.likedLength - 1
         }
+        
       })
     }
   }
