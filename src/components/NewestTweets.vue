@@ -12,11 +12,11 @@
         <div class="comment_wrap_body--content mb-3">{{tweet.content}}</div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon my-auto"><img src="../assets/icon_reply.png" /></div>
+            <div class="icon comment my-auto"></div>
             <span class="number-wrap">{{tweet.commentsLength}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon my-auto" :class="{liked: tweet.isFavorite}"><img src="../assets/icon_liked.png" /></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}" @click.stop.prevent="toggleLiked (tweet.id)"></div>
             <span class="number-wrap">{{tweet.likedLength}}</span>
           </div>
         </div>
@@ -38,6 +38,15 @@ export default{
     }
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
+  methods: {
+    toggleLiked (tweetId) {
+      this.tweets.filter((tweet)=>{
+        if(tweet.id === tweetId){
+          tweet.isFavorite = !tweet.isFavorite
+        }
+      })
+    }
+  }
 }
 </script>
 
@@ -64,6 +73,17 @@ export default{
       height: 14px;
       margin-right: 9.5px;
       cursor: pointer;
+      background-position: center !important;
+      background-size: contain !important;
+      &.comment{
+        background: var(--icon-comment);
+      }
+      &.liked{
+        background: var(--icon-liked);
+      }
+      &.liked.isliked{
+        background: var(--icon-liked-active);
+      }
     }
   }
 }
