@@ -210,5 +210,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/admin-signIn-Up/basic.scss';
+@import '../assets/scss/admin-signIn-Up/style.scss';
 </style>
