@@ -9,10 +9,10 @@
           ・
           <span class="size-14">{{tweet.createAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3">{{tweet.content}}</div>
+        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon comment my-auto"></div>
+            <div class="icon comment my-auto" @click.stop.prevent = "openModal"></div>
             <span class="number-wrap">{{tweet.commentsLength}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
@@ -22,15 +22,25 @@
         </div>
       </div>
     </div>
+    <TweetReply :is-show="isShow" @close-modal="closeModal"/>
   </div>
 </template>
 
 <script>
+import TweetReply from './TweetReply'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 
 export default{
+  data (){
+    return{
+      isShow: false
+    }
+  },
+  components: {
+    TweetReply
+  },
   props: {
     tweets:{
       type: Array,
@@ -50,6 +60,12 @@ export default{
         }
         
       })
+    },
+    openModal (){
+      return this.isShow = true
+    },
+    closeModal (show){
+      return this.isShow = show
     }
   }
 }
@@ -57,40 +73,5 @@ export default{
 
 
 <style lang="scss" scoped>
-.comment_wrap{
-  padding: 24px 16px;
-  border-bottom: 1px solid #E6ECF0;
-  &_body{
-    &--title{
-      color: var(--secondary-color);
-      line-height: 16px;
-      margin-bottom: 10px;
-      h5{
-        color: var(--dark-100);
-        margin-right: 8px;
-      }
-    }
-  }
-  &_footer{
-    color: var(--secondary-color);
-    .icon{
-      width: 14px;
-      height: 14px;
-      margin-right: 9.5px;
-      cursor: pointer;
-      background-position: center !important;
-      background-size: contain !important;
-      &.comment{
-        background: var(--icon-comment);
-      }
-      &.liked{
-        background: var(--icon-liked);
-      }
-      &.liked.isliked{
-        background: var(--icon-liked-active);
-      }
-    }
-  }
-}
-
+@import '../assets/scss/tweet.scss';
 </style>
