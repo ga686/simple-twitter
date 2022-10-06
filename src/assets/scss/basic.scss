@@ -45,6 +45,7 @@ $max:40;
 main{
   max-width: 1440px;
   height: 100vh;
+  margin: 0 auto;
 }
 
 .main-view{
@@ -311,6 +312,10 @@ $spacers: (
   overflow: hidden;
   flex: 0 0 50px;
   margin-right: 8px;
+}
+
+.avatar_wrap{
+  position: relative;
 }
 
 
