@@ -1,0 +1,40 @@
+.modal{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgb(23,23,37, 40%);
+  pointer-events: none;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  &_container{
+    transform: translateY(56px);
+    width: 634px;
+    background: var(--dark-0);
+    border-radius: 14px;
+    &-header{
+      border-bottom: 1px solid #E6ECF0;
+      padding: 19px 18px;
+    }
+  }
+  &.show{
+    pointer-events: all;
+    opacity: 1;
+  }
+}
+
+.tweet_list-box{
+    padding: 24px 16px;
+    flex-direction: column;
+  textarea{
+    border-width: 0px;
+    min-height: 211px;
+    font-size: 18px;
+    resize: none;
+    &::placeholder{
+      font-size: 16px;
+      font-weight: regular;
+      color: var(--secondary-color)
+    }
+  }
+}
