@@ -1,11 +1,11 @@
 <template>
   <main class="main-view mx-auto">
     <NavbarLeft />
-    <div class="tweet_list_home">
-      <div class="tweet_list_home-title">
+    <div class="tweet_list">
+      <div class="tweet_list-title">
         <h4>首頁</h4>
       </div>
-      <form class="tweet_list_home-box d-flex">
+      <form class="tweet_list-box d-flex">
         <div class="d-flex">
           <div class="avatar_image"><img src="../assets/empty_image.png" /></div>
           <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？"></textarea>
@@ -35,40 +35,44 @@ const dummyData = {
       name: 'root',
       likedLength: 72,
       commentsLength: 13,
-      isFavorite: false
+      isFavorite: false,
+      avatar: null
     },
     {
       id: 1,
-      content: 'hello world',
+      content: 'hello world 1',
       video: null,
       createAt: '2022-10-04',
       account: 'root',
       name: 'root',
       likedLength: 72,
       commentsLength: 13,
-      isFavorite: true
+      isFavorite: true,
+      avatar: null
     },
     {
       id: 2,
-      content: 'hello world',
+      content: 'hello world 2',
       video: null,
       createAt: '2022-10-04',
       account: 'root',
       name: 'root',
       likedLength: 72,
       commentsLength: 13,
-      isFavorite: true
+      isFavorite: true,
+      avatar: null
     },
     {
       id: 3,
-      content: 'hello world',
+      content: 'hello world 3',
       video: null,
       createAt: '2022-10-04',
       account: 'root',
       name: 'root',
       likedLength: 72,
       commentsLength: 13,
-      isFavorite: false
+      isFavorite: false,
+      avatar: null
     }
   ]
 }
@@ -77,7 +81,6 @@ export default {
   data() {
     return {
       tweets: [],
-      modalIsShow: false,
     }
   },
   components: {
@@ -100,33 +103,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tweet_list_home {
-  border-right: 1px solid #E6ECF0;
-  border-left: 1px solid #E6ECF0;
-  overflow: scroll;
-
-  &-title {
-    padding: 24px 25px;
-    border-bottom: 1px solid #E6ECF0;
-  }
-
-  &-box {
-    padding: 26px 16px;
-    border-bottom: 10px solid #E6ECF0;
-    flex-direction: column;
-
-    textarea {
-      border-width: 0px;
-      height: fit-content;
-      font-size: 18px;
-      resize: none;
-
-      &::placeholder {
-        font-size: 18px;
-        font-weight: bold;
-        color: var(--secondary-color)
-      }
-    }
-  }
-}
+@import '../assets/scss/main.scss'
 </style>
