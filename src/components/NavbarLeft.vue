@@ -21,9 +21,9 @@
         <div class="btn" @click.stop.prevent="openModal">推文</div>
       </div>
     </div>
-    <div class="navbar_item">
+    <div class="navbar_item" @click="logout">
       <router-link to="/signin" class="nav_link">
-        <div class="nav_link-icon logout" @click="logout"></div>登出
+        <div class="nav_link-icon logout" ></div>登出
       </router-link>    
     </div>
     <UserTweetNew :is-show="isShow" @close-modal="closeModal" />
