@@ -1,9 +1,9 @@
 <template>
   <div class="navbar ml-auto d-flex justify-content-between">
     <div class="navbar_wrap">
-      <div class="navbar_logo"><img src="../assets/photos/acLogo.png" /></div>
+      <div class="navbar_logo"><router-link to="/homepage"><img src="../assets/photos/acLogo.png" /></router-link></div>
       <div class="navbar_item">
-        <router-link to="/" class="nav_link">
+        <router-link to="/homepage" class="nav_link">
           <div class="nav_link-icon home"></div>首頁
         </router-link>
       </div>
