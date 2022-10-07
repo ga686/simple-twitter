@@ -39,7 +39,7 @@ export default new Vuex.Store({
       const data = {
         user: {
           id: 1,
-          account: "user1",
+          account: "heyjohn",
           name: 'John Doe',
           email: "user1@example.com",
           password: "12345678",
@@ -93,11 +93,83 @@ export default new Vuex.Store({
               isFavorite: false
             }
           ],
+          replyTweets: [
+            {
+              id: 0,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+            },
+            {
+              id: 1,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+            },
+            {
+              id: 2,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+            },
+            {
+              id: 3,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+            }
+          ],
+          favoriteTweets:[
+            {
+              id: 0,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+              likedLength: 72,
+              commentsLength: 13,
+              isFavorite: true
+            },
+            {
+              id: 1,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+              likedLength: 72,
+              commentsLength: 13,
+              isFavorite: true
+            },
+            {
+              id: 2,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+              likedLength: 72,
+              commentsLength: 13,
+              isFavorite: true
+            },
+            {
+              id: 3,
+              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+              createAt: '2022-10-04',
+              account: 'apple',
+              name: 'apple',
+              likedLength: 72,
+              commentsLength: 13,
+              isFavorite: true
+            }
+          ],
           isAdmin: false,
         },
       }
       try {
-        const { id, account, name, email, image, banner, tweetsLength, description, tweets, isAdmin } = data.user
+        const { id, account, name, email, image, banner, tweetsLength, description, tweets,replyTweets,favoriteTweets, isAdmin } = data.user
         commit("setCurrentUser", {
           id,
           account,
@@ -108,6 +180,8 @@ export default new Vuex.Store({
           tweetsLength,
           description,
           tweets,
+          replyTweets,
+          favoriteTweets,
           isAdmin,
         })
         return true

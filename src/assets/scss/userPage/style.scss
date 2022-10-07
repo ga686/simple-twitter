@@ -113,23 +113,24 @@
     & .togglePage {
       width: 100%;
       color: var(--border-color);
-      & .tweetsPage,
-      .replyPage,
-      .likesPage {
+      & .userTweets,
+      .userReplies,
+      .userLikes {
         width: 130px;
-        height: 37px;
+        height: 35px;
         text-align: center;
-        transition:  ease-out 0.2s;
+        transition:  ease-out 0.1s;
         border-bottom: 0 solid var(--brand-color);
         cursor: pointer;
       }
-      & .tweetsPage:hover,
-      .replyPage:hover,
-      .likesPage:hover{
+      & .userTweets:hover,
+      .userReplies:hover,
+      .userLikes:hover{
         color: var(--brand-color);
         border-bottom: 2px solid var(--brand-color);
       }
       & .active{
+        color: var(--brand-color);
         border-bottom: 2px solid var(--brand-color);
       }
     }

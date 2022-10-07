@@ -27,14 +27,14 @@
           </div>
         </div>
         <div class="togglePage d-flex">
-        <div class="tweetsPage">推文</div>
-        <div class="replyPage">回覆</div>
-        <div class="likesPage">喜歡的內容</div>
+          <div @click.prevent.stop="togglePage('userTweets')" :class="['userTweets',{'active':currentContent === 'userTweets'}]">推文</div>
+          <div @click.prevent.stop="togglePage('userReplies')" :class="['userReplies', {'active':currentContent === 'userReplies'}]">回覆</div>
+          <div @click.prevent.stop="togglePage('userLikes')" :class="['userLikes', {'active':currentContent === 'userLikes'}]">喜歡的內容</div>
+        </div>
       </div>
-      </div>
-      <UserTweets />
-      <UserComments />
-      <UserLikes />
+      <UserTweets :tweets="user.tweets" v-show="currentContent === 'userTweets'"/>
+      <UserReplies :replyTweets="user.replyTweets" v-show="currentContent === 'userReplies'"/>
+      <UserLikes :favoriteTweets="user.favoriteTweets" v-show="currentContent === 'userLikes'"/>
     </div>
     <SuggestUser />
   </main>
@@ -45,7 +45,7 @@ import SuggestUser from '../components/SuggestUser.vue';
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import UserComments from '../components/UserComments.vue'
+import UserReplies from '../components/UserReplies.vue'
 import UserLikes from '../components/UserLikes.vue'
 import UserTweets from '../components/UserTweets.vue'
 
@@ -54,10 +54,10 @@ export default {
   components: {
     NavbarLeft,
     SuggestUser,
-    UserComments,
+    UserReplies,
     UserLikes,
     UserTweets
-},
+  },
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -71,10 +71,10 @@ export default {
         description: '',
         tweetsLength: 0,
         tweets: [],
+        replyTweets: [],
+        favoriteTweets: [],
       },
-      tweetPage: true,
-      replyPage: false,
-      LikesPage: false,
+      currentContent: 'userTweets'
     }
   },
   created() {
@@ -92,11 +92,14 @@ export default {
   methods: {
     fetchUser(userId) {
       console.log(userId)
-      const { id, account, name, email, image, banner, description, tweetsLength, tweets } = this.currentUser
+      const { id, account, name, email, image, banner, description, tweetsLength, tweets,replyTweets,favoriteTweets } = this.currentUser
       this.user = {
         ...this.user,
-        id, account, name, email, image, banner, description, tweetsLength, tweets
+        id, account, name, email, image, banner, description, tweetsLength, tweets,replyTweets,favoriteTweets
       }
+    },
+    togglePage(content){
+      this.currentContent = content
     }
   },
   filters: {
