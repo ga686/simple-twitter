@@ -40,7 +40,7 @@
 $max:40;
 @for $i from 1 to $max {
   .size-#{$i * 2} {
-    font-size: ($i * 2)+px !important;
+    font-size: ($i * 2)+px;
   }
 }
 
