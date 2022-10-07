@@ -16,6 +16,9 @@
     &--content{
       a{color: var(--dark-100);}
     }
+    &--time{
+      color: var(--secondary-color);
+    }
   }
   &_footer{
     color: var(--secondary-color);
@@ -37,9 +40,47 @@
         background: var(--icon-liked-active);
       }
     }
+    // TweetPage
+    &.detail{
+      border-top: 1px solid #E6ECF0;
+      border-bottom: 1px solid #E6ECF0;
+      height: 60px;
+      line-height: 60px;
+    }
+  }
+  // TweetPage
+  &.detail{
+    flex-direction: column;
+    h5{line-height: 26px;}
+    p{line-height: 22px;}
+    .comment_wrap_body--content{line-height: 26px;}
+    .number-wrap{
+      font-size: 19px;
+      color: var(--dark-100);
+      line-height: inherit;
+      & + p {
+        font-size: 19px;
+        line-height: inherit;
+      }
+    }
+    //ReplyTweets
+    &.tweet-list{
+      padding:  0;
+      .comment_wrap_body--title{
+        margin-bottom: 8px;
+      }
+      .comment_wrap_body{
+        padding-top: 16px;
+        padding-left: 24px;
+        padding-right: 24px;
+        & + .comment_wrap_body{
+          border-top: 1px solid #E6ECF0;
+        }
+      }
+    }
   }
 }
-
+// TweetReply
 .reply-span{
   width: 2px;
   height: 80%;
@@ -48,8 +89,7 @@
   position: absolute;
   left: calc(50% - 4px);
   transform: translateX(-50%);
-  top: calc(50% + 16px);
-  bottom: calc(50% - 16px);
+  top: calc(10% + 50px);
 }
 
 .reply_to{

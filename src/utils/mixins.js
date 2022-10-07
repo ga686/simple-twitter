@@ -2,11 +2,28 @@ import moment from 'moment'
 
 export const fromNowFilter = {
   filters: {
-    fromNow(commentDate) {
-      if (!commentDate) {
+    fromNow(createdDate) {
+      if (!createdDate) {
         return '-'
       }
-      return moment(commentDate).fromNow()
+      return moment(createdDate).fromNow()
+    },
+    fullDate(createdDate) {
+      if (!createdDate) {
+        return '-'
+      }
+      const year = moment(createdDate).format('YYYY')
+      const month = moment(createdDate).format('MM')
+      const date = moment(createdDate).format('DD')
+      return year + '年' + month + '月' + date + '日'
+    },
+    getTime (createdDate)  {
+      if (!createdDate) {
+        return '-'
+      }
+      let period = moment(createdDate).format('a') === 'am' ? '早上' : '下午'
+      const time = moment(createdDate).format('h:mm')
+      return period + time
     }
   }
 }
