@@ -28,7 +28,7 @@ export default{
   data (){
     return{
       isShow: false,
-      currentContent: this.initcurrentContent
+      currentContent: this.initcurrentContent,
     }
   },
   components: {

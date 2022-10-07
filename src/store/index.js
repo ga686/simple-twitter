@@ -57,7 +57,8 @@ export default new Vuex.Store({
               name: 'user1',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: false
+              isFavorite: false,
+              avatar: ''
             },
             {
               id: 1,
@@ -68,7 +69,8 @@ export default new Vuex.Store({
               name: 'user1',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             },
             {
               id: 2,
@@ -79,7 +81,8 @@ export default new Vuex.Store({
               name: 'user1',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             },
             {
               id: 3,
@@ -90,7 +93,8 @@ export default new Vuex.Store({
               name: 'user1',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: false
+              isFavorite: false,
+              avatar: ''
             }
           ],
           replyTweets: [
@@ -100,6 +104,7 @@ export default new Vuex.Store({
               createAt: '2022-10-04',
               account: 'apple',
               name: 'apple',
+              avatar: ''
             },
             {
               id: 1,
@@ -107,6 +112,7 @@ export default new Vuex.Store({
               createAt: '2022-10-04',
               account: 'apple',
               name: 'apple',
+              avatar: ''
             },
             {
               id: 2,
@@ -114,6 +120,7 @@ export default new Vuex.Store({
               createAt: '2022-10-04',
               account: 'apple',
               name: 'apple',
+              avatar: ''
             },
             {
               id: 3,
@@ -121,6 +128,7 @@ export default new Vuex.Store({
               createAt: '2022-10-04',
               account: 'apple',
               name: 'apple',
+              avatar: ''
             }
           ],
           favoriteTweets:[
@@ -132,7 +140,8 @@ export default new Vuex.Store({
               name: 'apple',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             },
             {
               id: 1,
@@ -142,7 +151,8 @@ export default new Vuex.Store({
               name: 'apple',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             },
             {
               id: 2,
@@ -152,7 +162,8 @@ export default new Vuex.Store({
               name: 'apple',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             },
             {
               id: 3,
@@ -162,7 +173,8 @@ export default new Vuex.Store({
               name: 'apple',
               likedLength: 72,
               commentsLength: 13,
-              isFavorite: true
+              isFavorite: true,
+              avatar: ''
             }
           ],
           isAdmin: false,

@@ -36,22 +36,32 @@ export default{
   data (){
     return{
       isShow: false,
-      currentContent: this.initcurrentContent
+      currentContent: this.initcurrentContent,
+      favoriteTweets: []
     }
   },
   components: {
     TweetReply
   },
   props: {
-    favoriteTweets:{
+    initFavoriteTweets:{
       type: Array,
       required: true
     }
   },
+  created(){
+    this.fetchData()
+  },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
   methods: {
+    fetchData(){
+      this.favoriteTweets = {
+        ...this.favoriteTweets,
+        ...this.initFavoriteTweets
+      }
+    },
     toggleLiked (tweetId) {
-      this.tweets.filter((tweet)=>{
+      this.favoriteTweets.filter((tweet)=>{
         if(tweet.id === tweetId && tweet.isFavorite === false){
           tweet.isFavorite = true
           tweet.likedLength = tweet.likedLength + 1
@@ -59,7 +69,6 @@ export default{
           tweet.isFavorite = false
           tweet.likedLength = tweet.likedLength - 1
         }
-        
       })
     },
     openModal (){

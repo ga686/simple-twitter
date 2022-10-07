@@ -37,14 +37,15 @@ export default{
   data (){
     return{
       isShow: false,
-      currentContent: this.initcurrentContent
+      currentContent: this.initcurrentContent,
+      tweets: this.initTweets
     }
   },
   components: {
     TweetReply
   },
   props: {
-    tweets:{
+    initTweets:{
       type: Array,
       required: true
     }
@@ -53,7 +54,16 @@ export default{
     ...mapState(['currentUser', 'isAuthenticated'])
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
+  created(){
+    this.fetchData()
+  },
   methods: {
+    fetchData(){
+      this.tweets = {
+        ...this.tweets,
+        ...this.initTweets
+      }
+    },
     toggleLiked (tweetId) {
       this.tweets.filter((tweet)=>{
         if(tweet.id === tweetId && tweet.isFavorite === false){
@@ -63,7 +73,6 @@ export default{
           tweet.isFavorite = false
           tweet.likedLength = tweet.likedLength - 1
         }
-        
       })
     },
     openModal (){
