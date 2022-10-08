@@ -13,12 +13,10 @@
         <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
       </div>
     </div>
-    <TweetReply :is-show="isShow" @close-modal="closeModal"/>
   </div>
 </template>
 
 <script>
-import TweetReply from './TweetReply'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
@@ -28,16 +26,11 @@ export default{
   data (){
     return{
       isShow: false,
-      currentContent: this.initcurrentContent,
     }
-  },
-  components: {
-    TweetReply
   },
   props: {
     replyTweets:{
       type: Array,
-      required: true
     }
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],

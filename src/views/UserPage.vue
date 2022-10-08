@@ -28,14 +28,17 @@
           </div>
         </div>
         <div class="togglePage d-flex">
-          <div @click.prevent.stop="togglePage('userTweets')" :class="['userTweets',{'active':currentContent === 'userTweets'}]">推文</div>
-          <div @click.prevent.stop="togglePage('userReplies')" :class="['userReplies', {'active':currentContent === 'userReplies'}]">回覆</div>
-          <div @click.prevent.stop="togglePage('userLikes')" :class="['userLikes', {'active':currentContent === 'userLikes'}]">喜歡的內容</div>
+          <div @click.prevent.stop="togglePage('userTweets')"
+            :class="['userTweets',{'active':currentContent === 'userTweets'}]">推文</div>
+          <div @click.prevent.stop="togglePage('userReplies')"
+            :class="['userReplies', {'active':currentContent === 'userReplies'}]">回覆</div>
+          <div @click.prevent.stop="togglePage('userLikes')"
+            :class="['userLikes', {'active':currentContent === 'userLikes'}]">喜歡的內容</div>
         </div>
       </div>
-      <UserTweets :initTweets="user.tweets" v-show="currentContent === 'userTweets'"/>
-      <UserReplies :replyTweets="user.replyTweets" v-show="currentContent === 'userReplies'"/>
-      <UserLikes :initFavoriteTweets="user.favoriteTweets" v-show="currentContent === 'userLikes'"/>
+      <UserTweets :initTweets="user.tweets" v-show="currentContent === 'userTweets'" />
+      <UserReplies :replyTweets="user.replyTweets" v-show="currentContent === 'userReplies'" />
+      <UserLikes :initFavoriteTweets="user.favoriteTweets" v-show="currentContent === 'userLikes'" />
     </div>
     <SuggestUser />
   </main>
@@ -51,7 +54,138 @@ import UserLikes from '../components/UserLikes.vue'
 import UserTweets from '../components/UserTweets.vue'
 import UserEdit from '@/components/UserEdit.vue';
 
-
+const dummyData = {
+  tweets: [
+    {
+      id: 0,
+      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
+      video: null,
+      createAt: '2022-10-04',
+      account: "heyjohn",
+      name: 'John Doe',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: false,
+      avatar: ''
+    },
+    {
+      id: 1,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: "heyjohn",
+      name: 'John Doe',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    },
+    {
+      id: 2,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: "heyjohn",
+      name: 'John Doe',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    },
+    {
+      id: 3,
+      content: 'hello world',
+      video: null,
+      createAt: '2022-10-04',
+      account: "heyjohn",
+      name: 'John Doe',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: false,
+      avatar: ''
+    }
+  ],
+  replyTweets: [
+    {
+      id: 0,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      avatar: ''
+    },
+    {
+      id: 1,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      avatar: ''
+    },
+    {
+      id: 2,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      avatar: ''
+    },
+    {
+      id: 3,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      avatar: ''
+    }
+  ],
+  favoriteTweets: [
+    {
+      id: 0,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    },
+    {
+      id: 1,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    },
+    {
+      id: 2,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    },
+    {
+      id: 3,
+      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
+      createAt: '2022-10-04',
+      account: 'apple',
+      name: 'apple',
+      likedLength: 72,
+      commentsLength: 13,
+      isFavorite: true,
+      avatar: ''
+    }
+  ],
+}
 export default {
   name: 'userPage',
   components: {
@@ -97,13 +231,14 @@ export default {
   methods: {
     fetchUser(userId) {
       console.log(userId)
-      const { id, account, name, email, image, banner, description, tweetsLength, tweets,replyTweets,favoriteTweets } = this.currentUser
+      const { tweets, replyTweets, favoriteTweets } = dummyData
+      const { id, account, name, email, image, banner, description, tweetsLength, } = this.currentUser
       this.user = {
         ...this.user,
-        id, account, name, email, image, banner, description, tweetsLength, tweets,replyTweets,favoriteTweets
+        id, account, name, email, image, banner, description, tweetsLength, tweets, replyTweets, favoriteTweets
       }
     },
-    togglePage(content){
+    togglePage(content) {
       this.currentContent = content
     },
     openModal() {

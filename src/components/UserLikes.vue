@@ -22,12 +22,10 @@
         </div>
       </div>
     </div>
-    <TweetReply :is-show="isShow" @close-modal="closeModal"/>
   </div>
 </template>
 
 <script>
-import TweetReply from './TweetReply'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
@@ -36,17 +34,12 @@ export default{
   data (){
     return{
       isShow: false,
-      currentContent: this.initcurrentContent,
       favoriteTweets: []
     }
-  },
-  components: {
-    TweetReply
   },
   props: {
     initFavoriteTweets:{
       type: Array,
-      required: true
     }
   },
   created(){

@@ -47,141 +47,11 @@ export default new Vuex.Store({
           image: require('@/assets/user_avatar.png'),
           description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
           tweetsLength: 4,
-          tweets: [
-            {
-              id: 0,
-              content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-              video: null,
-              createAt: '2022-10-04',
-              account: 'user1',
-              name: 'user1',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: false,
-              avatar: ''
-            },
-            {
-              id: 1,
-              content: 'hello world',
-              video: null,
-              createAt: '2022-10-04',
-              account: 'user1',
-              name: 'user1',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            },
-            {
-              id: 2,
-              content: 'hello world',
-              video: null,
-              createAt: '2022-10-04',
-              account: 'user1',
-              name: 'user1',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            },
-            {
-              id: 3,
-              content: 'hello world',
-              video: null,
-              createAt: '2022-10-04',
-              account: 'user1',
-              name: 'user1',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: false,
-              avatar: ''
-            }
-          ],
-          replyTweets: [
-            {
-              id: 0,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              avatar: ''
-            },
-            {
-              id: 1,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              avatar: ''
-            },
-            {
-              id: 2,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              avatar: ''
-            },
-            {
-              id: 3,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              avatar: ''
-            }
-          ],
-          favoriteTweets:[
-            {
-              id: 0,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            },
-            {
-              id: 1,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            },
-            {
-              id: 2,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            },
-            {
-              id: 3,
-              content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-              createAt: '2022-10-04',
-              account: 'apple',
-              name: 'apple',
-              likedLength: 72,
-              commentsLength: 13,
-              isFavorite: true,
-              avatar: ''
-            }
-          ],
           isAdmin: false,
         },
       }
       try {
-        const { id, account, name, email, image, banner, tweetsLength, description, tweets,replyTweets,favoriteTweets, isAdmin } = data.user
+        const { id, account, name, email, image, banner, tweetsLength, description, isAdmin } = data.user
         commit("setCurrentUser", {
           id,
           account,
@@ -191,9 +61,6 @@ export default new Vuex.Store({
           banner,
           tweetsLength,
           description,
-          tweets,
-          replyTweets,
-          favoriteTweets,
           isAdmin,
         })
         return true
