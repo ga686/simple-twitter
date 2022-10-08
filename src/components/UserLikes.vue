@@ -16,7 +16,7 @@
             <span class="number-wrap">{{tweet.commentsLength}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}" @click.stop.prevent="toggleLiked (tweet.id)"></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
             <span class="number-wrap">{{tweet.likedLength}}</span>
           </div>
         </div>
@@ -34,36 +34,17 @@ export default{
   data (){
     return{
       isShow: false,
-      favoriteTweets: []
+      favoriteTweets: this.initFavoriteTweets
     }
   },
   props: {
     initFavoriteTweets:{
       type: Array,
+      required: true
     }
-  },
-  created(){
-    this.fetchData()
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
   methods: {
-    fetchData(){
-      this.favoriteTweets = {
-        ...this.favoriteTweets,
-        ...this.initFavoriteTweets
-      }
-    },
-    toggleLiked (tweetId) {
-      this.favoriteTweets.filter((tweet)=>{
-        if(tweet.id === tweetId && tweet.isFavorite === false){
-          tweet.isFavorite = true
-          tweet.likedLength = tweet.likedLength + 1
-        }else if(tweet.id === tweetId && tweet.isFavorite === true){
-          tweet.isFavorite = false
-          tweet.likedLength = tweet.likedLength - 1
-        }
-      })
-    },
     openModal (){
       return this.isShow = true
     },
@@ -73,7 +54,6 @@ export default{
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';

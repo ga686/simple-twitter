@@ -31,6 +31,7 @@ export default{
   props: {
     replyTweets:{
       type: Array,
+      required: true
     }
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],

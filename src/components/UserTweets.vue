@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex" >
+    <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
@@ -9,93 +9,54 @@
           ・
           <span class="size-14">{{tweet.createAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
+        <div class="comment_wrap_body--content mb-3">
+          <router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link>
+        </div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon comment my-auto" @click.stop.prevent = "[openModal(), getTweet(tweet.id)]"></div>
+            <div class="icon comment my-auto"></div>
             <span class="number-wrap">{{tweet.commentsLength}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}" @click.stop.prevent="toggleLiked (tweet.id)"></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
             <span class="number-wrap">{{tweet.likedLength}}</span>
           </div>
         </div>
       </div>
     </div>
-    <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal"/>
   </div>
 </template>
 
 <script>
-import TweetReply from './TweetReply'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 
-export default{
-  data (){
-    return{
+export default {
+  data() {
+    return {
       isShow: false,
-      currentContent: this.initcurrentContent,
-      tweets: [],
-      currentTweet: {
-        id: 0,
-        content: '',
-        video: null,
-        createAt: '',
-        account: '',
-        name: '',
-        likedLength: 0,
-        commentsLength: 0,
-        isFavorite: false,
-        avatar: null
-      }
+      tweets: this.initTweets,
     }
   },
-  components: {
-    TweetReply
-  },
   props: {
-    initTweets:{
+    initTweets: {
       type: Array,
+      required: true
     }
   },
   computed: {
     ...mapState(['currentUser', 'isAuthenticated'])
   },
-  mixins: [fromNowFilter, emptyImageFilter,accountFilter],
-  created(){
-    this.fetchData()
-  },
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
   methods: {
-    fetchData(){
-      this.tweets = this.initTweets
-    },
-    toggleLiked (tweetId) {
-      this.tweets.filter((tweet)=>{
-        if(tweet.id === tweetId && tweet.isFavorite === false){
-          tweet.isFavorite = true
-          tweet.likedLength = tweet.likedLength + 1
-        }else if(tweet.id === tweetId && tweet.isFavorite === true){
-          tweet.isFavorite = false
-          tweet.likedLength = tweet.likedLength - 1
-        }
-      })
-    },
-    openModal (){
+    openModal() {
       return this.isShow = true
     },
-    closeModal (show){
+    closeModal(show) {
       return this.isShow = show
     },
-    getTweet (tweetId) {
-      const target = this.tweets.filter((tweet) => tweet.id === tweetId )
-      this.currentTweet = {
-        ...this.currentTweet,
-        ...target[0]
-      }
-    }
   }
 }
 </script>

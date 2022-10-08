@@ -2,7 +2,7 @@
   <main class="main-view mx-auto">
     <NavbarLeft />
     <div class="user-page">
-      <UserEdit :is-show="isShow" @close-modal="closeModal" />
+      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" />
       <div class="user-header d-flex align-item-center">
         <div class="link-icon" @click="$router.back()"></div>
         <div class="user-title d-flex justify-content-center">
