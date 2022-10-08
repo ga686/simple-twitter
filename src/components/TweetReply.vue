@@ -26,10 +26,10 @@
           </div>
         </div>
       </div>
-      <form class="tweet_list-box d-flex">
+      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex">
-          <div class="avatar_image"><img src="../assets/empty_image.png" /></div>
-          <textarea class="flex-fill my-auto" placeholder="推你的推文"></textarea>
+          <div class="avatar_image"><img :src="currentUser.image" /></div>
+          <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent"></textarea>
         </div>
         <button class="btn ml-auto">回應</button>
       </form>
@@ -41,8 +41,15 @@
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
+import { mapState } from 'vuex'
+import { Toast } from '../utils/helpers'
 
 export default{
+  data () {
+    return {
+      newContent: ''
+    }
+  },
   props: {
     isShow:{
       type: Boolean,
@@ -57,8 +64,25 @@ export default{
   methods: {
     closeModal () {
       this.$emit('close-modal',!this.isShow)
+    },
+    handleSubmit (e) {
+      if (!this.newContent) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請輸入推文訊息'
+        })
+        return
+      }
+      const form = e.target
+      const formData = new FormData(form)
+      this.closeModal()
+      this.newContent = ""
+      console.log(formData)
     }
-  }
+  },
+  computed: {
+    ...mapState(['currentUser'])
+  },
 }
 </script>
 

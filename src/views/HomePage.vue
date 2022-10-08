@@ -5,12 +5,12 @@
       <div class="tweet_list-title">
         <h4>首頁</h4>
       </div>
-      <form class="tweet_list-box d-flex">
+      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex">
-          <div class="avatar_image"><img src="../assets/empty_image.png" /></div>
-          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？"></textarea>
+          <div class="avatar_image"><img :src="currentUser.image" /></div>
+          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
         </div>
-        <button class="btn ml-auto">推文</button>
+        <button type="submit" class="btn ml-auto">推文</button>
       </form>
       <NewestTweets :tweets="tweets" />
     </div>
@@ -22,6 +22,7 @@ import NavbarLeft from '../components/NavbarLeft'
 import SuggestUser from '../components/SuggestUser'
 import NewestTweets from '../components/NewestTweets'
 import {mapState} from 'vuex'
+import { Toast } from '../utils/helpers'
 
 
 const dummyData = {
@@ -81,6 +82,7 @@ export default {
   data() {
     return {
       tweets: [],
+      newContent: ''
     }
   },
   components: {
@@ -94,6 +96,19 @@ export default {
   methods: {
     fetchComments() {
       return this.tweets = dummyData.tweets
+    },
+    handleSubmit (e) {
+      if (!this.newContent) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請輸入推文訊息'
+        })
+        return
+      }
+      const form = e.target
+      const formData = new FormData(form)
+      this.newContent = ""
+      console.log(formData)
     }
   },
   created() {
