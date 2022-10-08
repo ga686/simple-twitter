@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import SignIn from '../views/SignIn.vue'
 import HomePage from '../views/HomePage.vue'
 import TweetPage from '../views/TweetPage.vue'
+import AccountSettings from '../views/AccountSettings.vue'
 import NotFound from '../views/NotFound.vue'
 import store from '../store'
 
@@ -50,14 +51,14 @@ const routes = [
     component: ()=> import('../views/AdminPage.vue'),
   },
   {
-    path: "/home",
-    name: "home",
-    component: HomePage
-  },
-  {
     path: "/tweet/:id",
     name: "tweet",
     component: TweetPage
+  },
+  {
+    path: "/settings",
+    name: "account-settings",
+    component: AccountSettings 
   },
   {
     path: "*",
