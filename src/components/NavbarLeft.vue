@@ -13,7 +13,7 @@
         </router-link>
       </div>
       <div class="navbar_item">
-        <router-link to="/" class="nav_link">
+        <router-link to="/settings" class="nav_link">
           <div class="nav_link-icon setting"></div>設定
         </router-link>
       </div>
