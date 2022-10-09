@@ -213,7 +213,7 @@ export default {
         favoriteTweets: [],
       },
       currentContent: 'userTweets',
-      isShow: false
+      isShow: true
     }
   },
   created() {

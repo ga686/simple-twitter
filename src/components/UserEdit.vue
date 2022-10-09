@@ -11,19 +11,26 @@
         <div class="user-banner">
           <div class="filter"></div>
           <div class="icons">
-            <i class="icon-edit" @change="handleFileChange"></i>
-            <i class="icon-edit-done"></i>
+            <label for="banner">
+              <img class="icon-photo" src="~@/assets/icon_photo.png" alt="">
+            </label>
+            <input class="banner-edit" type="file" id="banner" accept="image/*" name="banner"
+              @change="handleFileChange">
+            <i class="icon-edit-done" @click.prevent.stop="user.banner = initUser.banner"></i>
           </div>
-          <img :src="initUser.banner | emptyImage" alt="" id="banner" accept="image/*" name="banner">
+          <img :src="user.banner | emptyImage" alt="" />
         </div>
         <div class="avatar">
           <div class="filter"></div>
-          <i class="icon-edit" @change="handleFileChange"></i>
-          <img :src="user.avatar | emptyImage" alt="" id="avatar" accept="image/*" name="avatar" />
+          <label for="avatar">
+            <img class="icon-photo" src="~@/assets/icon_photo.png" alt="">
+          </label>
+          <input class="avatar-edit" type="file" id="avatar" accept="image/*" name="avatar" @change="handleFileChange">
+          <img :src="user.avatar | emptyImage" alt="" />
         </div>
         <div class="user-name">
           <label for="">名稱</label>
-          <input type="text" id="name" name="name" v-model="user.name"  maxlength="50"/>
+          <input type="text" id="name" name="name" v-model="user.name" maxlength="50" />
         </div>
         <p class="input-length">{{user.name.length}}/50</p>
         <div class="user-description">
@@ -41,7 +48,7 @@ const dummyData = {
   description: 'John Doe : )'
 }
 import { emptyImageFilter } from '@/utils/mixins'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   props: {
     isShow: {
@@ -78,11 +85,15 @@ export default {
     handleFileChange(e) {
       const { files } = e.target
       if (files.length === 0) {
-        this.user.image = ''
+        this.image = ''
         return
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
-        this.user.image = imageURL
+        if(e.target.name === 'banner'){
+          this.user.banner = imageURL
+        }else if(e.target.name === 'avatar'){
+          this.user.avatar = imageURL
+        }
       }
     },
   }
