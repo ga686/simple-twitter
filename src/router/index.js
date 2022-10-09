@@ -46,9 +46,14 @@ const routes = [
     component: ()=> import('../views/AdminSignIn.vue'),
   },
   {
-    path: "/adminpage",
-    name: "admin-page",
-    component: ()=> import('../views/AdminPage.vue'),
+    path: "/admin/users",
+    name: "admin-users",
+    component: ()=> import('../views/AdminUsers.vue'),
+  },
+  {
+    path: "/admin/tweets",
+    name: "admin-tweets",
+    component: ()=> import('../views/AdminTweets.vue'),
   },
   {
     path: "/tweet/:id",
