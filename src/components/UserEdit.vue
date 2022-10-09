@@ -11,15 +11,15 @@
         <div class="user-banner">
           <div class="filter"></div>
           <div class="icons">
-            <i class="icon-edit"></i>
+            <i class="icon-edit" @change="handleFileChange"></i>
             <i class="icon-edit-done"></i>
           </div>
-          <img :src="initUser.banner | emptyImage" alt="">
+          <img :src="initUser.banner | emptyImage" alt="" id="banner" accept="image/*" name="banner">
         </div>
         <div class="avatar">
           <div class="filter"></div>
-          <i class="icon-edit"></i>
-          <img :src="user.avatar | emptyImage" alt="">
+          <i class="icon-edit" @change="handleFileChange"></i>
+          <img :src="user.avatar | emptyImage" alt="" id="avatar" accept="image/*" name="avatar" />
         </div>
         <div class="user-name">
           <label for="">名稱</label>
@@ -41,6 +41,7 @@ const dummyData = {
   description: 'John Doe : )'
 }
 import { emptyImageFilter } from '@/utils/mixins'
+import {mapState} from 'vuex'
 export default {
   props: {
     isShow: {
@@ -51,12 +52,15 @@ export default {
       required: true,
     }
   },
+  mixins: [emptyImageFilter],
   data() {
     return {
       user: {}
     }
   },
-  mixins: [emptyImageFilter],
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
   created() {
     this.fetchUser()
   },
@@ -70,7 +74,17 @@ export default {
     },
     closeModal() {
       this.$emit('close-modal', !this.isShow)
-    }
+    },
+    handleFileChange(e) {
+      const { files } = e.target
+      if (files.length === 0) {
+        this.user.image = ''
+        return
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.user.image = imageURL
+      }
+    },
   }
 }
 </script>

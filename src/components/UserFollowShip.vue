@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="tweet in followingsTweets" :key="tweet.id" class="comment_wrap d-flex">
+    <div v-for="tweet in followShip" :key="tweet.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="tweet.user.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
@@ -13,12 +13,11 @@
     </div>
   </div>
 </template>
-
 <script>
 import { emptyImageFilter } from '../utils/mixins'
 export default {
   props: {
-    initFollowingsTweets: {
+    initFollowShip: {
       type: Array,
       required: true,
     },
@@ -26,18 +25,23 @@ export default {
   mixins: [emptyImageFilter],
   data() {
     return {
-      followingsTweets: [],
+      followShip: [],
     }
   },
   created() {
     this.fetchData()
   },
+  watch:{
+    initFollowShip(){
+      this.fetchData()
+    }  
+  },
   methods: {
     fetchData() {
-      this.followingsTweets = this.initFollowingsTweets
+      this.followShip = this.initFollowShip
     },
     toggleFollow(userId) {
-      this.followingsTweets.filter((tweet)=>{
+      this.followShip.filter((tweet)=>{
         if(tweet.user.id === userId){
           tweet.user.isFollowed = !tweet.user.isFollowed 
         }
@@ -49,11 +53,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
-
-.comment_wrap_body {
+.comment_wrap_body{
   width: 100%;
 }
-
 .comment_wrap_body--title {
   justify-content: space-between;
   align-items: center;

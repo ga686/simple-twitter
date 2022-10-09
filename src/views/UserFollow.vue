@@ -15,8 +15,7 @@
         <div :class="['user-followings',{active: currentView === 'followings'}]"
           @click.prevent.stop="toggleContent('followings')">正在追隨</div>
       </div>
-      <UserFollowers :initFollowersTweets='followersTweets' v-show="this.currentView === 'followers'"/>
-      <UserFollowings :initFollowingsTweets="followingsTweets" v-show="this.currentView === 'followings'"/>
+      <UserFollowShip :initFollowShip='followShip'/>
     </div>
     <SuggestUser />
   </main>
@@ -27,11 +26,10 @@ import SuggestUser from '../components/SuggestUser.vue';
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import UserFollowers from '../components/UserFollowers.vue'
-import UserFollowings from '@/components/UserFollowings.vue';
+import UserFollowShip from '../components/UserFollowShip.vue'
 
 const dummyData = {
-  followersTweets: [
+  followShip: [
     {
       user:{
         id: 0,
@@ -113,58 +111,6 @@ const dummyData = {
       content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
     }
   ],
-  followingsTweets: [
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 0,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true, 
-      },
-      id: 1,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 5,
-        name: 'Josh',
-        avatar: null,
-        isFollowed: true, 
-      },
-      id: 2,
-      content: 'You only live once!',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 3,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 4,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-  ],
 }
 
 export default {
@@ -172,8 +118,7 @@ export default {
   components: {
     NavbarLeft,
     SuggestUser,
-    UserFollowers,
-    UserFollowings
+    UserFollowShip
 },
   mixins: [emptyImageFilter, accountFilter],
   data() {
@@ -192,8 +137,7 @@ export default {
         favoriteTweets: [],
       },
       isShow: false,
-      followersTweets: dummyData.followersTweets,
-      followingsTweets: dummyData.followingsTweets,
+      followShip: dummyData.followShip,
       currentView: ''
     }
   },
@@ -219,6 +163,11 @@ export default {
         id, account, name, email, image, banner, description, tweetsLength, tweets, replyTweets, favoriteTweets
       }
       this.currentView = userId
+      if(userId === 'followings'){
+        this.followShip = dummyData.followShip.filter(tweet => tweet.user.isFollowed === true)
+      }else{
+        this.followShip = dummyData.followShip
+      }
     },
     openModal() {
       return this.isShow = true
@@ -228,6 +177,11 @@ export default {
     },
     toggleContent(view) {
       this.currentView = view
+      if(view === 'followings'){
+        this.followShip = this.followShip.filter(tweet => tweet.user.isFollowed === true)
+      }else{
+        this.followShip = dummyData.followShip
+      }
     }
   },
   filters: {

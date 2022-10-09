@@ -24,7 +24,7 @@
           <div class="user-decription number-wrap">{{user.description}}</div>
           <div class="user-follow d-flex number-wrap">
             <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>34</span> 個跟隨中</div>
-            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>59</span> 位跟隨中</div>
+            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>59</span> 位跟隨者</div>
           </div>
         </div>
         <div class="togglePage d-flex">
