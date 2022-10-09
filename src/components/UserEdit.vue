@@ -19,7 +19,7 @@
         <div class="avatar">
           <div class="filter"></div>
           <i class="icon-edit"></i>
-          <img :src="user.image | emptyImage" alt="">
+          <img :src="user.avatar | emptyImage" alt="">
         </div>
         <div class="user-name">
           <label for="">名稱</label>

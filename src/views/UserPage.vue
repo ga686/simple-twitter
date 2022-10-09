@@ -15,7 +15,7 @@
           <img :src="user.banner | emptyImage" alt="">
         </div>
         <div class="avatar">
-          <img :src="user.image | emptyImage" alt="">
+          <img :src="user.avatar | emptyImage" alt="">
         </div>
         <div class="user-setting" @click.stop.prevent="openModal">編輯個人資料</div>
         <div class="user-info">
@@ -23,8 +23,8 @@
           <div class="user-account number-wrap">{{user.account | account}}</div>
           <div class="user-decription number-wrap">{{user.description}}</div>
           <div class="user-follow d-flex number-wrap">
-            <div class="user-info-following"><span>34</span> 個跟隨中</div>
-            <div class="user-info-follower"><span>59</span> 位跟隨中</div>
+            <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>34</span> 個跟隨中</div>
+            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>59</span> 位跟隨中</div>
           </div>
         </div>
         <div class="togglePage d-flex">
@@ -205,7 +205,7 @@ export default {
         name: '',
         email: '',
         banner: '',
-        image: '',
+        avatar: '',
         description: '',
         tweetsLength: 0,
         tweets: [],
@@ -232,10 +232,10 @@ export default {
     fetchUser(userId) {
       console.log(userId)
       const { tweets, replyTweets, favoriteTweets } = dummyData
-      const { id, account, name, email, image, banner, description, tweetsLength, } = this.currentUser
+      const { id, account, name, email, avatar, banner, description, tweetsLength, } = this.currentUser
       this.user = {
         ...this.user,
-        id, account, name, email, image, banner, description, tweetsLength, tweets, replyTweets, favoriteTweets
+        id, account, name, email, avatar, banner, description, tweetsLength, tweets, replyTweets, favoriteTweets
       }
     },
     togglePage(content) {

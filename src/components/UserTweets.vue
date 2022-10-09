@@ -34,30 +34,30 @@ import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 
 export default {
-  data() {
-    return {
-      isShow: false,
-      tweets: this.initTweets,
-    }
-  },
-  props: {
-    initTweets: {
-      type: Array,
-      required: true
-    }
-  },
-  computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
-  },
-  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-  methods: {
-    openModal() {
-      return this.isShow = true
+    data() {
+        return {
+            isShow: false,
+            tweets: this.initTweets,
+        };
     },
-    closeModal(show) {
-      return this.isShow = show
+    props: {
+        initTweets: {
+            type: Array,
+            required: true
+        }
     },
-  }
+    computed: {
+        ...mapState(["currentUser", "isAuthenticated"])
+    },
+    mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+    methods: {
+        openModal() {
+            return this.isShow = true;
+        },
+        closeModal(show) {
+            return this.isShow = show;
+        },
+    },
 }
 </script>
 

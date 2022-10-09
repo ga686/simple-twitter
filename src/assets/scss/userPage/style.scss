@@ -103,12 +103,12 @@
 
       .user-follow {
         color: var(--secondary-color);
+        cursor: pointer;
         & .user-info-following {
           margin-right: 20px;
           font-weight: 400;
         }
         & span{
-          cursor: pointer;
           color: var(--dark-100);
         }
       }

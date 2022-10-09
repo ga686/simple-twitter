@@ -28,7 +28,7 @@
       </div>
       <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex">
-          <div class="avatar_image"><img :src="currentUser.image" /></div>
+          <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent"></textarea>
         </div>
         <button class="btn ml-auto">回應</button>
