@@ -7,7 +7,7 @@
     <form class="" @submit.prevent.stop="handleSubmit">
       <div :class="['form-label-group',{'errorAccount': errorAccount}]">
         <label for="account">帳號</label>
-        <input id="account" name="account" autofocus v-model="account" type="email" placeholder="請輸入帳號"
+        <input id="account" name="account" autofocus v-model="account" type="name" placeholder="請輸入帳號"
           autocomplete="account">
       </div>
       <div :class="['form-label-group',{'errorPassword': errorPassword}]">
@@ -29,19 +29,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import authorizationAPI from '../apis/authorization';
 import { Toast } from '../utils/helpers'
-const dummyData = {
-  user: {
-    id: 1,
-    account: 'user1',
-    email: 'user1@example.com',
-    password: '12345678',
-    image: '../assets/UserPhoto.png',
-    isAdmin: false,
-  },
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9e1vstA8ybc930xrvOcF8denO4ImYK8',
-}
 
 export default {
   data() {
@@ -53,67 +42,70 @@ export default {
       errorPassword: false
     }
   },
-  computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
-  },
   methods: {
-    handleSubmit() {
-      if (!this.account || !this.password) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請輸入帳號及密碼'
-        })
-        this.isInputNull = true
-        return
-      }
+    async handleSubmit() {
+      try {
+        if (!this.account || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請輸入帳號及密碼'
+          })
+          return
+        }
 
-      const user = dummyData.user
-      this.isProcessing = true
+        this.isProcessing = true
 
-      if (user.isAdmin === true) {
-        Toast.fire({
-          icon: 'error',
-          title: '管理者請由後台登入'
+        const { data } = await authorizationAPI.signIn({
+          account: this.account,
+          password: this.password
         })
-        this.account = ''
-        this.password = ''
-        return
-      }
 
-      if (user.email !== this.account) {
+        if (data.status === 'error') {
+          throw new Error()
+        }
+
+        this.$store.commit('setCurrentUser', data.user)
+        localStorage.setItem('token', data.token)
+
         Toast.fire({
-          icon: 'error',
-          title: '帳號不存在！'
+          icon: 'success',
+          title: '登入成功！'
         })
-        console.log(user)
-        this.errorAccount = true
+
+        this.$router.push('/homepage')
         this.isProcessing = false
-        return
-      } else if (user.password !== this.password) {
-        Toast.fire({
-          icon: 'error',
-          title: '密碼有誤！'
-        })
-        this.errorPassword = true
+
+      } catch (err) {
         this.isProcessing = false
-        return
+        let message = err.response.data.message
+
+        if (message === "Error: user permission denied") {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號輸入錯誤'
+          })
+          this.errorAccount = true
+        } else if (message === "Error: The account is incorrect!") {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號輸入錯誤'
+          })
+          this.errorAccount = true
+        } else if (message === "Error: The password is incorrect!") {
+          Toast.fire({
+            icon: 'warning',
+            title: '密碼輸入錯誤'
+          })
+          this.errorPassword = true
+        }
       }
-
-      this.$store.commit('setCurrentUser', user)
-      localStorage.setItem('token', dummyData.token)
-
-      Toast.fire({
-        icon: 'success',
-        title: '登入成功！'
-      })
-      this.$router.push('/homepage')
     }
   },
   watch: {
-    account() {
+    account(){
       this.errorAccount = false
     },
-    password() {
+    password(){
       this.errorPassword = false
     }
   }
