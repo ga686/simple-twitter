@@ -29,7 +29,7 @@
 import { Toast } from '../utils/helpers'
 const dummyData = {
   id: 1,
-  account: 'user1@example.com',
+  account: 'root',
   password: '12345678',
   isAdmin: true,
   token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9e1vstA8ybc930xrvOcF8denO4ImYK8',
@@ -93,7 +93,7 @@ export default {
         icon: 'success',
         title: '登入成功！'
       })
-      this.$router.push('/AdminPage')
+      this.$router.push('/admin/tweets')
     }
   },
   watch: {

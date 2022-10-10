@@ -8,8 +8,8 @@
       </div>
       <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex">
-          <div class="avatar_image"><img :src="currentUser.avatar" /></div>
-          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
+          <div class="avatar_image"><img :src="currentUser.image" /></div>
+          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
         </div>
         <button type="submit" class="btn ml-auto">推文</button>
       </form>
@@ -41,7 +41,7 @@ export default{
       if (!this.newContent) {
         Toast.fire({
           icon: 'warning',
-          title: '請輸入推文訊息'
+          title: '內容不可空白'
         })
         return
       }
