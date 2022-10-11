@@ -8,7 +8,7 @@
       <div class="admin_box_wrap card-wrap">
         <div class="admin_box-item card text-center" v-for="user in users" :key="user.id">
           <div style="position:relative">
-            <img class="admin_box-item-banner" :src="user.homeBanner | emptyBanner">
+            <img class="admin_box-item-banner" :src="user.coverPhoto | emptyBanner">
             <div class="admin_box-item-avatar"><img :src="user.avatar | emptyImage"></div>
           </div>
           <div class="admin_box-item-body mt-3">
@@ -17,19 +17,19 @@
             <div class="d-flex admin_box-item-actions justify-content-center">
               <div class="d-flex align-items-center mx-3">
                 <div class="icon reply"></div>
-                <span class="ml-2">{{ user.commentsLength }}</span>
+                <span class="ml-2">{{ user.TweetsCount }}</span>
               </div>
               <div class="d-flex align-items-center mx-3">
                 <div class="icon liked"></div>
-                <span class="ml-2">{{ user.likedLength }}</span>
+                <span class="ml-2">{{ user.LikedCount }}</span>
               </div>
             </div>
             <div class="d-flex admin_box-item-footer justify-content-center">
               <div class="following size-14 mx-2">
-                <span>{{ user.followingLength }}個</span>跟隨中
+                <span>{{ user.FollowingsCount }}個</span>跟隨中
               </div>
               <div class="followers size-14 mx-2">
-                <span>{{ user.followerLength }}個</span>跟隨者
+                <span>{{ user.FollowersCount }}個</span>跟隨者
               </div>
             </div>
           </div>
@@ -41,57 +41,10 @@
 
 <script>
 import NavbarAdmin from '../components/NavbarAdmin'
+import adminAPI from '../apis/admin'
 import { emptyImageFilter } from '@/utils/mixins'
 import { accountFilter } from '@/utils/mixins'
-
-const dummyData = {
-  users: [
-    {
-      id: 1,
-      account: 'apple1',
-      name: 'apple1',
-      likedLength: 72,
-      commentsLength: 13,
-      followerLength: 1000,
-      followingLength: 100,
-      avatar: null,
-      homeBanner: null
-    },
-    {
-      id: 2,
-      account: 'apple2',
-      name: 'apple2',
-      likedLength: 72,
-      commentsLength: 13,
-      followerLength: 1000,
-      followingLength: 100,
-      avatar: null,
-      homeBanner: null
-    },
-    {
-      id: 3,
-      account: 'apple3',
-      name: 'apple3',
-      likedLength: 72,
-      commentsLength: 13,
-      followerLength: 1000,
-      followingLength: 100,
-      avatar: null,
-      homeBanner: null
-    },
-    {
-      id: 4,
-      account: 'apple4',
-      name: 'apple4',
-      likedLength: 72,
-      commentsLength: 13,
-      followerLength: 1000,
-      followingLength: 100,
-      avatar: null,
-      homeBanner: null
-    }
-  ]
-}
+import { Toast } from '@/utils/helpers'
 
 export default {
   data () {
@@ -104,8 +57,20 @@ export default {
     NavbarAdmin,
   },
   methods: {
-    fetchUsers () {
-      return this.users = dummyData.users
+    async fetchUsers () {
+      try {
+        const { data } = await adminAPI.getAllUsers()
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        return this.users = data
+      }catch (err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法取得使用者資料，請稍後再試'
+        })
+      }
     }
   },
   created () {
