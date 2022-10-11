@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="navbar_item" @click="logout">
-      <router-link to="/signin" class="nav_link">
+      <router-link to="/admin/signin" class="nav_link">
         <div class="nav_link-icon logout" ></div>登出
       </router-link>    
     </div>
@@ -31,7 +31,7 @@ export default{
   methods: {
     logout () {
       this.$store.commit('rmAuthentication')
-      this.$router.push('/signin')
+      this.$router.push('/admin/signin')
     }
   }
 }
