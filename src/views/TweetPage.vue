@@ -8,33 +8,34 @@
       <div class="comment_wrap detail d-flex" >
         <div class="comment_wrap_body">
           <div class="d-flex">
-            <div class="avatar_image"><img :src="tweet.avatar | emptyImage" /></div>
+            <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage" /></div>
             <div class="comment_wrap_body--title">
-              <h5 class="size-16">{{tweet.name}}</h5>
-              <p class="size-14">{{tweet.account | account}}</p>
+              <h5 class="size-16">{{tweet.User.name}}</h5>
+              <p class="size-14">{{tweet.User.account | account}}</p>
             </div>
           </div>
-          <div class="comment_wrap_body--content size-24 mb-2">{{tweet.content}}</div>
+          <div class="comment_wrap_body--content size-24 mb-2">{{tweet.description}}</div>
           <div class="comment_wrap_body--time">
-            <span class="size-14">{{tweet.createAt | getTime }}</span>
+            <span class="size-14">{{tweet.createdAt | getTime }}</span>
             ・
-            <span class="size-14">{{tweet.createAt | fullDate }}</span>
+            <span class="size-14">{{tweet.createdAt | fullDate }}</span>
           </div>
         </div>
         <div class="comment_wrap_footer d-flex mt-3 detail">
             <div class="comment_wrap_footer--comments-num d-flex mr-10">
-              <div class="number-wrap mr-1">{{tweet.commentsLength}}</div><p>回覆</p>
+              <div class="number-wrap mr-1">{{tweet.repliedCount}}</div><p>回覆</p>
             </div>
             <div class="comment_wrap_footer--liked-num d-flex">
-              <div class="number-wrap mr-1">{{tweet.likedLength}}</div><p>喜歡次數</p>
+              <div class="number-wrap mr-1">{{tweet.likedCount}}</div><p>喜歡次數</p>
             </div>
           </div>
       </div> 
       <div class="tweet_list-detail btn-wrap d-flex">
         <div class="icon-btn reply" @click.stop.prevent="openModal"></div>
-        <div class="icon-btn liked" :class="{isliked: tweet.isFavorite}" @click.stop.prevent="toggleLiked"></div>
+        <div class="icon-btn liked isliked my-auto" v-if="getLikedStatus(tweet.UserId)" @click.stop.prevent="deleteLike(tweet.id)"></div>
+        <div class="icon-btn liked my-auto" v-else @click.stop.prevent="addLike(tweet.id)"></div>
       </div>
-      <ReplyTweets />
+      <ReplyTweets :reply-to="tweet" />
     </div>
     <SuggestUser />
     <TweetReply :is-show="isShow" :tweet = "tweet" @close-modal="closeModal"/>
@@ -45,48 +46,12 @@ import NavbarLeft from "../components/NavbarLeft"
 import SuggestUser from "../components/SuggestUser"
 import ReplyTweets from "../components/ReplyTweets"
 import TweetReply from "../components/TweetReply"
+import tweetsAPI from '../apis/tweets'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
-
-const dummyData = {
-  id: 0,
-  content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-  video: null,
-  createAt: '2022-10-08T11:35:48.000Z',
-  account: 'root',
-  name: 'root',
-  likedLength: 72,
-  commentsLength: 13,
-  isFavorite: false,
-  avatar: null,
-  comments: [
-    {
-      id: 0,
-      content: 'hello 1',
-      video: null,
-      createAt: '2022-10-04T11:35:48.000Z',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: false,
-      avatar: null,
-    },
-    {
-      id: 0,
-      content: 'hello 2',
-      video: null,
-      createAt: '2022-10-05T11:35:48.000Z',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: false,
-      avatar: null,
-    },
-  ]
-}
+import { Toast } from "@/utils/helpers"
+import { mapState } from 'vuex'
 
 export default{
   data () {
@@ -103,9 +68,45 @@ export default{
   },
   mixins: [accountFilter, emptyImageFilter,fromNowFilter],
   methods: {
-    toggleLiked () {
-      console.log(this.tweet.isFavorite)
-      return this.tweet.isFavorite = !this.tweet.isFavorite
+    async addLike (tweetId) {
+      console.log('add')
+      try{
+        const data = tweetsAPI.addLike({ tweetId })
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.tweets.filter((tweet) => {
+          if(tweet.id === tweetId){
+            tweet.likedCount = tweet.likedCount + 1
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法加入最愛，請稍後再試'
+        })
+      }
+    },
+    async deleteLike (tweetId) {
+      console.log('delete')
+      try{
+        const data = tweetsAPI.deleteLike({ tweetId })
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.tweets.filter((tweet) => {
+          if(tweet.id === tweetId){
+            tweet.likedCount = tweet.likedCount - 1
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除最愛，請稍後再試'
+        })
+      }
     },
     openModal (){
       return this.isShow = true
@@ -113,12 +114,42 @@ export default{
     closeModal (show){
       return this.isShow = show
     },
-    fetchTweet () {
-      return this.tweet = dummyData
+    async fetchTweet (tweetId) {
+      try {
+        const { data } = await tweetsAPI.getTweet({ tweetId })
+        console.log(data)
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        return this.tweet = data
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法找到推文，請稍後再試'
+        })
+      }
+    },
+    getLikedStatus (userId) {
+      console.log(userId)
+      if (userId === this.currentUser.id){
+        return true
+      }
+      return false
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 路由改變時重新抓取資料
+    const { id } = to.params
+    this.fetchTweet(id)
+    next()
+  },
   created () {
-    this.fetchTweet()
+    const { id: tweetId } = this.$route.params
+    this.fetchTweet(tweetId)
   }
 }
 </script>
