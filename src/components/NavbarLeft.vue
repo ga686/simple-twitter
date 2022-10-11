@@ -26,7 +26,7 @@
         <div class="nav_link-icon logout" ></div>登出
       </router-link>    
     </div>
-    <UserTweetNew :is-show="isShow" @close-modal="closeModal" />
+    <UserTweetNew :is-show="isShow" @close-modal="closeModal" @refresh-tweet="refreshTweet"/>
   </div>
 </template>
 
@@ -56,6 +56,9 @@ export default {
     logout () {
       this.$store.commit('rmAuthentication')
       this.$router.push('/signin')
+    },
+    refreshTweet (data) {
+      this.$emit('return-new-data',data)
     }
   }
 }
