@@ -1,23 +1,24 @@
 <template>
   <div>
     <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex" >
-      <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
+      <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.name}}</h5>
-          <p class="size-14">{{tweet.account | account}}</p>
+          <h5 class="size-16">{{tweet.User.name}}</h5>
+          <p class="size-14">{{tweet.User.account | account}}</p>
           ・
-          <span class="size-14">{{tweet.createAt | fromNow }}</span>
+          <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
+        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link></div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
             <div class="icon comment my-auto" @click.stop.prevent = "[openModal(), getTweet(tweet.id)]"></div>
-            <span class="number-wrap">{{tweet.commentsLength}}</span>
+            <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}" @click.stop.prevent="toggleLiked (tweet.id)"></div>
-            <span class="number-wrap">{{tweet.likedLength}}</span>
+            <div class="icon liked isliked my-auto" v-if="tweet.isFav" @click.stop.prevent="deleteLike(tweet.id)"></div>
+            <div class="icon liked my-auto" v-else @click.stop.prevent="addLike(tweet.id)"></div>
+            <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
       </div>
@@ -28,25 +29,25 @@
 
 <script>
 import TweetReply from './TweetReply'
+import tweetsAPI from '../apis/tweets'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
+import { Toast } from '@/utils/helpers'
+import { mapState } from 'vuex'
 
 export default{
   data (){
     return{
       isShow: false,
       currentTweet: {
+        UserId: 0,
+        createdAt: "",
+        description: "",
         id: 0,
-        content: '',
-        video: null,
-        createAt: '',
-        account: '',
-        name: '',
-        likedLength: 0,
-        commentsLength: 0,
-        isFavorite: false,
-        avatar: null
+        likedCount: 0,
+        repliedCount: 0,
+        updatedAt: ""
       }
     }
   },
@@ -61,17 +62,47 @@ export default{
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
   methods: {
-    toggleLiked (tweetId) {
-      this.tweets.filter((tweet)=>{
-        if(tweet.id === tweetId && tweet.isFavorite === false){
-          tweet.isFavorite = true
-          tweet.likedLength = tweet.likedLength + 1
-        }else if(tweet.id === tweetId && tweet.isFavorite === true){
-          tweet.isFavorite = false
-          tweet.likedLength = tweet.likedLength - 1
+    async addLike (tweetId) {
+      console.log('add')
+      try{
+        const data = tweetsAPI.addLike({ tweetId })
+        if(data.status === "error"){
+          throw new Error(data.message)
         }
-        
-      })
+        this.tweets.filter((tweet) => {
+          if(tweet.id === tweetId){
+            tweet.likedCount = tweet.likedCount + 1
+            tweet.isFav = true
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法加入最愛，請稍後再試'
+        })
+      }
+    },
+    async deleteLike (tweetId) {
+      console.log('delete')
+      try{
+        const data = tweetsAPI.deleteLike({ tweetId })
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.tweets.filter((tweet) => {
+          if(tweet.id === tweetId){
+            tweet.likedCount = tweet.likedCount - 1
+            tweet.isFav = false
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除最愛，請稍後再試'
+        })
+      }
     },
     openModal (){
       return this.isShow = true
@@ -85,7 +116,10 @@ export default{
         ...this.currentTweet,
         ...target[0]
       }
-    }
+    },
+  },
+  computed: {
+    ...mapState(['currentUser'])
   }
 }
 </script>
