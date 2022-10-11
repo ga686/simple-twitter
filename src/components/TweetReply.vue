@@ -9,26 +9,26 @@
       <div class="comment_wrap d-flex" >
         <div class="avatar_wrap">
           <div class="avatar_image">
-            <img :src="tweet.avatar | emptyImage" />
+            <img :src="tweet.User.avatar | emptyImage" />
           </div>
           <span class="reply-span"></span>
         </div>
         <div class="comment_wrap_body">
           <div class="d-flex comment_wrap_body--title">
-            <h5 class="size-16">{{ tweet.name }}</h5>
-            <p class="size-14">{{ tweet.account | account }}</p>
+            <h5 class="size-16">{{ tweet.User.name }}</h5>
+            <p class="size-14">{{ tweet.User.account | account }}</p>
             ・
-            <span class="size-14">{{tweet.createAt | fromNow }}</span>
+            <span class="size-14">{{tweet.createdAt | fromNow }}</span>
           </div>
-          <div class="comment_wrap_body--content mb-3">{{ tweet.content }}</div>
+          <div class="comment_wrap_body--content mb-3">{{ tweet.description }}</div>
           <div class="comment_wrap_footer d-flex reply_to">
-            <p>回覆給</p><p class="ml-1 reply_to-account">{{ tweet.account | account }}</p>
+            <p>回覆給</p><p class="ml-1 reply_to-account">{{ tweet.User.account | account }}</p>
           </div>
         </div>
       </div>
       <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex">
-          <div class="avatar_image"><img :src="currentUser.image" /></div>
+          <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent" maxlength="140"></textarea>
         </div>
         <button class="btn ml-auto">回應</button>
