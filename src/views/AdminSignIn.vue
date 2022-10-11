@@ -18,7 +18,7 @@
       <button class="btn">登入</button>
     </form>
     <div class="other-link d-flex justify-content-end">
-      <router-link to='/signIn'>
+      <router-link to='admin/signin'>
       <div class="btn-cancel"><u>前台登入</u></div>
     </router-link>
     </div>
@@ -26,15 +26,8 @@
 </template>
 
 <script>
+import adminAPI from '../apis/admin'
 import { Toast } from '../utils/helpers'
-const dummyData = {
-  id: 1,
-  account: 'root',
-  password: '12345678',
-  isAdmin: true,
-  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9e1vstA8ybc930xrvOcF8denO4ImYK8',
-}
-
 export default {
   data() {
     return {
@@ -46,54 +39,58 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-      if (!this.account || !this.password) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請輸入帳號及密碼'
-        })
-        this.isInputNull = true
-        return
-      }
+    async handleSubmit() {
+      try {
+        if (!this.account || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請輸入帳號及密碼'
+          })
+          this.isInputNull = true
+          return
+        }
 
-      const user = dummyData
-      this.isProcessing = true
 
-      if(user.isAdmin !== true){
-        Toast.fire({
-          icon: 'error',
-          title: '請由前台登入'
+        const { data } = await adminAPI.signIn({
+          account: this.account,
+          password: this.password
         })
-        this.account = ''
-        this.password = ''
-        return 
-      }
+        this.isProcessing = true
 
-      if (user.account !== this.account) {
+        if (data.status === 'error') {
+          throw new Error()
+        }
+        this.$store.commit('setCurrentUser', data.user)
+        localStorage.setItem('token', data.token)
         Toast.fire({
-          icon: 'error',
-          title: '帳號不存在！'
+          icon: 'success',
+          title: '登入成功！'
         })
-        this.errorAccount = true
+        this.$router.push({name: "admin-tweets"})
+      }catch(err){
         this.isProcessing = false
-        return
-      } else if (user.password !== this.password) {
-        Toast.fire({
-          icon: 'error',
-          title: '密碼有誤！'
-        })
-        this.errorPassword = true
-        this.isProcessing = false
-        return
+        let message = err.response.data.message
+
+        if (message === "Error: admin permission denied") {
+          Toast.fire({
+            icon: 'warning',
+            title: '請由前台登入'
+          })
+          this.errorAccount = true
+        } else if (message === "Error: The account is incorrect!") {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號不存在！'
+          })
+          this.errorAccount = true
+        } else if (message === "Error: The password is incorrect!") {
+          Toast.fire({
+            icon: 'warning',
+            title: '密碼有誤'
+          })
+          this.errorPassword = true
+        }
       }
-
-      localStorage.setItem('token', dummyData.token)
-
-      Toast.fire({
-        icon: 'success',
-        title: '登入成功！'
-      })
-      this.$router.push('/admin/tweets')
     }
   },
   watch: {
