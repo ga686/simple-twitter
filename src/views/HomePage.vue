@@ -1,6 +1,6 @@
 <template>
   <main class="main-view mx-auto">
-    <NavbarLeft />
+    <NavbarLeft @return-new-data="getNewData"/>
     <div class="tweet_list">
       <div class="tweet_list-title">
         <h4>首頁</h4>
@@ -21,62 +21,10 @@
 import NavbarLeft from '../components/NavbarLeft'
 import SuggestUser from '../components/SuggestUser'
 import NewestTweets from '../components/NewestTweets'
-import {mapState} from 'vuex'
+import tweetsAPI from '../apis/tweets'
+import usersAPI from '../apis/users'
+import { mapState } from 'vuex'
 import { Toast } from '../utils/helpers'
-
-
-const dummyData = {
-  tweets: [
-    {
-      id: 0,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: false,
-      avatar: null
-    },
-    {
-      id: 1,
-      content: 'hello world 1',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: true,
-      avatar: null
-    },
-    {
-      id: 2,
-      content: 'hello world 2',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: true,
-      avatar: null
-    },
-    {
-      id: 3,
-      content: 'hello world 3',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root',
-      name: 'root',
-      likedLength: 72,
-      commentsLength: 13,
-      isFavorite: false,
-      avatar: null
-    }
-  ]
-}
 
 export default {
   data() {
@@ -94,25 +42,75 @@ export default {
     ...mapState(['currentUser'])
   },
   methods: {
-    fetchComments() {
-      return this.tweets = dummyData.tweets
+    async fetchTweets() {
+      try{
+        const {data} = await tweetsAPI.getTweets()
+ 
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        this.tweets = this.getLikedStatus(data)
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新推特，請稍後再試'
+        })
+      }
     },
-    handleSubmit (e) {
-      if (!this.newContent) {
+    async handleSubmit () {
+      try {
+        if (!this.newContent) {
         Toast.fire({
           icon: 'warning',
-          title: '請輸入推文訊息'
+          title: '內容不可空白'
         })
         return
       }
-      const form = e.target
-      const formData = new FormData(form)
-      this.newContent = ""
-      console.log(formData)
+        const description  = this.newContent
+        const { data } = await tweetsAPI.postNewTweet({description})
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.newContent = ""
+        this.fetchTweets()
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法新增貼文，請稍後再試'
+        })
+      }
+    },
+    getNewData (data){
+      return this.tweets = data
+    },
+    async getLikedStatus (data) {
+      try{
+        const response = await usersAPI.getCurrentFavorite(14)
+        console.log(response.data)
+        let result = data.map(obj => {
+          if(!response.data.some(o2 => obj.id === o2.TweetId)){
+            return obj = {
+              ...obj,
+              isFav: false
+            }
+          }
+          return obj = {
+            ...obj,
+            isFav: true
+          }
+        })
+        this.tweets = result
+
+      }catch(err){
+        console.error(err)
+      }
     }
   },
   created() {
-    this.fetchComments()
+    this.fetchTweets()
   }
 }
 </script>
