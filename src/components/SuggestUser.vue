@@ -9,67 +9,90 @@
         <h5>{{followship.name}}</h5>
         <div class="account_name size-14">{{followship.account | account}}</div>
       </div>
-      <div class="btn my-auto" :class="{unfollow: !followship.isFollowed}" @click.prevent.stop="toggleFollow(followship.id)">{{ followship.isFollowed ? '正在跟隨' : '跟隨'}}</div>
+      <div class="btn my-auto" @click.prevent.stop="deleteFollow(followship.id)" v-if="followship.isFollowed">跟隨</div>
+      <div class="btn my-auto unfollow" @click.prevent.stop="addFollow(followship.id)" v-else>跟隨</div>
     </div>
   </div>
 </template>
 
 <script>
+import followshipsAPI from '@/apis/followships'
+import { Toast } from '@/utils/helpers'
 import { emptyImageFilter } from '../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-
-const dummyData = {
- followships:[
-    {
-      id: 1,
-      account: 'root',
-      name: 'root',
-      followerLength: 100,
-      isFollowed: true,
-      avatar_image: null
-    },
-    {
-      id: 2,
-      account: 'root',
-      name: 'root',
-      followerLength: 90,
-      isFollowed: true,
-      avatar_image: null
-    },
-    {
-      id: 25,
-      account: 'root24343',
-      name: 'root24343',
-      followerLength: 50,
-      isFollowed: false,
-      avatar_image: null
-    },
-    {
-      id: 37,
-      account: 'root8888888990',
-      name: 'root8888888990',
-      followerLength: 30,
-      isFollowed: false,
-      avatar_image: null
-    }
-  ]
-}
 
 export default{
   data () {
     return {followships: []}
   },
   methods: {
-    fetchFollowShips () {
-      return this.followships = dummyData.followships
-    },
-    toggleFollow (userId) {
-      this.followships.filter((followship)=>{
-        if( followship.id === userId ){
-          followship.isFollowed = !followship.isFollowed
+    async fetchFollowShips () {
+      try{
+        const { data } = await followshipsAPI.getFollowship()
+        if(data.status === "error"){
+          throw new Error(data.message)
         }
-      })
-    }
+        this.followships = data.data
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推薦，請稍後再試'
+        })
+      }
+    },
+    async addFollow (userId) {
+      try {
+        const { data } = await followshipsAPI.addFollow({userId})
+
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+
+        this.followships = {
+          ...this.followships,
+          isFollowed: false
+        }
+
+        this.followships.filter((followship)=>{
+          if( followship.id === userId ){
+            followship.isFollowed = true
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法加入追蹤，請稍後再試'
+        })
+      }
+    },
+    async deleteFollow (userId) {
+      try {
+        const { data } = await followshipsAPI.deleteFollow({userId})
+
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+
+        this.followships = {
+          ...this.followships,
+          isFollowed: false
+        }
+
+        this.followships.filter((followship)=>{
+          if( followship.id === userId ){
+            followship.isFollowed = false
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法移除追蹤，請稍後再試'
+        })
+      }
+    },
   },
   mixins: [emptyImageFilter,accountFilter],
   created () {
