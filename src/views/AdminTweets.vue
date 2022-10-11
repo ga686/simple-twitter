@@ -8,15 +8,15 @@
       <div class="admin_box_wrap">
         <div class="admin_box_wrap-item d-flex" v-for="tweet in tweets" :key="tweet.id">
           <div class="d-flex flex-fill">
-            <div class="avatar_image"><img :src="tweet.avatar | emptyImage" /></div>
+            <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage" /></div>
             <div>
               <div class="d-flex admin_box_wrap-title align-items-center">
-                <h5 class="size-16">{{ tweet.name }}</h5>
-                <p class="size-14 ml-1">{{ tweet.account | account }}</p>
+                <h5 class="size-16">{{ tweet.userData.name }}</h5>
+                <p class="size-14 ml-1">{{ tweet.userData.account | account }}</p>
                 ・
                 <span class="size-14">{{ tweet.createAt | fromNow }}</span>
               </div>
-              <div class="mb-3 mt-1 admin_box_wrap-content">{{ tweet.content }}</div>
+              <div class="mb-3 mt-1 admin_box_wrap-content">{{ tweet.description }}</div>
             </div>
           </div>
           <div class="tweet-delete-btn" @click.stop.prevent = "deleteTweet(tweet.id)"><i class="fa-solid fa-xmark size-20"></i></div>
@@ -28,50 +28,11 @@
 
 <script>
 import NavbarAdmin from '../components/NavbarAdmin'
+import adminAPI from '../apis/admin'
 import { emptyImageFilter } from '@/utils/mixins'
 import { fromNowFilter } from '@/utils/mixins'
 import { accountFilter } from '../utils/mixins'
-
-const dummyData = {
-  tweets: [
-    {
-      id: 0,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root1',
-      name: 'root1',
-      avatar: null
-    },
-    {
-      id: 1,
-      content: 'hello world 1',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root2',
-      name: 'root2',
-      avatar: null
-    },
-    {
-      id: 2,
-      content: 'hello world 2',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root3',
-      name: 'root3',
-      avatar: null
-    },
-    {
-      id: 3,
-      content: 'hello world 3',
-      video: null,
-      createAt: '2022-10-04',
-      account: 'root4',
-      name: 'root4',
-      avatar: null
-    }
-  ]
-}
+import { Toast } from '@/utils/helpers'
 
 export default {
   data () {
@@ -84,11 +45,34 @@ export default {
   },
   mixins:[ emptyImageFilter , fromNowFilter , accountFilter ],
   methods: {
-    fetchTweets () {
-      return this.tweets = dummyData.tweets
+    async fetchTweets () {
+      try{
+        const { data } = await adminAPI.getAllTweets()
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.tweets = data
+      }catch(err){
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推文資料，請稍後再試'
+        })
+      }
     },
-    deleteTweet (tweetId) {
-      this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+    async deleteTweet (tweetId) {
+      try{
+        const { data } = await adminAPI.deleteTweet(tweetId)
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+      }catch(err){
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除推文，請稍後再試'
+        })
+      }
     }
   },
   created () {
