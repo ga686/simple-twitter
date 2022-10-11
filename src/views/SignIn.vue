@@ -21,7 +21,7 @@
       <router-link to='/signUp'>
         <div class="signup-link"><u>註冊</u></div>
       </router-link>&#x2022;
-      <router-link to="/adminsignin">
+      <router-link to="/admin/signin">
         <div class="admin-link"><u>後台登入</u></div>
       </router-link>
     </div>
@@ -59,14 +59,12 @@ export default {
           account: this.account,
           password: this.password
         })
-
+        console.log(data)
         if (data.status === 'error') {
           throw new Error()
         }
-
         this.$store.commit('setCurrentUser', data.user)
         localStorage.setItem('token', data.token)
-
         Toast.fire({
           icon: 'success',
           title: '登入成功！'
