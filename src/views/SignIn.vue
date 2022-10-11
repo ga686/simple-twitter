@@ -65,6 +65,7 @@ export default {
         }
 
         this.$store.commit('setCurrentUser', data.user)
+        localStorage.setItem('userId', data.user.id)
         localStorage.setItem('token', data.token)
 
         Toast.fire({

@@ -35,23 +35,10 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchCurrentUser({ commit }) {
-      const data = {
-        user: {
-          id: 1,
-          account: "heyjohn",
-          name: 'John Doe',
-          email: "user1@example.com",
-          password: "12345678",
-          banner: require('@/assets/banner.jpeg'),
-          avatar: require('@/assets/user_avatar.png'),
-          description: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. ',
-          tweetsLength: 4,
-          isAdmin: false,
-        },
-      }
+    async fetchCurrentUser({ commit }) {
       try {
-        const { id, account, name, email, avatar, banner, tweetsLength, description, isAdmin } = data.user
+        //not done
+        const { id, account, name, email, avatar, banner, tweetsLength, description, isAdmin } = this.currentUser
         commit("setCurrentUser", {
           id,
           account,
