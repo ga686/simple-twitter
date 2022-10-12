@@ -22,8 +22,8 @@
           </div>
         </div>
       </div>
-      <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal" />
     </div>
+    <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal" @refresh-replies="update"/>
   </div>
 </template>
 
@@ -63,7 +63,6 @@ export default{
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],
   methods: {
     async addLike (tweetId) {
-      console.log('add')
       try{
         const data = tweetsAPI.addLike({ tweetId })
         if(data.status === "error"){
@@ -84,7 +83,6 @@ export default{
       }
     },
     async deleteLike (tweetId) {
-      console.log('delete')
       try{
         const data = tweetsAPI.deleteLike({ tweetId })
         if(data.status === "error"){
@@ -116,6 +114,9 @@ export default{
         ...this.currentTweet,
         ...target[0]
       }
+    },
+    update () {
+      this.$emit('refresh-tweets')
     }
   },
   computed: {
