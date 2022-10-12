@@ -38,7 +38,7 @@
       <ReplyTweets :reply-to="tweet" />
     </div>
     <SuggestUser />
-    <TweetReply :is-show="isShow" :tweet = "tweet" @close-modal="closeModal"/>
+    <TweetReply :is-show="isShow" :tweet = "tweet" @close-modal="closeModal" @refresh-replies="refreshAgain"/>
   </main>
 </template>
 <script>
@@ -128,9 +128,8 @@ export default{
     },
     async getLikedStatus (data) {
       try{
-        const response = await usersAPI.getCurrentFavorite(14)
+        const response = await usersAPI.getCurrentFavorite(14) 
         let result = response.data.findIndex((obj)=>obj.TweetId === data.id)
-        console.log(result)
         if(result > 0){
           this.tweet = {
             ...data,
@@ -157,6 +156,10 @@ export default{
           title: '無法新增貼文，說稍後再試'
         })
       }
+    },
+    refreshAgain (tweetId){
+      console.log('refresh')
+      this.fetchTweet(tweetId)
     }
   },
   computed: {
