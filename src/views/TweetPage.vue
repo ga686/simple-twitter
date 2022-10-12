@@ -46,7 +46,6 @@ import NavbarLeft from "../components/NavbarLeft"
 import SuggestUser from "../components/SuggestUser"
 import ReplyTweets from "../components/ReplyTweets"
 import TweetReply from "../components/TweetReply"
-import usersAPI from '../apis/users'
 import tweetsAPI from '../apis/tweets'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
@@ -113,48 +112,15 @@ export default{
     async fetchTweet (tweetId) {
       try {
         const { data } = await tweetsAPI.getTweet({ tweetId })
-        console.log(data)
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        return this.tweet = this.getLikedStatus (data)
+        return this.tweet = data
       }catch(err){
         console.error(err)
         Toast.fire({
           icon: 'error',
           title: '無法找到推文，請稍後再試'
-        })
-      }
-    },
-    async getLikedStatus (data) {
-      try{
-        const response = await usersAPI.getCurrentFavorite(14) 
-        let result = response.data.findIndex((obj)=>obj.TweetId === data.id)
-        if(result > 0){
-          this.tweet = {
-            ...data,
-            isFav: true
-          }
-          return
-        }
-        this.tweet = {
-          ...data,
-          isFav: false
-        }
-      }catch(err){
-        console.error(err)
-      }
-    },
-    async handleAfterSubmit (description) {
-      try{
-        const { data } = await tweetsAPI.addReply(14 , description )
-        if(data.status === 'error'){
-          throw new Error(data.message)
-        }
-      }catch(err){
-        Toast.fire({
-          icon: 'error',
-          title: '無法新增貼文，說稍後再試'
         })
       }
     },
@@ -170,15 +136,6 @@ export default{
     const { id } = to.params
     this.fetchTweet(id)
     next()
-  },
-  watch: {
-    tweet: {
-      handler: function () {
-        const { id } = this.$route.params
-        this.fetchTweet(id)
-      },
-      deep: true
-    }
   },
   created () {
     const { id: tweetId } = this.$route.params
