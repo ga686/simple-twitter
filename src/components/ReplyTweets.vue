@@ -59,6 +59,15 @@ export default{
       }
     }
   },
+  watch: {
+    replyTo: {
+      handler: function () {
+        const { id: tweetId } = this.$route.params
+        this.fetchReplies(tweetId)
+      },
+      deep: true
+    }
+  },
   created () {
     const { id: tweetId } = this.$route.params
     this.fetchReplies(tweetId)
