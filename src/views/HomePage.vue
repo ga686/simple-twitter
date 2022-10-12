@@ -103,7 +103,7 @@ export default {
           }
         })
         this.tweets = result
-
+        console.log(result)
       }catch(err){
         console.error(err)
       }
