@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import tweetsAPI from '../apis/tweets'
-import { Toast } from '@/utils/helpers'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
@@ -41,36 +39,8 @@ export default{
     }
   },
   mixins: [accountFilter,fromNowFilter,emptyImageFilter ],
-  methods: {
-    async fetchReplies (tweetId) {
-      try {
-        const { data } = await tweetsAPI.getReplies({ tweetId })
-        console.log(data)
-        if( data.status === "error" ){
-          throw new Error(data.message)
-        }
-        this.replies = data
-      }catch(err){
-        console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法更新留言，請稍後再試'
-        })
-      }
-    }
-  },
-  watch: {
-    replyTo: {
-      handler: function () {
-        const { id: tweetId } = this.$route.params
-        this.fetchReplies(tweetId)
-      },
-      deep: true
-    }
-  },
   created () {
-    const { id: tweetId } = this.$route.params
-    this.fetchReplies(tweetId)
+    return this.replies = this.replyTo.Replies
   }
 }
 </script>
