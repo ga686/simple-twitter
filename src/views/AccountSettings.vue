@@ -36,6 +36,7 @@
 
 <script>
 import NavbarLeft from '../components/NavbarLeft'
+import usersAPI from '../apis/users'
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helpers'
 
@@ -58,28 +59,40 @@ export default {
       this.name = this.currentUser.name
       this.email = this.currentUser.email
     },
-    handleSubmit (e) {
-      if(this.account.length === 0 | this.name.length === 0 | this.email.length === 0 | this.password.length === 0 | this.passwordConfrim.length === 0){
+    async handleSubmit (e) {
+      try {
+        if(this.account.length === 0 | this.name.length === 0 | this.email.length === 0 | this.password.length === 0 | this.passwordConfrim.length === 0){
+          Toast.fire({
+            icon: 'warning',
+            title: '尚有欄位未填寫'
+          })
+          return
+        }
+
+        if (this.password !== this.passwordConfrim ) {
+          Toast.fire({
+            icon: 'warning',
+            title: '密碼輸入不一致'
+          })
+          return
+        }
+
+        const form = e.target
+        const formData = new FormData(form)
+        const { data } = await usersAPI.updateAccount(this.currentUser.id, formData)
+
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+
+        // this.$router.push({name: "home-page"})
+      }catch(err){
+        console.error(err)
         Toast.fire({
           icon: 'warning',
-          title: '尚有欄位未填寫'
+          title: '無法更新資料，請稍後再試'
         })
-        return
       }
-
-      if (this.password !== this.passwordConfrim ) {
-        Toast.fire({
-          icon: 'warning',
-          title: '密碼輸入不一致'
-        })
-        return
-      }
-
-      const form = e.target
-      const formData = new FormData(form)
-      this.newContent = ""
-      console.log(formData)
-      this.$router.push({name: "home-page"})
     }
   },
   computed: {
