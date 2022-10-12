@@ -89,7 +89,6 @@ export default {
     async getLikedStatus (data) {
       try{
         const response = await usersAPI.getCurrentFavorite(14)
-        console.log(response.data)
         let result = data.map(obj => {
           if(!response.data.some(o2 => obj.id === o2.TweetId)){
             return obj = {

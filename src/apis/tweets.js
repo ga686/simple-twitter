@@ -19,7 +19,7 @@ export default {
   getReplies({ tweetId }) {
     return apiHelper.get(`api/tweets/${ tweetId }/replies`)
   },
-  addReply({ tweetId , fromData }) {
-    return apiHelper.post(`api/tweets${ tweetId }/replies`, fromData)
+  addReply( tweetId , fromData ) {
+    return apiHelper.post(`api/tweets/${ tweetId }/replies`, fromData)
   }
 }

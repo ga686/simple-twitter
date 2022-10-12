@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal"/>
+      <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal" @after-comment="handleAfterSubmit"/>
     </div>
   </div>
 </template>
@@ -117,6 +117,19 @@ export default{
         ...target[0]
       }
     },
+    async handleAfterSubmit (description) {
+      try{
+        const { data } = await tweetsAPI.addReply(14 , description )
+        if(data.status === 'error'){
+          throw new Error(data.message)
+        }
+      }catch(err){
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增貼文，說稍後再試'
+        })
+      }
+    }
   },
   computed: {
     ...mapState(['currentUser'])

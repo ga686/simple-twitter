@@ -4,8 +4,8 @@ export default {
   getFollowship() {
     return apiHelper.get(`/api/followships/top`)
   },
-  addFollow ({ userId }) {
-    return apiHelper.post(`/api/followships/${ userId }`, null)
+  addFollow () {
+    return apiHelper.post(`/api/followships/`, null)
   },
   deleteFollow ({ userId }) {
     return apiHelper.delete(`/api/followships/${ userId }`)

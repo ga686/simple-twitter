@@ -9,6 +9,6 @@ export default {
   },
 
   signUp(data) {
-    return apiHelper.post("api/users/signup", { ...data })
+    return apiHelper.post("/api/users/", {...data})
   },
 }

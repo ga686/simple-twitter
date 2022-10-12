@@ -1,5 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
+import usersAPI from "../apis/users"
 
 
 Vue.use(Vuex)
@@ -12,8 +13,13 @@ export default new Vuex.Store({
       email: "",
       name: "",
       password: "",
-      isAdmin: false,
-      avatar: "",
+      role: "",
+      avatar: '',
+      coverPhoto: '',
+      introduction: '',
+      Tweets: [],
+      Replies: [],
+      Likes: []
     },
     isAuthenticated: false,
     token: "",
@@ -33,12 +39,29 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ""
       localStorage.removeItem("token")
+      localStorage.removeItem("currentId")
     },
   },
   actions: {
-    fetchCurrentUser({ commit }) {
+    async fetchCurrentUser({ commit }) {
       try {
-        commit("setCurrentUser")
+        const currentUserId = localStorage.getItem('currentId')
+        const {data} = await usersAPI.get(currentUserId)
+        const { id, account, email,name, password, role, avatar, coverPhoto, introduction, Tweets, Replies, Likes } = data
+        commit("setCurrentUser", {
+          id,
+          account,
+          email,
+          name,
+          password,
+          role,
+          avatar,
+          coverPhoto,
+          introduction,
+          Tweets,
+          Replies,
+          Likes
+        })
         return true
       } catch (error) {
         console.log(error.message)

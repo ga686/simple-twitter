@@ -32,7 +32,7 @@
       </div> 
       <div class="tweet_list-detail btn-wrap d-flex">
         <div class="icon-btn reply" @click.stop.prevent="openModal"></div>
-        <div class="icon-btn liked isliked my-auto" v-if="getLikedStatus(tweet.UserId)" @click.stop.prevent="deleteLike(tweet.id)"></div>
+        <div class="icon-btn liked isliked my-auto" v-if="tweet.isFav" @click.stop.prevent="deleteLike(tweet.id)"></div>
         <div class="icon-btn liked my-auto" v-else @click.stop.prevent="addLike(tweet.id)"></div>
       </div>
       <ReplyTweets :reply-to="tweet" />
@@ -46,6 +46,7 @@ import NavbarLeft from "../components/NavbarLeft"
 import SuggestUser from "../components/SuggestUser"
 import ReplyTweets from "../components/ReplyTweets"
 import TweetReply from "../components/TweetReply"
+import usersAPI from '../apis/users'
 import tweetsAPI from '../apis/tweets'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
@@ -69,17 +70,14 @@ export default{
   mixins: [accountFilter, emptyImageFilter,fromNowFilter],
   methods: {
     async addLike (tweetId) {
-      console.log('add')
       try{
         const data = tweetsAPI.addLike({ tweetId })
         if(data.status === "error"){
           throw new Error(data.message)
         }
-        this.tweets.filter((tweet) => {
-          if(tweet.id === tweetId){
-            tweet.likedCount = tweet.likedCount + 1
-          }
-        })
+        if(this.tweet.id === tweetId){
+          this.tweet.isFav = true
+        }
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -95,11 +93,9 @@ export default{
         if(data.status === "error"){
           throw new Error(data.message)
         }
-        this.tweets.filter((tweet) => {
-          if(tweet.id === tweetId){
-            tweet.likedCount = tweet.likedCount - 1
-          }
-        })
+        if(this.tweet.id === tweetId){
+          this.tweet.isFav = false
+        }
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -121,7 +117,7 @@ export default{
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        return this.tweet = data
+        return this.tweet = this.getLikedStatus (data)
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -130,12 +126,37 @@ export default{
         })
       }
     },
-    getLikedStatus (userId) {
-      console.log(userId)
-      if (userId === this.currentUser.id){
-        return true
+    async getLikedStatus (data) {
+      try{
+        const response = await usersAPI.getCurrentFavorite(14)
+        let result = response.data.findIndex((obj)=>obj.TweetId === data.id)
+        console.log(result)
+        if(result > 0){
+          this.tweet = {
+            ...data,
+            isFav: true
+          }
+        }
+        this.tweet = {
+          ...data,
+          isFav: false
+        }
+      }catch(err){
+        console.error(err)
       }
-      return false
+    },
+    async handleAfterSubmit (description) {
+      try{
+        const { data } = await tweetsAPI.addReply(14 , description )
+        if(data.status === 'error'){
+          throw new Error(data.message)
+        }
+      }catch(err){
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增貼文，說稍後再試'
+        })
+      }
     }
   },
   computed: {

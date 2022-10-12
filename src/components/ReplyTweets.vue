@@ -45,6 +45,7 @@ export default{
     async fetchReplies (tweetId) {
       try {
         const { data } = await tweetsAPI.getReplies({ tweetId })
+        console.log(data)
         if( data.status === "error" ){
           throw new Error(data.message)
         }
@@ -60,7 +61,6 @@ export default{
   },
   created () {
     const { id: tweetId } = this.$route.params
-    console.log(tweetId)
     this.fetchReplies(tweetId)
   }
 }

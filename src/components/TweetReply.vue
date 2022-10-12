@@ -65,7 +65,7 @@ export default{
     closeModal () {
       this.$emit('close-modal',!this.isShow)
     },
-    handleSubmit (e) {
+    handleSubmit () {
       if (!this.newContent) {
         Toast.fire({
           icon: 'warning',
@@ -73,11 +73,9 @@ export default{
         })
         return
       }
-      const form = e.target
-      const formData = new FormData(form)
+      this.$emit('after-comment',this.newContent)
       this.closeModal()
       this.newContent = ""
-      console.log(formData)
     }
   },
   computed: {

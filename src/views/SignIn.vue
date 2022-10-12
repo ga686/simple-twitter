@@ -63,8 +63,12 @@ export default {
         if (data.status === 'error') {
           throw new Error()
         }
-        this.$store.commit('setCurrentUser', data.user)
+
         localStorage.setItem('token', data.token)
+        localStorage.setItem('currentId', data.user.id)
+
+        this.$store.commit('setCurrentUser', data.user)
+
         Toast.fire({
           icon: 'success',
           title: '登入成功！'
