@@ -4,10 +4,10 @@
       <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.name}}</h5>
+          <h5 class="size-16">{{initUser.name}}</h5>
           <p class="size-14">{{tweet.account | account}}</p>
           ・
-          <span class="size-14">{{tweet.createAt | fromNow }}</span>
+          <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
         <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
         <div class="comment_wrap_footer d-flex">
@@ -41,6 +41,10 @@ export default{
     initFavoriteTweets:{
       type: Array,
       required: true
+    },
+    initUser: {
+            type: Object,
+            required: true
     }
   },
   mixins: [fromNowFilter, emptyImageFilter,accountFilter],

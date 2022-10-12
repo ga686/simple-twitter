@@ -1,6 +1,7 @@
 import { apiHelper } from "@/utils/helpers";
+
 export default {
-  get(){
-    return apiHelper.get()
-  }
+  get(userId){
+    return apiHelper.get(`/api/users/${userId}`)
+  },
 }
