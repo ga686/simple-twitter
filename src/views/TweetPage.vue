@@ -174,7 +174,7 @@ export default{
   watch: {
     tweet: {
       handler: function () {
-        const id = this.currentUser.id
+        const { id } = this.$route.params
         this.fetchTweet(id)
       },
       deep: true
