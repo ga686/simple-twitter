@@ -6,5 +6,11 @@ export default {
   },
   getCurrentFavorite(userId) {
     return apiHelper.get(`/api/users/${ userId }/likes`)
+  },
+  getCurrentFollow(userId) {
+    return apiHelper.get(`/api/users/${ userId }/followings`)
+  },
+  updateAccount(userId, data) {
+    return apiHelper.post(`api/users/${ userId }/account`, data )
   }
 }
