@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <div v-for="reply in replyTweets" :key="reply.id" class="comment_wrap d-flex" >
       <div class="avatar_image"><img :src="reply.avatar | emptyImage " /></div>
@@ -54,4 +54,19 @@ export default{
     color: var(--brand-color);
   }
 }
+</style> -->
+<template>
+  <div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    
+  }
+</script>
+
+<style lang="scss" scoped>
+
 </style>

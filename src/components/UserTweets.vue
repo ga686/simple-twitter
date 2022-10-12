@@ -14,8 +14,8 @@
         </div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon comment my-auto"></div>
-            <span class="number-wrap">{{tweet.commentsLength}}</span>
+            <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
+            <span class="number-wrap">{{tweet.Replies.length}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
             <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
@@ -24,6 +24,7 @@
         </div>
       </div>
     </div>
+    <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
   </div>
 </template>
 
@@ -32,30 +33,40 @@ import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
+import usersAPI from '../apis/users'
+import TweetReply from './TweetReply'
 
 export default {
     data() {
         return {
             isShow: false,
-            tweets: this.initTweets,
+            tweets: [],
+            targetTweet: {}
         };
     },
     props: {
-        initTweets: {
-            type: Array,
-            required: true
-        },
         initUser: {
             type: Object,
             required: true
         }
     },
+    components:{
+      TweetReply
+    },
     computed: {
         ...mapState(["currentUser", "isAuthenticated"])
     },
     mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+    created(){
+      this.fetchTweets(this.initUser.id)
+    },
     methods: {
-        openModal() {
+        async fetchTweets(userId){
+          const {data} = await usersAPI.getTweets(userId)
+          this.tweets = data
+        },
+        openModal(tweet) {
+            this.targetTweet = tweet
             return this.isShow = true;
         },
         closeModal(show) {

@@ -4,13 +4,10 @@ export default {
   get(userId){
     return apiHelper.get(`/api/users/${userId}`)
   },
-  getCurrentFavorite(userId) {
-    return apiHelper.get(`/api/users/${ userId }/likes`)
+  getTweets(userId) {
+    return apiHelper.get(`/api/users/${ userId }/tweets`)
   },
   getCurrentFollow(userId) {
     return apiHelper.get(`/api/users/${ userId }/followings`)
   },
-  updateAccount(userId, data) {
-    return apiHelper.post(`api/users/${ userId }`, data )
-  }
 }

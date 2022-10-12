@@ -38,9 +38,9 @@
             :class="['userLikes', {'active':currentContent === 'userLikes'}]">喜歡的內容</div>
         </div>
       </div>
-      <UserTweets :initTweets="user.tweets" :initUser="user" v-show="currentContent === 'userTweets'" />
-      <UserReplies :replyTweets="user.replyTweets" :initUser="user" v-show="currentContent === 'userReplies'" />
-      <UserLikes :initFavoriteTweets="user.favoriteTweets" :initUser="user" v-show="currentContent === 'userLikes'" />
+      <UserTweets :initUser="user" v-show="currentContent === 'userTweets'" />
+      <UserReplies :initUser="user" v-show="currentContent === 'userReplies'" />
+      <UserLikes :initUser="user" v-show="currentContent === 'userLikes'" />
     </div>
     </template>
     <SuggestUser />
@@ -83,9 +83,6 @@ export default {
         coverPhoto: '',
         introduction: '',
         tweetsLength: 0,
-        tweets: [],
-        replyTweets: [],
-        favoriteTweets: [],
       },
       currentContent: 'userTweets',
       isShow: false,
@@ -108,10 +105,10 @@ export default {
     async fetchUser(userId) {
       this.isProcessing = true
       const {data} = await usersAPI.get(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, Tweets, Replies ,Likes} = data
+      const { id, account, name, email, avatar, coverPhoto, introduction, Tweets} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, tweetsLength:Tweets.length, tweets:Tweets, replyTweets:Replies, favoriteTweets:Likes
+        id, account, name, email, avatar, coverPhoto, introduction, tweetsLength:Tweets.length
       }
       this.isProcessing = false
     },

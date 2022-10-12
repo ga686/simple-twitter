@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <div v-for="tweet in favoriteTweets" :key="tweet.id" class="comment_wrap d-flex" >
       <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
@@ -61,4 +61,19 @@ export default{
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
+</style> -->
+<template>
+  <div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    
+  }
+</script>
+
+<style lang="scss" scoped>
+
 </style>
