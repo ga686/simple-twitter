@@ -9,7 +9,7 @@
         <h5>{{followship.name}}</h5>
         <div class="account_name size-14">{{followship.account | account}}</div>
       </div>
-      <div class="btn my-auto" @click.prevent.stop="deleteFollow(followship.id)" v-if="followship.isFollowed">跟隨</div>
+      <div class="btn my-auto" @click.prevent.stop="deleteFollow(followship.id)" v-if="followship.isFollowed">正在跟隨</div>
       <div class="btn my-auto unfollow" @click.prevent.stop="addFollow(followship.id)" v-else>跟隨</div>
     </div>
   </div>
@@ -17,6 +17,7 @@
 
 <script>
 import followshipsAPI from '@/apis/followships'
+import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { emptyImageFilter } from '../utils/mixins'
 import { accountFilter } from './../utils/mixins'
@@ -32,7 +33,7 @@ export default{
         if(data.status === "error"){
           throw new Error(data.message)
         }
-        this.followships = data.data
+        this.followships = this.getFollowStatus(data.data)
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -43,7 +44,7 @@ export default{
     },
     async addFollow (userId) {
       try {
-        const { data } = await followshipsAPI.addFollow({userId})
+        const { data } = await followshipsAPI.addFollow(userId)
 
         if(data.status === "error"){
           throw new Error(data.message)
@@ -93,6 +94,28 @@ export default{
         })
       }
     },
+    async getFollowStatus (data) {
+      try{
+        const id = localStorage.getItem('currentId')
+        const response = await usersAPI.getCurrentFollow(id)
+        let result = data.map(obj => {
+          if(!response.data.some(o2 => obj.id === o2.TweetId)){
+            return obj = {
+              ...obj,
+              isFollowed: false
+            }
+          }
+          return obj = {
+            ...obj,
+            isFollowed: true
+          }
+        })
+        this.followships = result
+
+      }catch(err){
+        console.error(err)
+      }
+    }
   },
   mixins: [emptyImageFilter,accountFilter],
   created () {
