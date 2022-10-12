@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
+      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit(tweet.id)">
         <div class="d-flex">
           <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent" maxlength="140"></textarea>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import tweetsAPI from '../apis/tweets'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
@@ -65,17 +66,28 @@ export default{
     closeModal () {
       this.$emit('close-modal',!this.isShow)
     },
-    handleSubmit () {
-      if (!this.newContent) {
+    async handleSubmit (tweetId) {
+      try{
+          if (!this.newContent) {
+          Toast.fire({
+            icon: 'warning',
+            title: '內容不可空白'
+          })
+          return
+        }
+        const { data } = await tweetsAPI.addReply(tweetId , this.newContent )
+        if(data.status === 'error'){
+          throw new Error(data.message)
+        }
+        this.closeModal()
+        this.newContent = ""
+        this.$emit('refresh-replies', tweetId)
+      }catch(err){
         Toast.fire({
-          icon: 'warning',
-          title: '內容不可空白'
+          icon: 'error',
+          title: '無法新增貼文，說稍後再試'
         })
-        return
       }
-      this.$emit('after-comment',this.newContent)
-      this.closeModal()
-      this.newContent = ""
     }
   },
   computed: {
