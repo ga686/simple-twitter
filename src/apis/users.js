@@ -11,6 +11,6 @@ export default {
     return apiHelper.get(`/api/users/${ userId }/followings`)
   },
   updateAccount(userId, data) {
-    return apiHelper.post(`api/users/${ userId }/account`, data )
+    return apiHelper.post(`api/users/${ userId }`, data )
   }
 }
