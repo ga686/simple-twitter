@@ -17,7 +17,6 @@
 
 <script>
 import followshipsAPI from '@/apis/followships'
-import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
 import { emptyImageFilter } from '../utils/mixins'
 import { accountFilter } from './../utils/mixins'
@@ -33,7 +32,7 @@ export default{
         if(data.status === "error"){
           throw new Error(data.message)
         }
-        this.followships = this.getFollowStatus(data.data)
+        this.followships = data.data
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -50,16 +49,7 @@ export default{
           throw new Error(data.message)
         }
 
-        this.followships = {
-          ...this.followships,
-          isFollowed: false
-        }
-
-        this.followships.filter((followship)=>{
-          if( followship.id === userId ){
-            followship.isFollowed = true
-          }
-        })
+        this.fetchFollowShips()
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -76,16 +66,8 @@ export default{
           throw new Error(data.message)
         }
 
-        this.followships = {
-          ...this.followships,
-          isFollowed: false
-        }
+        this.fetchFollowShips()
 
-        this.followships.filter((followship)=>{
-          if( followship.id === userId ){
-            followship.isFollowed = false
-          }
-        })
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -94,28 +76,6 @@ export default{
         })
       }
     },
-    async getFollowStatus (data) {
-      try{
-        const id = localStorage.getItem('currentId')
-        const response = await usersAPI.getCurrentFollow(id)
-        let result = data.map(obj => {
-          if(!response.data.some(o2 => obj.id === o2.TweetId)){
-            return obj = {
-              ...obj,
-              isFollowed: false
-            }
-          }
-          return obj = {
-            ...obj,
-            isFollowed: true
-          }
-        })
-        this.followships = result
-
-      }catch(err){
-        console.error(err)
-      }
-    }
   },
   mixins: [emptyImageFilter,accountFilter],
   created () {
