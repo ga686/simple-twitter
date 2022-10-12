@@ -12,7 +12,7 @@
         </div>
         <button type="submit" class="btn ml-auto">推文</button>
       </form>
-      <NewestTweets :tweets="tweets" />
+      <NewestTweets :tweets="tweets" @refresh-tweets="fetchTweets"/>
     </div>
     <SuggestUser />
   </main>
@@ -88,7 +88,7 @@ export default {
     },
     async getLikedStatus (data) {
       try{
-        const id = this.currentUser.id
+        const id = localStorage.getItem('currentId')
         const response = await usersAPI.getCurrentFavorite(id)
         let result = data.map(obj => {
           if(!response.data.some(o2 => obj.id === o2.TweetId)){
