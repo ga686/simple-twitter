@@ -135,6 +135,7 @@ export default{
             ...data,
             isFav: true
           }
+          return
         }
         this.tweet = {
           ...data,
@@ -158,7 +159,6 @@ export default{
       }
     },
     refreshAgain (tweetId){
-      console.log('refresh')
       this.fetchTweet(tweetId)
     }
   },
@@ -170,6 +170,15 @@ export default{
     const { id } = to.params
     this.fetchTweet(id)
     next()
+  },
+  watch: {
+    tweet: {
+      handler: function () {
+        const id = this.currentUser.id
+        this.fetchTweet(id)
+      },
+      deep: true
+    }
   },
   created () {
     const { id: tweetId } = this.$route.params
