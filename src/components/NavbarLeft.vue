@@ -22,9 +22,9 @@
       </div>
     </div>
     <div class="navbar_item" @click="logout">
-      <router-link to="/signin" class="nav_link">
+      <div class="nav_link">
         <div class="nav_link-icon logout" ></div>登出
-      </router-link>    
+      </div>    
     </div>
     <UserTweetNew :is-show="isShow" @close-modal="closeModal" @refresh-tweet="refreshTweet"/>
   </div>
