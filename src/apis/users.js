@@ -19,4 +19,10 @@ export default {
   getLikes(userId){
     return apiHelper.get(`/api/users/${ userId }/likes`)
   },
+  getFollowers(userId){
+    return apiHelper.get(`api/users/${userId}/followers`)
+  },
+  getFollowings(userId){
+    return apiHelper.get(`api/users/${userId}/followings`)
+  }
 }

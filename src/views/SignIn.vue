@@ -59,7 +59,7 @@ export default {
           account: this.account,
           password: this.password
         })
-        console.log(data)
+        
         if (data.status === 'error') {
           throw new Error()
         }
