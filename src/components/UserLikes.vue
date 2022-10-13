@@ -1,13 +1,13 @@
 <template>
   <div>
     <LoadingSpinner v-if="isLoading" />
-    <template v-else>
-      <div v-for="tweet in favoriteTweets" :key="tweet.id" class="comment_wrap d-flex" >
-      <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
+    <!-- <template v-else>
+      <div v-for="tweet in favoriteTweets" :key="tweet" class="comment_wrap d-flex" >
+      <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.name}}</h5>
-          <p class="size-14">{{tweet.account | account}}</p>
+          <h5 class="size-16">{{tweet.userData.name}}</h5>
+          <p class="size-14">{{tweet.userData.account | account}}</p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
@@ -15,16 +15,16 @@
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
             <div class="icon comment my-auto" @click.stop.prevent = "openModal"></div>
-            <span class="number-wrap">{{tweet.commentsLength}}</span>
+            <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
             <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
-            <span class="number-wrap">{{tweet.length}}</span>
+            <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
       </div>
     </div>
-    </template>
+    </template> -->
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     return {
       isShow: false,
       favoriteTweets: [],
-      isLoading: false
+      isLoading: false,
     };
   },
   props: {
@@ -58,10 +58,8 @@ export default {
     async fetchLikes(userId){
       try{
         this.isLoading = true
-        const {data} = await usersAPI.get(userId)
-        const {Likes} = data
-        const favoriteTweets = JSON.parse(JSON.stringify(Likes))
-        this.favoriteTweets = favoriteTweets.Tweet
+        const {data} = await usersAPI.getLikes(userId) 
+        console.log(data)
         //缺少Likes推文回覆數
         //缺少喜歡username
         //缺少Likes推文avatar

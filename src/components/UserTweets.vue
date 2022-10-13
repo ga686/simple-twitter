@@ -3,13 +3,13 @@
     <LoadingSpinner v-if="isLoading" />
     <template v-else>
       <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
-        <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
+        <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage " /></div>
         <div class="comment_wrap_body">
           <div class="d-flex comment_wrap_body--title">
             <h5 class="size-16">
-              <router-link :to="{name:'userpage', params:{id:tweet.User.id}}">{{tweet.User.name}}</router-link>
+              <router-link :to="{name:'userpage', params:{id:tweet.userData.id}}">{{tweet.userData.name}}</router-link>
             </h5>
-            <p class="size-14">{{tweet.User.account | account}}</p>
+            <p class="size-14">{{tweet.userData.account | account}}</p>
             ・
             <span class="size-14">{{tweet.createdAt | fromNow }}</span>
           </div>
@@ -19,16 +19,16 @@
           <div class="comment_wrap_footer d-flex">
             <div class="comment_wrap_footer--comments-num d-flex mr-10">
               <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
-              <span class="number-wrap">{{tweet.Replies.length}}</span>
+              <span class="number-wrap">{{tweet.repliedCount}}</span>
             </div>
             <div class="comment_wrap_footer--liked-num d-flex">
-              <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
-              <span class="number-wrap">{{tweet.Likes.length}}</span>
+              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"></div>
+              <span class="number-wrap">{{tweet.likedCount}}</span>
             </div>
           </div>
         </div>
       </div>
-      <!-- <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" /> -->
+      <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
     </template>
   </div>
 </template>
@@ -40,7 +40,7 @@ import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
 import LoadingSpinner from './LoadingSpinner.vue'
-// import TweetReply from './TweetReply'
+import TweetReply from './TweetReply'
 
 export default {
   data() {
@@ -58,7 +58,8 @@ export default {
     }
   },
   components: {
-    LoadingSpinner
+    LoadingSpinner,
+    TweetReply
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"])
@@ -70,11 +71,8 @@ export default {
   methods: {
     async fetchTweets(userId) {
       try {
-        this.isLoading = true
-        const { data } = await usersAPI.getTweets(userId)
+        const {data} = await usersAPI.getTweets(userId)
         this.tweets = data
-        this.isLoading = false
-        //缺少比對currentUser是否喜歡此貼文, isLike
       }
       catch (err) {
         console.log(err)

@@ -3,7 +3,7 @@
     <LoadingSpinner v-if=isLoading />
     <template v-else>
       <div v-for="reply in replyTweets" :key="reply.id" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="reply.avatar | emptyImage " /></div>
+      <div class="avatar_image"><img :src="initUser.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{initUser.name}}</h5>
@@ -11,7 +11,7 @@
           ・
           <span class="size-14">{{reply.createdAt | fromNow }}</span>
         </div>
-        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id:reply.Tweet.UserId}}">{{reply.Tweet.id | account}}</router-link></span></div>
+        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id:reply.Tweet.UserId}}">{{reply.Tweet.UserId | account}}</router-link></span></div>
         <div class="comment_wrap_body--content mb-3">
           <router-link :to="{name: 'userpage', params: { id: reply.id }}">{{reply.comment}}</router-link>
         </div>
@@ -54,10 +54,8 @@ export default {
         async fetchReplies(userId) {
           try{
             this.isLoading = true
-            const { data } = await usersAPI.get(userId);
-            const { Replies } = data;
-            this.replyTweets = Replies.reverse()
-            console.log(this.replyTweets[0])
+            const { data } = await usersAPI.getReplies(userId);
+            this.replyTweets = data
             this.isLoading = false
             //缺少原推文username
             //推文時間軸顛倒
@@ -65,7 +63,6 @@ export default {
           catch(err){
             console.log(err)
           }
-
         }
     },
     components: { LoadingSpinner }
