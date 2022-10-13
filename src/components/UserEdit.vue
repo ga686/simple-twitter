@@ -5,20 +5,20 @@
         <div class="cancel-btn" @click.stop.prevent="closeModal">
           <i class="fa-solid fa-xmark size-32"></i>
         </div>
-        <h5>編輯個人資訊</h5><button type="submit" form="profile-box" class="btn">儲存</button>
+        <h5>編輯個人資訊</h5><button type="submit" form="profile-box" class="btn" :disabled="isProcessing">儲存</button>
       </div>
       <form class="profile-box" id="profile-box" @submit.prevent.stop="handleSubmit">
         <div class="user-banner">
           <div class="filter"></div>
           <div class="icons">
-            <label for="banner">
+            <label for="coverPhoto">
               <img class="icon-photo" src="~@/assets/icon_photo.png" alt="">
             </label>
-            <input class="banner-edit" type="file" id="banner" accept="image/*" name="banner"
+            <input class="banner-edit" type="file" id="coverPhoto" accept="image/*" name="coverPhoto"
               @change="handleFileChange">
-            <i class="icon-edit-done" @click.prevent.stop="user.banner = initUser.banner"></i>
+            <i class="icon-edit-done" @click.prevent.stop="user.coverPhoto = initUser.banner"></i>
           </div>
-          <img :src="user.banner | emptyBanner" alt="" />
+          <img :src="user.coverPhoto | emptyBanner" alt="" />
         </div>
         <div class="avatar">
           <div class="filter"></div>
@@ -62,7 +62,8 @@ export default {
   data() {
     return {
       user: {},
-      description: ''
+      description: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -90,8 +91,8 @@ export default {
         return
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
-        if(e.target.name === 'banner'){
-          this.user.banner = imageURL
+        if(e.target.name === 'coverPhoto'){
+          this.user.coverPhoto = imageURL
         }else if(e.target.name === 'avatar'){
           this.user.avatar = imageURL
         }
@@ -99,6 +100,7 @@ export default {
     },
     async handleSubmit(e) {
       try {
+        this.isProcessing = true
         const form = e.target
         const formData = new FormData(form)
         const { data } = await usersAPI.updateProfile(this.initUser.id, formData)
@@ -107,7 +109,9 @@ export default {
         }
         this.closeModal()
         this.$emit('refresh-user',this.user.id)
+        this.isProcessing = false
       }catch(err){
+        this.isProcessing = false
         console.error(err)
         Toast.fire({
           icon: 'warning',
