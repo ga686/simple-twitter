@@ -5,13 +5,7 @@
     <template v-else>
       <div class="user-page">
       <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
-      <div class="user-header d-flex align-item-center">
-        <div class="link-icon" @click="$router.back()"></div>
-        <div class="user-title d-flex justify-content-center">
-          <h5 class="user-name">{{user.name}}</h5>
-          <div class="user-tweetCounts number-wrap">{{user.tweetsLength | quantifier}}</div>
-        </div>
-      </div>
+      <UserHeader :user="user"/>
       <div class="user-profile">
         <div class="user-banner">
           <img :src="user.coverPhoto | emptyBanner" alt="">
@@ -25,8 +19,8 @@
           <div class="user-account number-wrap">{{user.account | account}}</div>
           <div class="user-decription number-wrap">{{user.introduction}}</div>
           <div class="user-follow d-flex number-wrap">
-            <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>{{user.followingCount}}</span> 個跟隨中</div>
-            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>{{user.followerCount}}</span> 位跟隨者</div>
+            <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
+            <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>
           </div>
         </div>
         <div class="togglePage d-flex">
@@ -58,6 +52,7 @@ import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import usersAPI from '../apis/users'
+import UserHeader from '@/components/UserHeader.vue';
 export default {
   name: 'userPage',
   components: {
@@ -67,8 +62,9 @@ export default {
     UserLikes,
     UserTweets,
     UserEdit,
-    LoadingSpinner
-  },
+    LoadingSpinner,
+    UserHeader
+},
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -107,10 +103,10 @@ export default {
     async fetchUser(userId) {
       this.isLoading = true
       const {data} = await usersAPI.get(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets} = data
+      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets,} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length
+        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length,
       }
       this.isLoading = false
     },

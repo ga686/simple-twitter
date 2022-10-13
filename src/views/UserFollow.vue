@@ -2,20 +2,15 @@
   <main class="main-view mx-auto">
     <NavbarLeft />
     <div class="user-page">
-      <div class="user-header d-flex align-item-center">
-        <div class="link-icon" @click="$router.back()"></div>
-        <div class="user-title d-flex justify-content-center">
-          <h5 class="user-name">{{user.name}}</h5>
-          <div class="user-tweetCounts number-wrap">{{user.tweetsLength | quantifier}}</div>
-        </div>
-      </div>
+      <UserHeader :user='user' />
       <div class="follow-title">
         <div :class="['user-followers', {active: currentView === 'followers'}]"
-          @click.prevent.stop="toggleContent('followers')">追蹤者</div>
+        @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
         <div :class="['user-followings',{active: currentView === 'followings'}]"
-          @click.prevent.stop="toggleContent('followings')">正在追隨</div>
+        @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
-      <UserFollowShip :initFollowShip='followShip'/>
+      <UserFollowers :initFollowers="user.followers" v-show="currentView === 'followers'" />
+      <UserFollowings :initFollowings="user.followings" v-show="currentView === 'followings'" />
     </div>
     <SuggestUser />
   </main>
@@ -26,147 +21,62 @@ import SuggestUser from '../components/SuggestUser.vue';
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import UserFollowShip from '../components/UserFollowShip.vue'
-
-const dummyData = {
-  followShip: [
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 0,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-    },
-    {
-      user:{
-        id: 4,
-        name: 'David',
-        avatar: null,
-        isFollowed: false,
-      },
-      id: 1,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true, 
-      },
-      id: 2,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 3,
-        name: 'Will',
-        avatar: null,
-        isFollowed: false,
-      },
-      id: 3,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 4,
-      content: 'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. ',
-    },
-    {
-      user:{
-        id: 1,
-        name: 'Karen',
-        avatar: null,
-        isFollowed: false,
-      },
-      id: 5,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 0,
-        name: 'Apple',
-        avatar: null,
-        isFollowed: true,
-      },
-      id: 6,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    },
-    {
-      user:{
-        id: 2,
-        name: 'Will',
-        avatar: null,
-        isFollowed: false,
-      },
-      id: 7,
-      content: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.',
-    }
-  ],
-}
+import UserFollowers from '../components/UserFollowers.vue';
+import UserFollowings from '../components/UserFollowings.vue';
+import usersAPI from '../apis/users'
+import UserHeader from '@/components/UserHeader.vue';
 
 export default {
   name: 'userPage',
   components: {
     NavbarLeft,
     SuggestUser,
-    UserFollowShip
+    UserFollowers,
+    UserFollowings,
+    UserHeader
 },
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
       user: {
         id: -1,
-        account: '',
         name: '',
-        email: '',
-        banner: '',
-        image: '',
-        description: '',
         tweetsLength: 0,
-        tweets: [],
-        replyTweets: [],
-        favoriteTweets: [],
+        followers: [],
+        followings: [],
       },
       isShow: false,
-      followShip: dummyData.followShip,
       currentView: ''
     }
   },
   created() {
     const { id } = this.$route.params
-    this.fetchUser(id)
+    const userId = this.$route.params.user
+    this.currentView = id
+    this.fetchFollow(userId)
   },
   computed: {
     ...mapState(['currentUser'])
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params
-    this.fetchUser(id)
+    const userId = to.params.user
+    this.currentView = id
+    this.fetchFollow(userId)
     next()
   },
   methods: {
-    fetchUser(userId) {
-      console.log(userId)
-      const { tweets, replyTweets, favoriteTweets } = dummyData
-      const { id, account, name, email, image, banner, description, tweetsLength, } = this.currentUser
-      this.user = {
-        ...this.user,
-        id, account, name, email, image, banner, description, tweetsLength, tweets, replyTweets, favoriteTweets
-      }
-      this.currentView = userId
-      if(userId === 'followings'){
-        this.followShip = dummyData.followShip.filter(tweet => tweet.user.isFollowed === true)
-      }else{
-        this.followShip = dummyData.followShip
+    async fetchFollow(userId) {
+      try {
+        const { data } = await usersAPI.get(userId)
+        const {id, name, Tweets, Followers:followers, Followings:followings} = data
+        console.log(followers)
+        this.user = {
+          ...this.user,
+         id, name, tweetsLength: Tweets.length, followers ,followings
+        }
+      } catch (err) {
+        console.log(err)
       }
     },
     openModal() {
@@ -177,11 +87,6 @@ export default {
     },
     toggleContent(view) {
       this.currentView = view
-      if(view === 'followings'){
-        this.followShip = this.followShip.filter(tweet => tweet.user.isFollowed === true)
-      }else{
-        this.followShip = dummyData.followShip
-      }
     }
   },
   filters: {

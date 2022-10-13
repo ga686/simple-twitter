@@ -1,51 +1,52 @@
 <template>
   <div>
-    <div v-for="tweet in followShip" :key="tweet.id" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="tweet.user.avatar | emptyImage " /></div>
+    <div v-for="follower in followers" :key="follower.id" class="comment_wrap d-flex">
+      <div class="avatar_image"><img :src="follower.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.user.name}}</h5>
-          <button :class="['btn',{unfollow: !tweet.user.isFollowed}]" @click.prevent.stop="toggleFollow(tweet.user.id)">{{ tweet.user.isFollowed ? '正在跟隨' :
+          <h5 class="size-16">{{follower.name}}</h5>
+          <button :class="['btn',{'unfollow': !isFollowed}]" @click.prevent.stop="toggleFollow(follower.id)">{{ isFollowed ? '正在跟隨' :
           '跟隨'}}</button>
         </div>
-        <div class="comment_wrap_body--content mb-3">{{tweet.content}}</div>
+        <div class="comment_wrap_body--content mb-3">{{follower.introduction}}</div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { emptyImageFilter } from '../utils/mixins'
+import {mapState} from 'vuex'
 export default {
   props: {
-    initFollowShip: {
+    initFollowers: {
       type: Array,
       required: true,
+      isFollowed: false
     },
   },
   mixins: [emptyImageFilter],
   data() {
     return {
-      followShip: [],
+      followers: [],
     }
   },
-  created() {
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
+  created(){
     this.fetchData()
   },
   watch:{
-    initFollowShip(){
+    initFollowers(){
       this.fetchData()
     }  
   },
   methods: {
     fetchData() {
-      this.followShip = this.initFollowShip
+      this.followers = this.initFollowers
     },
     toggleFollow(userId) {
-      this.followShip.filter((tweet)=>{
-        if(tweet.user.id === userId){
-          tweet.user.isFollowed = !tweet.user.isFollowed 
-        }
-      })
+      console.log(userId)
     }
   }
 }

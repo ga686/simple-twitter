@@ -31,7 +31,7 @@ const routes = [
     component: HomePage
   },
   {
-    path: "/user/follow/:id",
+    path: "/user/follow/:id/:user",
     name: "user-follow",
     component: ()=>import("../views/UserFollow.vue")
   },
