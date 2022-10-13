@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
   <div>
     <div v-for="tweet in followShip" :key="tweet.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="tweet.user.avatar | emptyImage " /></div>
@@ -60,19 +60,4 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-</style> -->
-<template>
-  <div>
-
-  </div>
-</template>
-
-<script>
-  export default {
-    
-  }
-</script>
-
-<style lang="scss" scoped>
-
 </style>

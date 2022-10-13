@@ -1,30 +1,30 @@
 <template>
   <div>
     <LoadingSpinner v-if="isLoading" />
-    <!-- <template v-else>
+    <template v-else>
       <div v-for="tweet in favoriteTweets" :key="tweet" class="comment_wrap d-flex" >
       <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.userData.name}}</h5>
+          <h5 class="size-16"><router-link :to="{name:'userpage', params:{id: tweet.userData.id}}">{{tweet.userData.name}}</router-link></h5>
           <p class="size-14">{{tweet.userData.account | account}}</p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link></div>
+        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.TweetId}}">{{tweet.description}}</router-link></div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
             <div class="icon comment my-auto" @click.stop.prevent = "openModal"></div>
             <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"></div>
             <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
       </div>
     </div>
-    </template> -->
+    </template>
   </div>
 </template>
 
@@ -59,12 +59,9 @@ export default {
       try{
         this.isLoading = true
         const {data} = await usersAPI.getLikes(userId) 
+        this.favoriteTweets = data
         console.log(data)
-        //缺少Likes推文回覆數
-        //缺少喜歡username
-        //缺少Likes推文avatar
-        //缺少Likes account
-
+        this.isLoading = false
       }
       catch(err){
         console.log(err)

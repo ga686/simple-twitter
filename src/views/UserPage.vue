@@ -25,8 +25,8 @@
           <div class="user-account number-wrap">{{user.account | account}}</div>
           <div class="user-decription number-wrap">{{user.introduction}}</div>
           <div class="user-follow d-flex number-wrap">
-            <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>{{user.followingCount}}</span> 個跟隨中</div>
-            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>{{user.followerCount}}</span> 位跟隨者</div>
+            <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
+            <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>
           </div>
         </div>
         <div class="togglePage d-flex">
@@ -107,10 +107,10 @@ export default {
     async fetchUser(userId) {
       this.isLoading = true
       const {data} = await usersAPI.get(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets} = data
+      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets,} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length
+        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length,
       }
       this.isLoading = false
     },

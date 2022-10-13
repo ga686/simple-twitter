@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
+      <div class="avatar_image"><img :src="initUser.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{initUser.name}}</h5>
@@ -18,7 +18,7 @@
             <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"></div>
             <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
@@ -34,7 +34,7 @@ import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
-import TweetReply from './TweetReply'
+import TweetReply from './TweetReply.vue'
 
 export default {
     data() {
@@ -51,8 +51,8 @@ export default {
         }
     },
     components:{
-      TweetReply
-    },
+    TweetReply
+},
     computed: {
         ...mapState(["currentUser", "isAuthenticated"])
     },

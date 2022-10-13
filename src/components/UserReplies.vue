@@ -11,7 +11,7 @@
           ・
           <span class="size-14">{{reply.createdAt | fromNow }}</span>
         </div>
-        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id:reply.Tweet.UserId}}">{{reply.Tweet.UserId | account}}</router-link></span></div>
+        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id: reply.userData.id}}">{{reply.userData.account | account}}</router-link></span></div>
         <div class="comment_wrap_body--content mb-3">
           <router-link :to="{name: 'userpage', params: { id: reply.id }}">{{reply.comment}}</router-link>
         </div>
@@ -34,7 +34,7 @@ export default {
         return {
             isShow: false,
             replyTweets: [],
-            isLoading: false
+            isLoading: false,
         };
     },
     props: {
@@ -57,8 +57,6 @@ export default {
             const { data } = await usersAPI.getReplies(userId);
             this.replyTweets = data
             this.isLoading = false
-            //缺少原推文username
-            //推文時間軸顛倒
           }
           catch(err){
             console.log(err)
