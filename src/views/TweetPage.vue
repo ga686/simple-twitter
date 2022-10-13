@@ -5,7 +5,7 @@
       <div class="tweet_list-title d-flex">
         <a @click="$router.back()"><i class="fa-solid fa-arrow-left size-20"></i></a><h4>推文</h4>
       </div>
-      <div class="comment_wrap detail d-flex" >
+      <div class="comment_wrap detail d-flex" v-if="tweet.User">
         <div class="comment_wrap_body">
           <div class="d-flex">
             <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage" /></div>
@@ -115,7 +115,7 @@ export default{
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        return this.tweet = data
+        return this.tweet = this.getLikedStatus(data)
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -123,6 +123,21 @@ export default{
           title: '無法找到推文，請稍後再試'
         })
       }
+    },
+    getLikedStatus (data) {
+      const result = data.Likes.filter(obj => obj.UserId === JSON.parse(localStorage.getItem('currentId')))       
+      if(result.length > 0) {
+        data = {
+          ...data,
+          isFav: true
+        }
+      }else{
+        data = {
+          ...data,
+          isFav: false
+        }
+      }
+      return this.tweet = data
     },
     refreshAgain (tweetId){
       this.fetchTweet(tweetId)
