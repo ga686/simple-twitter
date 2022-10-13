@@ -35,7 +35,7 @@ import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
-import TweetReply from './TweetReply.vue'
+import TweetReply from './TweetReply'
 import tweetsAPI from '../apis/tweets'
 import {Toast} from '../utils/helpers'
 
@@ -45,17 +45,28 @@ export default {
     return {
       isShow: false,
       tweets: [],
-      targetTweet: {
-        createdAt: '',
-        description: '',
-        id: '',
-        User: []
-      }
+      targetTweet: {}
+    };
+  },
+  props: {
+    initUser: {
+      type: Object,
+      required: true
     }
   },
+  components: {
+    TweetReply
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"])
+  },
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+  created() {
+    this.fetchTweets(this.initUser.id)
+  },
   methods: {
-    async fetchTweets(userId){
-      const {data} = await usersAPI.getTweets(userId)
+    async fetchTweets(userId) {
+      const { data } = await usersAPI.getTweets(userId)
       this.tweets = data
     },
     openModal(tweet) {
@@ -120,7 +131,7 @@ export default {
         }
       }
     }
-  }
+  },
 }
 
 </script>
