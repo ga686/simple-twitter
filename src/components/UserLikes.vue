@@ -1,15 +1,17 @@
-<!-- <template>
+<template>
   <div>
-    <div v-for="tweet in favoriteTweets" :key="tweet.id" class="comment_wrap d-flex" >
+    <LoadingSpinner v-if="isLoading" />
+    <template v-else>
+      <div v-for="tweet in favoriteTweets" :key="tweet.id" class="comment_wrap d-flex" >
       <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{initUser.name}}</h5>
+          <h5 class="size-16">{{tweet.name}}</h5>
           <p class="size-14">{{tweet.account | account}}</p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.content}}</router-link></div>
+        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link></div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
             <div class="icon comment my-auto" @click.stop.prevent = "openModal"></div>
@@ -17,11 +19,12 @@
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
             <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
-            <span class="number-wrap">{{tweet.likedLength}}</span>
+            <span class="number-wrap">{{tweet.length}}</span>
           </div>
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -29,51 +32,56 @@
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
+import LoadingSpinner from './LoadingSpinner.vue'
+import usersAPI from '../apis/users'
 
-export default{
-  data (){
-    return{
+export default {
+  data() {
+    return {
       isShow: false,
-      favoriteTweets: this.initFavoriteTweets
-    }
+      favoriteTweets: [],
+      isLoading: false
+    };
   },
   props: {
-    initFavoriteTweets:{
-      type: Array,
-      required: true
-    },
     initUser: {
-            type: Object,
-            required: true
+      type: Object,
+      required: true
     }
   },
-  mixins: [fromNowFilter, emptyImageFilter,accountFilter],
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+  components: { LoadingSpinner },
+  created() {
+    this.fetchLikes(this.initUser.id)
+  },
   methods: {
-    openModal (){
-      return this.isShow = true
+    async fetchLikes(userId){
+      try{
+        this.isLoading = true
+        const {data} = await usersAPI.get(userId)
+        const {Likes} = data
+        const favoriteTweets = JSON.parse(JSON.stringify(Likes))
+        this.favoriteTweets = favoriteTweets.Tweet
+        //缺少Likes推文回覆數
+        //缺少喜歡username
+        //缺少Likes推文avatar
+        //缺少Likes account
+
+      }
+      catch(err){
+        console.log(err)
+      }
     },
-    closeModal (show){
-      return this.isShow = show
+    openModal() {
+      return this.isShow = true;
+    },
+    closeModal(show) {
+      return this.isShow = show;
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
-</style> -->
-<template>
-  <div>
-
-  </div>
-</template>
-
-<script>
-  export default {
-    
-  }
-</script>
-
-<style lang="scss" scoped>
-
 </style>
