@@ -1,7 +1,7 @@
 <template>
   <main class="main-view mx-auto">
     <NavbarLeft />
-    <LoadingSpinner v-if="isProcessing"/>
+    <LoadingSpinner v-if="isLoading"/>
     <template v-else>
       <div class="user-page">
       <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" />
@@ -25,8 +25,8 @@
           <div class="user-account number-wrap">{{user.account | account}}</div>
           <div class="user-decription number-wrap">{{user.introduction}}</div>
           <div class="user-follow d-flex number-wrap">
-            <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>34</span> 個跟隨中</div>
-            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>59</span> 位跟隨者</div>
+            <div class="user-info-following" @click="$router.push({name:'user-follow', params:{id: 'followings'}})"><span>{{user.followingCount}}</span> 個跟隨中</div>
+            <div class="user-info-follower" @click="$router.push({name:'user-follow', params:{id: 'followers'}})"><span>{{user.followerCount}}</span> 位跟隨者</div>
           </div>
         </div>
         <div class="togglePage d-flex">
@@ -82,11 +82,13 @@ export default {
         avatar: '',
         coverPhoto: '',
         introduction: '',
+        followerCount: 0,
+        followingCount: 0,
         tweetsLength: 0,
       },
       currentContent: 'userTweets',
       isShow: false,
-      isProcessing: false
+      isLoading: false
     }
   },
   created() {
@@ -103,14 +105,14 @@ export default {
   },
   methods: {
     async fetchUser(userId) {
-      this.isProcessing = true
+      this.isLoading = true
       const {data} = await usersAPI.get(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, Tweets} = data
+      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, tweetsLength:Tweets.length
+        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length
       }
-      this.isProcessing = false
+      this.isLoading = false
     },
     togglePage(content) {
       this.currentContent = content

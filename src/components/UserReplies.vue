@@ -1,7 +1,9 @@
-<!-- <template>
+<template>
   <div>
-    <div v-for="reply in replyTweets" :key="reply.id" class="comment_wrap d-flex" >
-      <div class="avatar_image"><img :src="reply.avatar | emptyImage " /></div>
+    <LoadingSpinner v-if=isLoading />
+    <template v-else>
+      <div v-for="reply in replyTweets" :key="reply.id" class="comment_wrap d-flex">
+      <div class="avatar_image"><img :src="initUser.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{initUser.name}}</h5>
@@ -9,10 +11,13 @@
           ・
           <span class="size-14">{{reply.createdAt | fromNow }}</span>
         </div>
-        <div class="replyAccount size-14">回覆 <span>{{reply.Tweet.id | account}}</span></div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: reply.id }}">{{reply.comment}}</router-link></div>
+        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id:reply.Tweet.UserId}}">{{reply.Tweet.UserId | account}}</router-link></span></div>
+        <div class="comment_wrap_body--content mb-3">
+          <router-link :to="{name: 'userpage', params: { id: reply.id }}">{{reply.comment}}</router-link>
+        </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
@@ -21,52 +26,58 @@ import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
+import usersAPI from '../apis/users'
+import LoadingSpinner from './LoadingSpinner.vue'
 
-export default{
-  data (){
-    return{
-      isShow: false,
-    }
-  },
-  props: {
-    replyTweets:{
-      type: Array,
-      required: true
+export default {
+    data() {
+        return {
+            isShow: false,
+            replyTweets: [],
+            isLoading: false
+        };
     },
-    initUser: {
+    props: {
+        initUser: {
             type: Object,
             required: true
-    }
-  },
-  mixins: [fromNowFilter, emptyImageFilter,accountFilter],
-  computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
-  },
+        }
+    },
+    mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+    computed: {
+        ...mapState(["currentUser", "isAuthenticated"])
+    },
+    created() {
+        this.fetchReplies(this.initUser.id);
+    },
+    methods: {
+        async fetchReplies(userId) {
+          try{
+            this.isLoading = true
+            const { data } = await usersAPI.getReplies(userId);
+            this.replyTweets = data
+            this.isLoading = false
+            //缺少原推文username
+            //推文時間軸顛倒
+          }
+          catch(err){
+            console.log(err)
+          }
+        }
+    },
+    components: { LoadingSpinner }
 }
 </script>
 
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
-.replyAccount{
+
+.replyAccount {
   color: var(--secondary-color);
-  & span{
+
+  & span {
     color: var(--brand-color);
   }
 }
-</style> -->
-<template>
-  <div>
-
-  </div>
-</template>
-
-<script>
-  export default {
-    
-  }
-</script>
-
-<style lang="scss" scoped>
-
 </style>
