@@ -32,9 +32,9 @@
             :class="{'active':currentContent === 'userLikes'}">喜歡的內容</div>
         </div>
       </div>
-      <UserTweets :initUser="user" v-show="currentContent === 'userTweets'" />
-      <UserReplies :initUser="user" v-show="currentContent === 'userReplies'" />
-      <UserLikes :initUser="user" v-show="currentContent === 'userLikes'" />
+      <UserTweets :initUser="user" v-if="currentContent === 'userTweets'" />
+      <UserReplies :initUser="user" v-if="currentContent === 'userReplies'" />
+      <UserLikes :initUser="user" v-if="currentContent === 'userLikes'" />
     </div>
     </template>
     <SuggestUser />

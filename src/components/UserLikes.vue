@@ -22,7 +22,8 @@
               <span class="number-wrap">{{tweet.repliedCount}}</span>
             </div>
             <div class="comment_wrap_footer--liked-num d-flex">
-              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}" @click.prevent.stop="deleteLike(tweet)">
+              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"
+                @click.prevent.stop="deleteLike(tweet)">
               </div>
               <span class="number-wrap">{{tweet.likedCount}}</span>
             </div>
@@ -48,6 +49,7 @@ export default {
       isShow: false,
       favoriteTweets: [],
       isLoading: false,
+      LikesLength: 0
     };
   },
   props: {
@@ -67,6 +69,7 @@ export default {
         this.isLoading = true
         const { data } = await usersAPI.getLikes(userId)
         this.favoriteTweets = data
+        this.LikesLength = data.length
         this.isLoading = false
       }
       catch (err) {
@@ -75,19 +78,16 @@ export default {
     },
     async deleteLike(tweet) {
       try {
-        const tweetId = tweet.tweetId
-        if (tweet.isLiked === true) {
-          const { data } = await tweetsAPI.deleteLike({ tweetId })
-          if (data.status === 'error') {
-            throw new Error(data.message)
-          }
-          Toast.fire({
-            icon: 'success',
-            title: '收回愛心'
-          })
-          tweet.isLiked = !tweet.isLiked
-          tweet.likedCount -= 1
+        const tweetId = tweet.TweetId
+        const { data } = await tweetsAPI.deleteLike({ tweetId })
+        if (data.status === 'error') {
+          throw new Error(data.message)
         }
+        Toast.fire({
+          icon: 'success',
+          title: '收回愛心'
+        })
+        this.favoriteTweets = this.favoriteTweets.filter(tweet=>tweet.TweetId !== tweetId)
       } catch (err) {
         console.log(err)
         Toast.fire({
@@ -101,6 +101,11 @@ export default {
     },
     closeModal(show) {
       return this.isShow = show;
+    }
+  },
+  watch:{
+    LikesLength(){
+      this.fetchLikes(this.initUser.id)
     }
   }
 }

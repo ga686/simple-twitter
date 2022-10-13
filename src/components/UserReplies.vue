@@ -26,7 +26,7 @@ import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
-// import usersAPI from '../apis/users'
+import usersAPI from '../apis/users'
 import LoadingSpinner from './LoadingSpinner.vue'
 
 export default {
@@ -54,9 +54,8 @@ export default {
         async fetchReplies(userId) {
           try{
             this.isLoading = true
-            // const { data } = await usersAPI.getReplies(userId);
-            console.log(userId)
-            // this.replyTweets = data
+            const { data } = await usersAPI.getReplies(userId);
+            this.replyTweets = data
             this.isLoading = false
           }
           catch(err){
