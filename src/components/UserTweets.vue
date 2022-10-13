@@ -41,7 +41,12 @@ export default {
         return {
             isShow: false,
             tweets: [],
-            targetTweet: {}
+            targetTweet: {
+              createdAt: '',
+              description: '',
+              id: '',
+              User: []
+            }
         };
     },
     props: {
@@ -66,7 +71,17 @@ export default {
           this.tweets = data
         },
         openModal(tweet) {
-            this.targetTweet = tweet
+            const {
+              createdAt,
+              description,
+              id,
+              userData
+            } = tweet
+  
+            this.targetTweet.createdAt = createdAt
+            this.targetTweet.description =  description
+            this.targetTweet.id = id
+            this.targetTweet.User = userData
             return this.isShow = true;
         },
         closeModal(show) {
