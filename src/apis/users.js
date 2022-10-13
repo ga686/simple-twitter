@@ -10,4 +10,7 @@ export default {
   getCurrentFollow(userId) {
     return apiHelper.get(`/api/users/${ userId }/followings`)
   },
+  updateAccount(userId, fromData) {
+    return apiHelper.put(`/api/users/${ userId }/account`, fromData)
+  }
 }
