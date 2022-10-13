@@ -1,18 +1,22 @@
 <template>
   <div>
-    <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex" >
+    <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{tweet.User.name}}</h5>
+          <h5 class="size-16">
+            <router-link :to="{name:'userpage', params: {id: tweet.UserId}}">{{tweet.User.name}}</router-link>
+          </h5>
           <p class="size-14">{{tweet.User.account | account}}</p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
-        <div class="comment_wrap_body--content mb-3"><router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link></div>
+        <div class="comment_wrap_body--content mb-3">
+          <router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link>
+        </div>
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon comment my-auto" @click.stop.prevent = "[openModal(), getTweet(tweet.id)]"></div>
+            <div class="icon comment my-auto" @click.stop.prevent="[openModal(), getTweet(tweet.id)]"></div>
             <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
@@ -23,7 +27,7 @@
         </div>
       </div>
     </div>
-    <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal" @refresh-replies="update"/>
+    <TweetReply :is-show="isShow" :tweet="currentTweet" @close-modal="closeModal" @refresh-replies="update" />
   </div>
 </template>
 
@@ -36,9 +40,9 @@ import { accountFilter } from './../utils/mixins'
 import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex'
 
-export default{
-  data (){
-    return{
+export default {
+  data() {
+    return {
       isShow: false,
       currentTweet: {
         UserId: 0,
@@ -55,26 +59,26 @@ export default{
     TweetReply
   },
   props: {
-    tweets:{
+    tweets: {
       type: Array,
       required: true
     }
   },
-  mixins: [fromNowFilter, emptyImageFilter,accountFilter],
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
   methods: {
-    async addLike (tweetId) {
-      try{
+    async addLike(tweetId) {
+      try {
         const data = tweetsAPI.addLike({ tweetId })
-        if(data.status === "error"){
+        if (data.status === "error") {
           throw new Error(data.message)
         }
         this.tweets.filter((tweet) => {
-          if(tweet.id === tweetId){
+          if (tweet.id === tweetId) {
             tweet.likedCount = tweet.likedCount + 1
             tweet.isFav = true
           }
         })
-      }catch(err){
+      } catch (err) {
         console.error(err)
         Toast.fire({
           icon: 'error',
@@ -82,19 +86,19 @@ export default{
         })
       }
     },
-    async deleteLike (tweetId) {
-      try{
+    async deleteLike(tweetId) {
+      try {
         const data = tweetsAPI.deleteLike({ tweetId })
-        if(data.status === "error"){
+        if (data.status === "error") {
           throw new Error(data.message)
         }
         this.tweets.filter((tweet) => {
-          if(tweet.id === tweetId){
+          if (tweet.id === tweetId) {
             tweet.likedCount = tweet.likedCount - 1
             tweet.isFav = false
           }
         })
-      }catch(err){
+      } catch (err) {
         console.error(err)
         Toast.fire({
           icon: 'error',
@@ -102,20 +106,20 @@ export default{
         })
       }
     },
-    openModal (){
+    openModal() {
       return this.isShow = true
     },
-    closeModal (show){
+    closeModal(show) {
       return this.isShow = show
     },
-    getTweet (tweetId) {
-      const target = this.tweets.filter((tweet) => tweet.id === tweetId )
+    getTweet(tweetId) {
+      const target = this.tweets.filter((tweet) => tweet.id === tweetId)
       this.currentTweet = {
         ...this.currentTweet,
         ...target[0]
       }
     },
-    update () {
+    update() {
       this.$emit('refresh-tweets')
     }
   },

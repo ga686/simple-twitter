@@ -5,13 +5,7 @@
     <template v-else>
       <div class="user-page">
       <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" />
-      <div class="user-header d-flex align-item-center">
-        <div class="link-icon" @click="$router.back()"></div>
-        <div class="user-title d-flex justify-content-center">
-          <h5 class="user-name">{{user.name}}</h5>
-          <div class="user-tweetCounts number-wrap">{{user.tweetsLength | quantifier}}</div>
-        </div>
-      </div>
+      <UserHeader :user="user"/>
       <div class="user-profile">
         <div class="user-banner">
           <img :src="user.coverPhoto | emptyBanner" alt="">
@@ -58,6 +52,7 @@ import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import usersAPI from '../apis/users'
+import UserHeader from '@/components/UserHeader.vue';
 export default {
   name: 'userPage',
   components: {
@@ -67,8 +62,9 @@ export default {
     UserLikes,
     UserTweets,
     UserEdit,
-    LoadingSpinner
-  },
+    LoadingSpinner,
+    UserHeader
+},
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {

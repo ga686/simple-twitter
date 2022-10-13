@@ -2,13 +2,7 @@
   <main class="main-view mx-auto">
     <NavbarLeft />
     <div class="user-page">
-      <div class="user-header d-flex align-item-center">
-        <div class="link-icon" @click="$router.back()"></div>
-        <div class="user-title d-flex justify-content-center">
-          <h5 class="user-name">{{user.name}}</h5>
-          <div class="user-tweetCounts number-wrap">{{user.tweetsLength | quantifier}}</div>
-        </div>
-      </div>
+      <UserHeader :user='user' />
       <div class="follow-title">
         <div :class="['user-followers', {active: currentView === 'followers'}]"
         @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
@@ -30,6 +24,7 @@ import { accountFilter } from './../utils/mixins'
 import UserFollowers from '../components/UserFollowers.vue';
 import UserFollowings from '../components/UserFollowings.vue';
 import usersAPI from '../apis/users'
+import UserHeader from '@/components/UserHeader.vue';
 
 export default {
   name: 'userPage',
@@ -37,8 +32,9 @@ export default {
     NavbarLeft,
     SuggestUser,
     UserFollowers,
-    UserFollowings
-  },
+    UserFollowings,
+    UserHeader
+},
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -58,7 +54,6 @@ export default {
     const userId = this.$route.params.user
     this.currentView = id
     this.fetchFollow(userId)
-
   },
   computed: {
     ...mapState(['currentUser'])

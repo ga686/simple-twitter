@@ -18,7 +18,8 @@
             <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"></div>
+            <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}" @click.prevent.stop="toggleLike(tweet)">
+            </div>
             <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
@@ -35,44 +36,91 @@ import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
 import TweetReply from './TweetReply.vue'
+import tweetsAPI from '../apis/tweets'
+import {Toast} from '../utils/helpers'
 
 export default {
-    data() {
-        return {
-            isShow: false,
-            tweets: [],
-            targetTweet: {}
-        };
-    },
-    props: {
-        initUser: {
-            type: Object,
-            required: true
-        }
-    },
-    components:{
+  data() {
+    return {
+      isShow: false,
+      tweets: [],
+      targetTweet: {}
+    };
+  },
+  props: {
+    initUser: {
+      type: Object,
+      required: true
+    }
+  },
+  components: {
     TweetReply
-},
-    computed: {
-        ...mapState(["currentUser", "isAuthenticated"])
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"])
+  },
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+  created() {
+    this.fetchTweets(this.initUser.id)
+  },
+  methods: {
+    async fetchTweets(userId) {
+      const { data } = await usersAPI.getTweets(userId)
+      this.tweets = data
     },
-    mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-    created(){
-      this.fetchTweets(this.initUser.id)
+    openModal(tweet) {
+      this.targetTweet = tweet
+      return this.isShow = true;
     },
-    methods: {
-        async fetchTweets(userId){
-          const {data} = await usersAPI.getTweets(userId)
-          this.tweets = data
-        },
-        openModal(tweet) {
-            this.targetTweet = tweet
-            return this.isShow = true;
-        },
-        closeModal(show) {
-            return this.isShow = show;
-        },
+    closeModal(show) {
+      return this.isShow = show;
     },
+    async toggleLike(tweet) {
+      if (tweet.isLiked === false) {
+        try {
+          const tweetId = tweet.id
+          const { data } = await tweetsAPI.addLike({tweetId})
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+          Toast.fire({
+            icon:'success',
+            title: '成功'
+          })
+          tweet.likedCount += 1
+          tweet.isLiked = !tweet.isLiked
+        }
+        catch (err) {
+          console.log(err)
+          Toast.fire({
+            icon:'error',
+            title: '收回讚失敗，請稍後再試'
+          })
+        }
+
+      } else if (tweet.isLiked === true) {
+        try {
+          const tweetId = tweet.id
+          const { data } = await tweetsAPI.deleteLike({tweetId})
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+          Toast.fire({
+            icon:'success',
+            title: '收回愛心'
+          })
+          tweet.isLiked = !tweet.isLiked
+          tweet.likedCount -= 1
+        } catch (err) {
+          console.log(err)
+          Toast.fire({
+            icon:'error',
+            title: '收回讚失敗，請稍後再試'
+          })
+        }
+      }
+    }
+  },
 }
 </script>
 
