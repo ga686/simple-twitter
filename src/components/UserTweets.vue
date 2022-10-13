@@ -39,37 +39,37 @@ import TweetReply from './TweetReply.vue'
 import tweetsAPI from '../apis/tweets'
 import {Toast} from '../utils/helpers'
 
+
 export default {
   data() {
     return {
       isShow: false,
       tweets: [],
-      targetTweet: {}
-    };
-  },
-  props: {
-    initUser: {
-      type: Object,
-      required: true
+      targetTweet: {
+        createdAt: '',
+        description: '',
+        id: '',
+        User: []
+      }
     }
   },
-  components: {
-    TweetReply
-  },
-  computed: {
-    ...mapState(["currentUser", "isAuthenticated"])
-  },
-  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-  created() {
-    this.fetchTweets(this.initUser.id)
-  },
   methods: {
-    async fetchTweets(userId) {
-      const { data } = await usersAPI.getTweets(userId)
+    async fetchTweets(userId){
+      const {data} = await usersAPI.getTweets(userId)
       this.tweets = data
     },
     openModal(tweet) {
-      this.targetTweet = tweet
+      const {
+        createdAt,
+        description,
+        id,
+        userData
+      } = tweet
+  
+      this.targetTweet.createdAt = createdAt
+      this.targetTweet.description =  description
+      this.targetTweet.id = id
+      this.targetTweet.User = userData
       return this.isShow = true;
     },
     closeModal(show) {
@@ -120,8 +120,9 @@ export default {
         }
       }
     }
-  },
+  }
 }
+
 </script>
 
 

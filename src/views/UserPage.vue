@@ -4,7 +4,7 @@
     <LoadingSpinner v-if="isLoading"/>
     <template v-else>
       <div class="user-page">
-      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" />
+      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
       <UserHeader :user="user"/>
       <div class="user-profile">
         <div class="user-banner">
@@ -119,6 +119,9 @@ export default {
     closeModal(show) {
       return this.isShow = show
     },
+    refreshUser(userId){
+      this.fetchUser(userId)
+    }
   },
   filters: {
     quantifier(length) {

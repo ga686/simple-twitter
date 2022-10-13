@@ -34,7 +34,7 @@ export default{
   },
   props: {
     replyTo: {
-      type: Array,
+      type: Object,
       required: true
     }
   },

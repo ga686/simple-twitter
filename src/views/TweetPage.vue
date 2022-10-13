@@ -1,44 +1,47 @@
 <template>
   <main class="main-view">
     <NavbarLeft />
-    <div class="tweet_list">
-      <div class="tweet_list-title d-flex">
-        <a @click="$router.back()"><i class="fa-solid fa-arrow-left size-20"></i></a><h4>推文</h4>
-      </div>
-      <div class="comment_wrap detail d-flex" v-if="tweet.User">
-        <div class="comment_wrap_body">
-          <div class="d-flex">
-            <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage" /></div>
-            <div class="comment_wrap_body--title">
-              <h5 class="size-16">{{tweet.User.name}}</h5>
-              <p class="size-14">{{tweet.User.account | account}}</p>
-            </div>
-          </div>
-          <div class="comment_wrap_body--content size-24 mb-2">{{tweet.description}}</div>
-          <div class="comment_wrap_body--time">
-            <span class="size-14">{{tweet.createdAt | getTime }}</span>
-            ・
-            <span class="size-14">{{tweet.createdAt | fullDate }}</span>
-          </div>
+    <LoadingSpinner v-if="isProcessing"/>
+    <template v-else>
+      <div class="tweet_list">
+        <div class="tweet_list-title d-flex">
+          <a @click="$router.back()"><i class="fa-solid fa-arrow-left size-20"></i></a><h4>推文</h4>
         </div>
-        <div class="comment_wrap_footer d-flex mt-3 detail">
-            <div class="comment_wrap_footer--comments-num d-flex mr-10">
-              <div class="number-wrap mr-1">{{tweet.repliedCount}}</div><p>回覆</p>
+        <div class="comment_wrap detail d-flex" v-if="tweet.User">
+          <div class="comment_wrap_body">
+            <div class="d-flex">
+              <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage" /></div>
+              <div class="comment_wrap_body--title">
+                <h5 class="size-16">{{tweet.User.name}}</h5>
+                <p class="size-14">{{tweet.User.account | account}}</p>
+              </div>
             </div>
-            <div class="comment_wrap_footer--liked-num d-flex">
-              <div class="number-wrap mr-1">{{tweet.likedCount}}</div><p>喜歡次數</p>
+            <div class="comment_wrap_body--content size-24 mb-2">{{tweet.description}}</div>
+            <div class="comment_wrap_body--time">
+              <span class="size-14">{{tweet.createdAt | getTime }}</span>
+              ・
+              <span class="size-14">{{tweet.createdAt | fullDate }}</span>
             </div>
           </div>
-      </div> 
-      <div class="tweet_list-detail btn-wrap d-flex">
-        <div class="icon-btn reply" @click.stop.prevent="openModal"></div>
-        <div class="icon-btn liked isliked my-auto" v-if="tweet.isFav" @click.stop.prevent="deleteLike(tweet.id)"></div>
-        <div class="icon-btn liked my-auto" v-else @click.stop.prevent="addLike(tweet.id)"></div>
+          <div class="comment_wrap_footer d-flex mt-3 detail">
+              <div class="comment_wrap_footer--comments-num d-flex mr-10">
+                <div class="number-wrap mr-1">{{tweet.repliedCount}}</div><p>回覆</p>
+              </div>
+              <div class="comment_wrap_footer--liked-num d-flex">
+                <div class="number-wrap mr-1">{{tweet.likedCount}}</div><p>喜歡次數</p>
+              </div>
+            </div>
+        </div> 
+        <div class="tweet_list-detail btn-wrap d-flex">
+          <div class="icon-btn reply" @click.stop.prevent="openModal"></div>
+          <div class="icon-btn liked isliked my-auto" v-if="tweet.isFav" @click.stop.prevent="deleteLike(tweet.id)"></div>
+          <div class="icon-btn liked my-auto" v-else @click.stop.prevent="addLike(tweet.id)"></div>
+        </div>
+        <ReplyTweets :reply-to="tweet" />
       </div>
-      <ReplyTweets :reply-to="tweet" />
-    </div>
     <SuggestUser />
     <TweetReply :is-show="isShow" :tweet = "tweet" @close-modal="closeModal" @refresh-replies="refreshAgain"/>
+    </template>
   </main>
 </template>
 <script>
@@ -47,6 +50,7 @@ import SuggestUser from "../components/SuggestUser"
 import ReplyTweets from "../components/ReplyTweets"
 import TweetReply from "../components/TweetReply"
 import tweetsAPI from '../apis/tweets'
+import LoadingSpinner from '../components/LoadingSpinner'
 import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
@@ -56,15 +60,17 @@ import { mapState } from 'vuex'
 export default{
   data () {
     return{
-      tweet: [],
-      isShow: false
+      tweet: {},
+      isShow: false,
+      isProcessing: false
     }
   },
   components: {
     NavbarLeft,
     SuggestUser,
     ReplyTweets,
-    TweetReply
+    TweetReply,
+    LoadingSpinner
   },
   mixins: [accountFilter, emptyImageFilter,fromNowFilter],
   methods: {
@@ -111,12 +117,15 @@ export default{
     },
     async fetchTweet (tweetId) {
       try {
+        this.isProcessing = true
         const { data } = await tweetsAPI.getTweet({ tweetId })
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        return this.tweet = this.getLikedStatus(data)
+        this.tweet = this.getLikedStatus(data)
+        this.isProcessing = false
       }catch(err){
+        this.isProcessing = false
         console.error(err)
         Toast.fire({
           icon: 'error',
