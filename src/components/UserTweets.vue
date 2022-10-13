@@ -23,8 +23,8 @@
           </div>
         </div>
       </div>
-      <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
-    </template>
+    </div>
+    <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
   </div>
 </template>
 
@@ -34,54 +34,45 @@ import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
-import LoadingSpinner from './LoadingSpinner.vue'
 import TweetReply from './TweetReply'
 
 export default {
-  data() {
-    return {
-      isShow: false,
-      tweets: [],
-      targetTweet: {},
-      isLoading: false
-    };
-  },
-  props: {
-    initUser: {
-      type: Object,
-      required: true
-    }
-  },
-  components: {
-    LoadingSpinner,
-    TweetReply
-  },
-  computed: {
-    ...mapState(["currentUser", "isAuthenticated"])
-  },
-  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-  created() {
-    this.fetchTweets(this.initUser.id)
-  },
-  methods: {
-    async fetchTweets(userId) {
-      try {
-        const {data} = await usersAPI.getTweets(userId)
-        this.tweets = data
-      }
-      catch (err) {
-        console.log(err)
-      }
-
+    data() {
+        return {
+            isShow: false,
+            tweets: [],
+            targetTweet: {}
+        };
     },
-    openModal(tweet) {
-      this.targetTweet = tweet
-      return this.isShow = true;
+    props: {
+        initUser: {
+            type: Object,
+            required: true
+        }
     },
-    closeModal(show) {
-      return this.isShow = show;
+    components:{
+      TweetReply
     },
-  },
+    computed: {
+        ...mapState(["currentUser", "isAuthenticated"])
+    },
+    mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+    created(){
+      this.fetchTweets(this.initUser.id)
+    },
+    methods: {
+        async fetchTweets(userId){
+          const {data} = await usersAPI.getTweets(userId)
+          this.tweets = data
+        },
+        openModal(tweet) {
+            this.targetTweet = tweet
+            return this.isShow = true;
+        },
+        closeModal(show) {
+            return this.isShow = show;
+        },
+    },
 }
 </script>
 
