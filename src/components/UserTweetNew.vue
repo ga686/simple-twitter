@@ -11,7 +11,7 @@
           <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
         </div>
-        <button type="submit" class="btn ml-auto">推文</button>
+        <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
       </form>
     </div>
   </div>
@@ -25,7 +25,8 @@ import tweetsAPI from '../apis/tweets'
 export default{
   data () {
     return {
-      newContent: ''
+      newContent: '',
+      isProcessing: false
     }
   },
   props: {
@@ -58,12 +59,13 @@ export default{
    async handleSubmit () {
       try {
         if (!this.newContent) {
-        Toast.fire({
-          icon: 'warning',
-          title: '內容不可空白'
-        })
-        return
-      }
+          Toast.fire({
+            icon: 'warning',
+            title: '內容不可空白'
+          })
+          return
+        }
+        this.isProcessing = true
         const description  = this.newContent
         const { data } = await tweetsAPI.postNewTweet({description})
         if(data.status === "error"){
@@ -71,8 +73,10 @@ export default{
         }
         this.closeModal()
         this.newContent = ""
+        this.isProcessing = false
         this.fetchTweets ()
       }catch(err){
+        this.isProcessing = false
         console.error(err)
         Toast.fire({
           icon: 'warning',
