@@ -5,9 +5,9 @@
         <div class="cancel-btn" @click.stop.prevent="closeModal">
           <i class="fa-solid fa-xmark size-32"></i>
         </div>
-        <h5>編輯個人資訊</h5><button class="btn">儲存</button>
+        <h5>編輯個人資訊</h5><button type="submit" form="profile-box" class="btn">儲存</button>
       </div>
-      <form class="profile-box">
+      <form class="profile-box" id="profile-box" @submit.prevent.stop="handleSubmit">
         <div class="user-banner">
           <div class="filter"></div>
           <div class="icons">
@@ -18,7 +18,7 @@
               @change="handleFileChange">
             <i class="icon-edit-done" @click.prevent.stop="user.banner = initUser.banner"></i>
           </div>
-          <img :src="user.banner | emptyImage" alt="" />
+          <img :src="user.banner | emptyBanner" alt="" />
         </div>
         <div class="avatar">
           <div class="filter"></div>
@@ -44,8 +44,10 @@
 </template>
 
 <script>
+import usersAPI from '../apis/users'
 import { emptyImageFilter } from '@/utils/mixins'
 import { mapState } from 'vuex'
+import { Toast } from '@/utils/helpers'
 export default {
   props: {
     isShow: {
@@ -72,7 +74,8 @@ export default {
   methods: {
     fetchUser() {
       this.user = this.initUser
-      this.user = {
+      this.description = this.currentUser.introduction
+      this.user = {   
         ...this.user,
         description: this.description
       }
@@ -94,7 +97,25 @@ export default {
         }
       }
     },
-  }
+    async handleSubmit(e) {
+      try {
+        const form = e.target
+        const formData = new FormData(form)
+        const { data } = await usersAPI.updateProfile(this.initUser.id, formData)
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.closeModal()
+        this.$emit('refresh-user',this.user.id)
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法變更使用者資訊，請稍後再試'
+        })
+      }
+    }
+  },
 }
 </script>
 
