@@ -30,12 +30,12 @@
           </div>
         </div>
         <div class="togglePage d-flex">
-          <div @click.prevent.stop="togglePage('userTweets')"
-            :class="['userTweets',{'active':currentContent === 'userTweets'}]">推文</div>
-          <div @click.prevent.stop="togglePage('userReplies')"
-            :class="['userReplies', {'active':currentContent === 'userReplies'}]">回覆</div>
-          <div @click.prevent.stop="togglePage('userLikes')"
-            :class="['userLikes', {'active':currentContent === 'userLikes'}]">喜歡的內容</div>
+          <div @click.prevent.stop="togglePage('userTweets')" class="userTweets"
+            :class="{'active':currentContent === 'userTweets'}">推文</div>
+          <div @click.prevent.stop="togglePage('userReplies')" class="userTweets"
+            :class="{'active':currentContent === 'userReplies'}">回覆</div>
+          <div @click.prevent.stop="togglePage('userLikes')" class="userTweets"
+            :class="{'active':currentContent === 'userLikes'}">喜歡的內容</div>
         </div>
       </div>
       <UserTweets :initUser="user" v-show="currentContent === 'userTweets'" />
@@ -131,5 +131,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/userPage/style.scss'
+@import '../assets/scss/userPage/style.scss';
 </style>
