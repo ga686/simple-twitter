@@ -7,10 +7,14 @@ export default {
   getTweets(userId) {
     return apiHelper.get(`/api/users/${ userId }/tweets`)
   },
-  getCurrentFollow(userId) {
-    return apiHelper.get(`/api/users/${ userId }/followings`)
+  getReplies(userId){
+    return apiHelper.get(`/api/users/${ userId }/replied_tweets`)
   },
   updateAccount(userId, fromData) {
     return apiHelper.put(`/api/users/${ userId }/account`, fromData)
   }
+  ,
+  getLikes(userId){
+    return apiHelper.get(`/api/users/${ userId }/likes`)
+  },
 }

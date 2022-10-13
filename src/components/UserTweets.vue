@@ -1,30 +1,35 @@
 <template>
   <div>
-    <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="tweet.avatar | emptyImage " /></div>
-      <div class="comment_wrap_body">
-        <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{initUser.name}}</h5>
-          <p class="size-14">{{initUser.account | account}}</p>
-          ・
-          <span class="size-14">{{tweet.createdAt | fromNow }}</span>
-        </div>
-        <div class="comment_wrap_body--content mb-3">
-          <router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link>
-        </div>
-        <div class="comment_wrap_footer d-flex">
-          <div class="comment_wrap_footer--comments-num d-flex mr-10">
-            <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
-            <span class="number-wrap">{{tweet.Replies.length}}</span>
+    <LoadingSpinner v-if="isLoading" />
+    <template v-else>
+      <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
+        <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage " /></div>
+        <div class="comment_wrap_body">
+          <div class="d-flex comment_wrap_body--title">
+            <h5 class="size-16">
+              <router-link :to="{name:'userpage', params:{id:tweet.userData.id}}">{{tweet.userData.name}}</router-link>
+            </h5>
+            <p class="size-14">{{tweet.userData.account | account}}</p>
+            ・
+            <span class="size-14">{{tweet.createdAt | fromNow }}</span>
           </div>
-          <div class="comment_wrap_footer--liked-num d-flex">
-            <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
-            <span class="number-wrap">{{tweet.likedLength}}</span>
+          <div class="comment_wrap_body--content mb-3">
+            <router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link>
+          </div>
+          <div class="comment_wrap_footer d-flex">
+            <div class="comment_wrap_footer--comments-num d-flex mr-10">
+              <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
+              <span class="number-wrap">{{tweet.repliedCount}}</span>
+            </div>
+            <div class="comment_wrap_footer--liked-num d-flex">
+              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"></div>
+              <span class="number-wrap">{{tweet.likedCount}}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
+      <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" />
+    </template>
   </div>
 </template>
 
@@ -34,45 +39,54 @@ import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
+import LoadingSpinner from './LoadingSpinner.vue'
 import TweetReply from './TweetReply'
 
 export default {
-    data() {
-        return {
-            isShow: false,
-            tweets: [],
-            targetTweet: {}
-        };
+  data() {
+    return {
+      isShow: false,
+      tweets: [],
+      targetTweet: {},
+      isLoading: false
+    };
+  },
+  props: {
+    initUser: {
+      type: Object,
+      required: true
+    }
+  },
+  components: {
+    LoadingSpinner,
+    TweetReply
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"])
+  },
+  mixins: [fromNowFilter, emptyImageFilter, accountFilter],
+  created() {
+    this.fetchTweets(this.initUser.id)
+  },
+  methods: {
+    async fetchTweets(userId) {
+      try {
+        const {data} = await usersAPI.getTweets(userId)
+        this.tweets = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+
     },
-    props: {
-        initUser: {
-            type: Object,
-            required: true
-        }
+    openModal(tweet) {
+      this.targetTweet = tweet
+      return this.isShow = true;
     },
-    components:{
-      TweetReply
+    closeModal(show) {
+      return this.isShow = show;
     },
-    computed: {
-        ...mapState(["currentUser", "isAuthenticated"])
-    },
-    mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-    created(){
-      this.fetchTweets(this.initUser.id)
-    },
-    methods: {
-        async fetchTweets(userId){
-          const {data} = await usersAPI.getTweets(userId)
-          this.tweets = data
-        },
-        openModal(tweet) {
-            this.targetTweet = tweet
-            return this.isShow = true;
-        },
-        closeModal(show) {
-            return this.isShow = show;
-        },
-    },
+  },
 }
 </script>
 
