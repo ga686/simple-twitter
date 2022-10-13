@@ -2,7 +2,7 @@
   <div>
     <LoadingSpinner v-if="isLoading" />
     <template v-else>
-      <div v-for="tweet in favoriteTweets" :key="tweet" class="comment_wrap d-flex">
+      <div v-for="tweet in favoriteTweets" :key="tweet.TweetId" class="comment_wrap d-flex">
         <div class="avatar_image"><img :src="tweet.userData.avatar | emptyImage " /></div>
         <div class="comment_wrap_body">
           <div class="d-flex comment_wrap_body--title">
