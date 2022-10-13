@@ -1,7 +1,7 @@
 <template>
     <div>
     <div class="comment_wrap detail tweet-list d-flex" >
-      <div class="comment_wrap_body" v-for="reply in replies" :key="reply.TweetId">
+      <div class="comment_wrap_body" v-for="reply in replies" :key="reply.id">
         <div class="d-flex">
           <div class="avatar_image"><img :src="reply.User.avatar | emptyImage" /></div>
           <div>
@@ -34,11 +34,19 @@ export default{
   },
   props: {
     replyTo: {
-      type: Object,
+      type: Array,
       required: true
     }
   },
   mixins: [accountFilter,fromNowFilter,emptyImageFilter ],
+  watch: {
+    replyTo: {
+      handler: function () {
+        return this.replies = this.replyTo.Replies
+      },
+      deep: true
+    }
+  },
   created () {
     return this.replies = this.replyTo.Replies
   }
