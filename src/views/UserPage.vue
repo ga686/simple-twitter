@@ -4,7 +4,7 @@
     <LoadingSpinner v-if="isLoading"/>
     <template v-else>
       <div class="user-page">
-      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" />
+      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
       <div class="user-header d-flex align-item-center">
         <div class="link-icon" @click="$router.back()"></div>
         <div class="user-title d-flex justify-content-center">
@@ -123,6 +123,9 @@ export default {
     closeModal(show) {
       return this.isShow = show
     },
+    refreshUser(userId){
+      this.fetchUser(userId)
+    }
   },
   filters: {
     quantifier(length) {
