@@ -58,7 +58,7 @@ export default {
       try {
         const followerId = follower.followerId
         if (follower.isFollowed === false) {
-          const { data } = await followshipsAPI.addFollow({ followerId })
+          const { data } = await followshipsAPI.addFollow(followerId)
           if (data === 'success') {
             throw new Error(data.message)
           }
@@ -70,7 +70,7 @@ export default {
           follower.isFollowed = !follower.isFollowed
           
         }else{
-          const { data } = await followshipsAPI.deleteFollow({ followerId })
+          const { data } = await followshipsAPI.deleteFollow(followerId)
           if (data === 'success') {
             throw new Error(data.message)
           }
