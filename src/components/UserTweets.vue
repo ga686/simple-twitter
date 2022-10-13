@@ -15,11 +15,11 @@
         <div class="comment_wrap_footer d-flex">
           <div class="comment_wrap_footer--comments-num d-flex mr-10">
             <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
-            <span class="number-wrap">{{tweet.Replies.length}}</span>
+            <span class="number-wrap">{{tweet.repliedCount}}</span>
           </div>
           <div class="comment_wrap_footer--liked-num d-flex">
             <div class="icon liked my-auto" :class="{isliked: tweet.isFavorite}"></div>
-            <span class="number-wrap">{{tweet.likedLength}}</span>
+            <span class="number-wrap">{{tweet.likedCount}}</span>
           </div>
         </div>
       </div>
