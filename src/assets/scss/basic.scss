@@ -307,6 +307,9 @@ $spacers: (
     background-color: transparent;
     color: var(--brand-color);
   }
+  &:disabled{
+    opacity: 0.5;
+  }
 }
 
 .cancel-btn{

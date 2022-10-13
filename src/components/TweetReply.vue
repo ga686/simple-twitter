@@ -6,7 +6,7 @@
           <i class="fa-solid fa-xmark size-32"></i>
         </div>
       </div>
-      <div class="comment_wrap d-flex" >
+      <div class="comment_wrap d-flex"  v-if="tweet.User">
         <div class="avatar_wrap">
           <div class="avatar_image">
             <img :src="tweet.User.avatar | emptyImage" />
@@ -31,7 +31,7 @@
           <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent" maxlength="140"></textarea>
         </div>
-        <button class="btn ml-auto">回應</button>
+        <button type="submit" class="btn ml-auto" :disabled="isProcessing">回應</button>
       </form>
     </div>
   </div>
@@ -48,7 +48,8 @@ import { Toast } from '../utils/helpers'
 export default{
   data () {
     return {
-      newContent: ''
+      newContent: '',
+      isProcessing: false
     }
   },
   props: {
@@ -75,6 +76,7 @@ export default{
           })
           return
         }
+        this.isProcessing = true
         const { data } = await tweetsAPI.addReply(tweetId , this.newContent )
         if(data.status === 'error'){
           throw new Error(data.message)
@@ -82,7 +84,10 @@ export default{
         this.closeModal()
         this.newContent = ""
         this.$emit('refresh-replies', tweetId)
+        this.isProcessing = false
       }catch(err){
+        this.isProcessing = false
+        console.error(err)
         Toast.fire({
           icon: 'error',
           title: '無法新增貼文，說稍後再試'

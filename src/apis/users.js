@@ -10,8 +10,11 @@ export default {
   getReplies(userId){
     return apiHelper.get(`/api/users/${ userId }/replied_tweets`)
   },
+  updateAccount(userId, fromData) {
+    return apiHelper.put(`/api/users/${ userId }/account`, fromData)
+  }
+  ,
   getLikes(userId){
     return apiHelper.get(`/api/users/${ userId }/likes`)
   },
-
 }

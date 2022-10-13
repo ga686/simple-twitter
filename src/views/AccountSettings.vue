@@ -19,15 +19,15 @@
           <input id="email" name="email" autofocus v-model="email" type="email">
         </div>
         <div class="form-label-group">
-          <label for="account">密碼</label>
-          <input id="account" name="account" autofocus v-model="password" type="password" placeholder="請設定密碼">
+          <label for="password">密碼</label>
+          <input id="password" name="password" autofocus v-model="password" type="password" placeholder="請設定密碼">
         </div>
         <div class="form-label-group">
-          <label for="account">密碼再確認</label>
-          <input id="account" name="account" autofocus v-model="passwordConfrim" type="password" placeholder="請再次輸入密碼">
+          <label for="checkPassword">密碼再確認</label>
+          <input id="checkPassword" name="checkPassword" autofocus v-model="passwordConfrim" type="password" placeholder="請再次輸入密碼">
         </div>
         <div class="d-flex">
-          <button class="btn ml-auto" type="submit" style="width:fit-content">儲存</button>
+          <button class="btn ml-auto" type="submit" style="width:fit-content" :disabled="isProcessing">{{isProcessing? '儲存變更中...': '儲存'}}</button>
         </div>
       </form>
     </div>
@@ -47,7 +47,8 @@ export default {
       name: '',
       email: '',
       password: '',
-      passwordConfrim: ''
+      passwordConfrim: '',
+      isProcessing: false
     }
   },
   components: {
@@ -68,7 +69,7 @@ export default {
           })
           return
         }
-
+        
         if (this.password !== this.passwordConfrim ) {
           Toast.fire({
             icon: 'warning',
@@ -76,17 +77,20 @@ export default {
           })
           return
         }
-
+        this.isProcessing = true
         const form = e.target
         const formData = new FormData(form)
-        const { data } = await usersAPI.updateAccount(this.currentUser.id, formData)
+
+
+        const { data } = await usersAPI.updateAccount(this.currentUser.id, Object.fromEntries(formData))
 
         if(data.status === "error"){
           throw new Error(data.message)
         }
 
-        // this.$router.push({name: "home-page"})
+        this.$router.push({name: "home-page"})
       }catch(err){
+        this.isProcessing = false
         console.error(err)
         Toast.fire({
           icon: 'warning',
@@ -97,6 +101,20 @@ export default {
   },
   computed: {
     ...mapState(['currentUser'])
+  },
+  watch: {
+    account: function () {
+      this.getCurrentInfo()
+    },
+    email: function () {
+      this.getCurrentInfo()
+    },
+    name: function () {
+      this.getCurrentInfo()
+    },
+    password: function () {
+      this.getCurrentInfo()
+    }
   },
   created () {
     this.getCurrentInfo()
