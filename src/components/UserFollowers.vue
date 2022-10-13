@@ -5,7 +5,8 @@
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{follower.name}}</h5>
-          <button :class="['btn',{'unfollow': !isFollowed}]" @click.prevent.stop="toggleFollow(follower.id)">{{ isFollowed ? '正在跟隨' :
+          <button :class="['btn',{'unfollow': !follower.isFollowed}]" @click.prevent.stop="toggleFollow(follower)">{{
+          follower.isFollowed ? '正在跟隨' :
           '跟隨'}}</button>
         </div>
         <div class="comment_wrap_body--content mb-3">{{follower.introduction}}</div>
@@ -15,14 +16,20 @@
 </template>
 <script>
 import { emptyImageFilter } from '../utils/mixins'
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
+import usersAPI from '../apis/users'
+import followshipsAPI from '../apis/followships'
+import { Toast } from '../utils/helpers'
 export default {
   props: {
     initFollowers: {
       type: Array,
       required: true,
-      isFollowed: false
     },
+    initUserId:{
+      type: Number,
+      required: true
+    }
   },
   mixins: [emptyImageFilter],
   data() {
@@ -33,20 +40,52 @@ export default {
   computed: {
     ...mapState(['currentUser', 'isAuthenticated'])
   },
-  created(){
-    this.fetchData()
+  created() {
+    this.fetchData(this.initUserId)
   },
-  watch:{
-    initFollowers(){
-      this.fetchData()
-    }  
+  watch: {
+    initFollowers() {
+      this.fetchData(this.initUserId)
+    }
   },
   methods: {
-    fetchData() {
-      this.followers = this.initFollowers
+    async fetchData(userId) {
+      const {data} = await usersAPI.getFollowers(userId)
+     this.followers = data
+
     },
-    toggleFollow(userId) {
-      console.log(userId)
+    async toggleFollow(follower) {
+      try {
+        const followerId = follower.followerId
+        if (follower.isFollowed === false) {
+          const { data } = await followshipsAPI.addFollow({ followerId })
+          if (data === 'success') {
+            throw new Error(data.message)
+          }
+          
+          Toast.fire({
+            icon: 'success',
+            title: '成功追蹤'
+          })
+          follower.isFollowed = !follower.isFollowed
+          
+        }else{
+          const { data } = await followshipsAPI.deleteFollow({ followerId })
+          if (data === 'success') {
+            throw new Error(data.message)
+          }
+          Toast.fire({
+            icon: 'success',
+            title: '成功取消追蹤'
+          })
+        }
+      } catch (err) {
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: '追蹤失敗，請稍後再試'
+        })
+      }
     }
   }
 }
@@ -54,9 +93,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
-.comment_wrap_body{
+
+.comment_wrap_body {
   width: 100%;
 }
+
 .comment_wrap_body--title {
   justify-content: space-between;
   align-items: center;

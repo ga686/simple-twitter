@@ -5,11 +5,11 @@
       <UserHeader :user='user' />
       <div class="follow-title">
         <div :class="['user-followers', {active: currentView === 'followers'}]"
-        @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
+        @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})" >追蹤者</div>
         <div :class="['user-followings',{active: currentView === 'followings'}]"
         @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
-      <UserFollowers :initFollowers="user.followers" v-show="currentView === 'followers'" />
+      <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
       <UserFollowings :initFollowings="user.followings" v-show="currentView === 'followings'" />
     </div>
     <SuggestUser />
@@ -70,7 +70,6 @@ export default {
       try {
         const { data } = await usersAPI.get(userId)
         const {id, name, Tweets, Followers:followers, Followings:followings} = data
-        console.log(followers)
         this.user = {
           ...this.user,
          id, name, tweetsLength: Tweets.length, followers ,followings
@@ -127,6 +126,7 @@ export default {
   & .active {
     border-bottom: 2px solid var(--brand-color);
     color: var(--brand-color);
+    pointer-events: none;
   }
 }
 </style>
