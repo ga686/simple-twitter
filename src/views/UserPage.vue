@@ -13,7 +13,11 @@
         <div class="avatar">
           <img :src="user.avatar | emptyImage" alt="">
         </div>
-        <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
+        <div class="d-flex justify-content-end btn-wrap">
+          <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
+          <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed" @click.prevent.stop="addFollow(user.id)">追蹤</div>
+          <div class="btn" v-else @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
+        </div>
         <div class="user-info">
           <h5>{{user.name}}</h5>
           <div class="user-account number-wrap">{{user.account | account}}</div>
@@ -41,18 +45,20 @@
   </main>
 </template>
 <script>
-import NavbarLeft from '../components/NavbarLeft.vue';
-import SuggestUser from '../components/SuggestUser.vue';
+import NavbarLeft from '../components/NavbarLeft.vue'
+import SuggestUser from '../components/SuggestUser.vue'
 import UserReplies from '../components/UserReplies.vue'
 import UserLikes from '../components/UserLikes.vue'
 import UserTweets from '../components/UserTweets.vue'
-import UserEdit from '@/components/UserEdit.vue';
+import UserEdit from '@/components/UserEdit.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
+import followshipsAPI from '@/apis/followships'
+import { Toast } from '@/utils/helpers'
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import usersAPI from '../apis/users'
-import UserHeader from '@/components/UserHeader.vue';
+import UserHeader from '@/components/UserHeader.vue'
 export default {
   name: 'userPage',
   components: {
@@ -81,6 +87,7 @@ export default {
         followerCount: 0,
         followingCount: 0,
         tweetsLength: 0,
+        isFollowed: false
       },
       currentContent: 'userTweets',
       isShow: false,
@@ -103,10 +110,10 @@ export default {
     async fetchUser(userId) {
       this.isLoading = true
       const {data} = await usersAPI.get(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets,} = data
+      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets, isFollowed} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length,
+        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length,isFollowed
       }
       this.isLoading = false
     },
@@ -118,6 +125,38 @@ export default {
     },
     closeModal(show) {
       return this.isShow = show
+    },
+    async addFollow (userId) {
+      try {
+        const { data } = await followshipsAPI.addFollow(userId)
+
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.user.isFollowed = true
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法加入追蹤，請稍後再試'
+        })
+      }
+    },
+    async deleteFollow (userId) {
+      try {
+        const { data } = await followshipsAPI.deleteFollow({userId})
+
+        if(data.status === "error"){
+          throw new Error(data.message)
+        }
+        this.user.isFollowed = false
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法移除追蹤，請稍後再試'
+        })
+      }
     },
     refreshUser(userId){
       this.fetchUser(userId)
@@ -133,4 +172,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/userPage/style.scss';
+.btn-wrap{
+  padding:10px 15px;
+}
 </style>
