@@ -16,7 +16,7 @@
         <div class="d-flex justify-content-end btn-wrap">
           <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
           <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed" @click.prevent.stop="addFollow(user.id)">追蹤</div>
-          <div class="btn" v-else @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
+          <div class="btn" v-if="user.id !== currentUser.id && user.isFollowed" @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
         </div>
         <div class="user-info">
           <h5>{{user.name}}</h5>
