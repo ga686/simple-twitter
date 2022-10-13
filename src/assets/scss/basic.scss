@@ -36,6 +36,9 @@
   --icon-back-arrow: url('~@/assets/icon_back_arrow.png');
   --icon-photo: url('~@/assets/icon_photo.png');
   --icon-cross: url('~@/assets/icon_cross.png');
+  --icon-email: url('~@/assets/icon_email.png');
+  --icon-notify: url('~@/assets/icon_notify.png');
+  --icon-notify-active: url('~@/assets/icon_notify_active.png');
 }
 
 /* basic setting */
@@ -309,6 +312,40 @@ $spacers: (
   }
   &:disabled{
     opacity: 0.5;
+  }
+  &.email, &.notify{
+    width: 35px;
+    height: 35px;
+    background-position: center;
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: 1px solid var(--brand-color);
+  }
+  &.email{
+    background-image: var(--icon-email);
+    position: relative;
+    a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  &.notify{
+    background-image: var(--icon-notify);
+    &.active{
+      background-image: var(--icon-notify-active);
+      background-color: var(--brand-color);
+    }
+  }
+}
+
+.btn-wrap{
+  padding:10px 15px;
+  div:not(:last-child) {
+    margin-right: 10px;
   }
 }
 
