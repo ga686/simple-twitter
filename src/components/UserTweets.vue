@@ -5,7 +5,7 @@
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{initUser.name}}</h5>
-          <p class="size-14">{{initUser.account | account}}</p>
+          <p class="size-14 ml-1">{{initUser.account | account}}</p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>

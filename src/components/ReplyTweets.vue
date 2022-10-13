@@ -7,7 +7,7 @@
           <div>
             <div class="d-flex comment_wrap_body--title align-items-center">
               <h5 class="size-16">{{ reply.User.name }}</h5>
-              <p class="size-14">{{ reply.User.account | account }}</p>
+              <p class="size-14 ml-1">{{ reply.User.account | account }}</p>
               ・
               <span class="size-14">{{ reply.createdAt | fromNow }}</span>
             </div>
