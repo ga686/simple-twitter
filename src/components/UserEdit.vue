@@ -35,7 +35,7 @@
         <p class="input-length">{{user.name.length}}/50</p>
         <div class="user-description">
           <label for="description">自我介紹</label>
-          <textarea id="description" name="description" cols="30" rows="10" v-model="user.description" maxlength="170" placeholder="John Doe : )"></textarea>
+          <textarea id="description" name="description" cols="30" rows="10" v-model="user.description" maxlength="170"></textarea>
         </div>
         <p class="input-length">{{user.description.length}}/170</p>
       </form>
