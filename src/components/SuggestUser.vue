@@ -104,36 +104,5 @@ export default{
 
 
 <style lang="scss" scoped>
-.suggest_user{
-  height: 100vh;
-  overflow: scroll;
-  &_list{
-    background: var(--dark-20);
-    border-radius: 16px;
-    width: 273px;
-    height: fit-content;
-    &-title{
-      padding: 24px;
-      border-bottom: 1px solid #E6ECF0;
-    }
-    &-item{
-      padding: 16px;
-      flex-wrap: wrap;
-    }
-    &-name{
-      overflow: hidden;
-      h5,.account_name{
-        width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        a{color: var(--dark-100)}
-      }
-      .account_name{
-        a {color: var(--dark-70);}
-      }
-    }
-  }
-}
-
+@import '../assets/scss/suggest-user.scss';
 </style>
