@@ -42,8 +42,7 @@ export default new Vuex.Store({
   actions: {
     async fetchCurrentUser({ commit }) {
       try {
-        const currentUserId = localStorage.getItem('currentId')
-        const {data} = await usersAPI.get(currentUserId)
+        const {data} = await usersAPI.getCurrentUser()
         const { id, account, email,name, password, role, avatar, coverPhoto, introduction, Tweets} = data
         commit("setCurrentUser", {
           id,
