@@ -16,7 +16,7 @@
             </label>
             <input class="banner-edit" type="file" id="coverPhoto" accept="image/*" name="coverPhoto"
               @change="handleFileChange">
-            <i class="icon-edit-done" @click.prevent.stop="user.coverPhoto = initUser.banner"></i>
+            <i class="icon-edit-done" @click.prevent.stop="defaultBanner"></i>
           </div>
           <img :src="user.coverPhoto | emptyBanner" alt="" />
         </div>
@@ -84,6 +84,8 @@ export default {
     closeModal() {
       this.$emit('close-modal', !this.isShow)
       this.user.name = this.initUser.name
+      this.user.avatar = this.initUser.avatar
+      this.user.coverPhoto = this.initUser.coverPhoto
       this.user.introduction = this.initUser.introduction || 'type something here...'
     },
     handleFileChange(e) {
@@ -127,6 +129,13 @@ export default {
           icon: 'warning',
           title: '無法儲存變更，請稍後再試'
         })
+      }
+    },
+    defaultBanner(e) {
+      if(e.target.classList.value === "icon-edit-done"){
+        this.user.coverPhoto = null
+        const target = document.getElementById('coverPhoto')
+        target.value = ""
       }
     }
   },
