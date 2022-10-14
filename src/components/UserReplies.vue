@@ -7,14 +7,12 @@
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{initUser.name}}</h5>
-          <p class="size-14 ml-1">{{initUser.account | account}}</p>
+          <p class="size-14">{{initUser.account | account}}</p>
           ・
           <span class="size-14">{{reply.createdAt | fromNow }}</span>
         </div>
-        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'userpage',params:{id: reply.userData.id}}">{{reply.userData.account | account}}</router-link></span></div>
-        <div class="comment_wrap_body--content mb-3">
-          <router-link :to="{name: 'tweet', params: { id: reply.TweetId }}">{{reply.comment}}</router-link>
-        </div>
+        <div class="replyAccount size-14">回覆 <span><router-link :to="{name:'user-page',params:{id: reply.userData.id}}">{{reply.userData.account | account}}</router-link></span></div>
+        <div class="comment_wrap_body--content">{{reply.comment}}</div>
       </div>
     </div>
     </template>
@@ -73,7 +71,7 @@ export default {
 
 .replyAccount {
   color: var(--secondary-color);
-
+  line-height: 22px;
   & a {
     color: var(--brand-color) !important;
   }
