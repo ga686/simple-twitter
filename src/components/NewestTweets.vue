@@ -5,9 +5,9 @@
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">
-            <router-link :to="{name:'userpage', params: {id: tweet.UserId}}">{{tweet.User.name}}</router-link>
+            <router-link :to="{name:'user-page', params: {id: tweet.UserId}}">{{tweet.User.name}}</router-link>
           </h5>
-          <p class="size-14">{{tweet.User.account | account}}</p>
+          <p class="size-14"><router-link :to="{name: 'user-page', params: {id: tweet.UserId}}">{{tweet.User.account | account}}</router-link></p>
           ・
           <span class="size-14">{{tweet.createdAt | fromNow }}</span>
         </div>
