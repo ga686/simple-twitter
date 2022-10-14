@@ -1,10 +1,17 @@
 .tweet_list {
   border-right: 1px solid #E6ECF0;
   border-left: 1px solid #E6ECF0;
-  overflow: scroll;
+  
+  .scroll{
+    overflow: scroll;
+    height: calc(100vh - 75px);
+  }
 
   &-title {
-      padding: 24px 25px;
+      height: 75px;
+      display: flex;
+      align-items: center;
+      padding-left: 23px;
       border-bottom: 1px solid #E6ECF0;
       i{
         line-height: 35px;

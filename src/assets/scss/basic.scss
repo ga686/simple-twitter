@@ -42,23 +42,22 @@
 }
 
 /* basic setting */
-$max:40;
-@for $i from 1 to $max {
-  .size-#{$i * 2} {
-    font-size: ($i * 2)+px;
-  }
+html{
+  overflow-y: scroll;
+  overscroll-behavior-y: none;
+  height: 100vh;
 }
 
 main{
   max-width: 1440px;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
 }
 
 .main-view{
   display: grid;
   grid-template-columns: 400px auto 400px;
-
+  grid-template-rows: max-content;
 }
 
 .admin-view{
@@ -72,8 +71,14 @@ main{
 // font
 html {
   font-size: 16px;
-  height: 100%;
   font-family: 'Noto Sans TC', sans-serif;
+}
+
+$max:40;
+@for $i from 1 to $max {
+  .size-#{$i * 2} {
+    font-size: ($i * 2)+px;
+  }
 }
 
 h1{

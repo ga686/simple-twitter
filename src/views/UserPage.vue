@@ -4,44 +4,46 @@
     <LoadingSpinner v-if="isLoading"/>
     <template v-else>
       <div class="user-page">
-      <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
-      <UserHeader :user="user"/>
-      <div class="user-profile">
-        <div class="user-banner">
-          <img :src="user.coverPhoto | emptyBanner" alt="">
-        </div>
-        <div class="avatar">
-          <img :src="user.avatar | emptyImage" alt="">
-        </div>
-        <div class="d-flex justify-content-end btn-wrap">
-          <div class="btn email" v-show="user.id !== currentUser.id"><a :href="`mailto:${user.email}`"></a></div>
-          <div class="btn notify" v-show="user.id !== currentUser.id"></div>
-          <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
-          <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed" @click.prevent.stop="addFollow(user.id)">追蹤</div>
-          <div class="btn" v-if="user.id !== currentUser.id && user.isFollowed" @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
-        </div>
-        <div class="user-info">
-          <h5>{{user.name}}</h5>
-          <div class="user-account number-wrap">{{user.account | account}}</div>
-          <div class="user-decription number-wrap">{{user.introduction}}</div>
-          <div class="user-follow d-flex number-wrap">
-            <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
-            <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>
+        <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
+        <UserHeader :user="user"/>
+        <div class="scroll">
+          <div class="user-profile">
+            <div class="user-banner">
+              <img :src="user.coverPhoto | emptyBanner" alt="">
+            </div>
+            <div class="avatar">
+              <img :src="user.avatar | emptyImage" alt="">
+            </div>
+            <div class="d-flex justify-content-end btn-wrap">
+              <div class="btn email" v-show="user.id !== currentUser.id"><a :href="`mailto:${user.email}`"></a></div>
+              <div class="btn notify" v-show="user.id !== currentUser.id"></div>
+              <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
+              <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed" @click.prevent.stop="addFollow(user.id)">追蹤</div>
+              <div class="btn" v-if="user.id !== currentUser.id && user.isFollowed" @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
+            </div>
+            <div class="user-info">
+              <h5>{{user.name}}</h5>
+              <div class="user-account number-wrap">{{user.account | account}}</div>
+              <div class="user-decription number-wrap">{{user.introduction}}</div>
+              <div class="user-follow d-flex number-wrap">
+                <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
+                <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>
+              </div>
+            </div>
+            <div class="togglePage d-flex">
+              <div @click.prevent.stop="togglePage('userTweets')" class="userTweets"
+                :class="{'active':currentContent === 'userTweets'}">推文</div>
+              <div @click.prevent.stop="togglePage('userReplies')" class="userTweets"
+                :class="{'active':currentContent === 'userReplies'}">回覆</div>
+              <div @click.prevent.stop="togglePage('userLikes')" class="userTweets"
+                :class="{'active':currentContent === 'userLikes'}">喜歡的內容</div>
+            </div>
           </div>
-        </div>
-        <div class="togglePage d-flex">
-          <div @click.prevent.stop="togglePage('userTweets')" class="userTweets"
-            :class="{'active':currentContent === 'userTweets'}">推文</div>
-          <div @click.prevent.stop="togglePage('userReplies')" class="userTweets"
-            :class="{'active':currentContent === 'userReplies'}">回覆</div>
-          <div @click.prevent.stop="togglePage('userLikes')" class="userTweets"
-            :class="{'active':currentContent === 'userLikes'}">喜歡的內容</div>
+          <UserTweets :initUser="user" v-if="currentContent === 'userTweets'" />
+          <UserReplies :initUser="user" v-if="currentContent === 'userReplies'" />
+          <UserLikes :initUser="user" v-if="currentContent === 'userLikes'" />
         </div>
       </div>
-      <UserTweets :initUser="user" v-if="currentContent === 'userTweets'" />
-      <UserReplies :initUser="user" v-if="currentContent === 'userReplies'" />
-      <UserLikes :initUser="user" v-if="currentContent === 'userLikes'" />
-    </div>
     </template>
     <SuggestUser />
   </main>

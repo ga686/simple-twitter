@@ -1,16 +1,18 @@
 <template>
-  <div class="ml-5 mt-3 suggest_user_list" v-if="!isProcessing">
-    <div class="suggest_user_list-title">
-      <h4>推薦跟隨</h4>
-    </div>
-    <div class="suggest_user_list-item d-flex" v-for="followship in followships" :key="followship.id">
-      <div class="avatar_image"><img :src="followship.avatar_image | emptyImage"/></div>
-      <div class="flex-fill suggest_user_list-name">
-        <h5><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.name}}</router-link></h5>
-        <div class="account_name size-14"><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.account | account}}</router-link></div>
+  <div class="suggest_user" v-if="!isProcessing">
+    <div class="ml-5 my-3 suggest_user_list">
+      <div class="suggest_user_list-title">
+        <h4>推薦跟隨</h4>
       </div>
-      <div class="btn my-auto" @click.prevent.stop="deleteFollow(followship.id)" v-if="followship.isFollowed">正在跟隨</div>
-      <div class="btn my-auto unfollow" @click.prevent.stop="addFollow(followship.id)" v-else>跟隨</div>
+      <div class="suggest_user_list-item d-flex" v-for="followship in followships" :key="followship.id">
+        <div class="avatar_image"><img :src="followship.avatar_image | emptyImage"/></div>
+        <div class="flex-fill suggest_user_list-name">
+          <h5><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.name}}</router-link></h5>
+          <div class="account_name size-14"><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.account | account}}</router-link></div>
+        </div>
+        <div class="btn my-auto" @click.prevent.stop="deleteFollow(followship.id)" v-if="followship.isFollowed">正在跟隨</div>
+        <div class="btn my-auto unfollow" @click.prevent.stop="addFollow(followship.id)" v-else>跟隨</div>
+      </div>
     </div>
   </div>
 </template>
@@ -102,30 +104,34 @@ export default{
 
 
 <style lang="scss" scoped>
-.suggest_user_list{
-  background: var(--dark-20);
-  border-radius: 16px;
-  width: 273px;
-  height: fit-content;
-  &-title{
-    padding: 24px;
-    border-bottom: 1px solid #E6ECF0;
-  }
-  &-item{
-    padding: 16px;
-    flex-wrap: wrap;
-  }
-  &-name{
-    overflow: hidden;
-    h5,.account_name{
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      a{color: var(--dark-100)}
+.suggest_user{
+  height: 100vh;
+  overflow: scroll;
+  &_list{
+    background: var(--dark-20);
+    border-radius: 16px;
+    width: 273px;
+    height: fit-content;
+    &-title{
+      padding: 24px;
+      border-bottom: 1px solid #E6ECF0;
     }
-    .account_name{
-      a {color: var(--dark-70);}
+    &-item{
+      padding: 16px;
+      flex-wrap: wrap;
+    }
+    &-name{
+      overflow: hidden;
+      h5,.account_name{
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        a{color: var(--dark-100)}
+      }
+      .account_name{
+        a {color: var(--dark-70);}
+      }
     }
   }
 }

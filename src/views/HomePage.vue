@@ -7,14 +7,16 @@
       <div class="tweet_list-title">
         <h4>首頁</h4>
       </div>
-      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
-        <div class="d-flex">
-          <div class="avatar_image"><img :src="currentUser.avatar" /></div>
-          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
-        </div>
-        <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
-      </form>
-      <NewestTweets :tweets="tweets" @refresh-tweets="fetchTweets"/>
+      <div class="scroll">
+        <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
+          <div class="d-flex">
+            <div class="avatar_image"><img :src="currentUser.avatar" /></div>
+            <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
+          </div>
+          <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
+        </form>
+        <NewestTweets :tweets="tweets" @refresh-tweets="fetchTweets"/>
+      </div>
     </div>
     </template>
     <SuggestUser />
