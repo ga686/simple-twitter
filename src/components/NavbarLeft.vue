@@ -8,7 +8,7 @@
         </router-link>
       </div>
       <div class="navbar_item">
-        <router-link :to="{name:'userpage',params:{id:currentUser.id}}" class="nav_link">
+        <router-link :to="{name:'user-page',params:{id:currentUser.id}}" class="nav_link">
           <div class="nav_link-icon user"></div>個人資料
         </router-link>
       </div>
