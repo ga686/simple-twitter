@@ -139,6 +139,13 @@ export default {
       this.accountDuplicated = false
     },
     name() {
+      if(this.name.length >= 50){
+        Toast.fire({
+          icon: 'warning',
+          title: '字數超出上限！'
+        })
+        this.overlimit = true
+      }
       this.overlimit = false
     },
     email() {
