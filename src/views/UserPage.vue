@@ -117,7 +117,7 @@ export default {
       const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets, isFollowed} = data
       this.user = {
         ...this.user,
-        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength:Tweets.length,isFollowed
+        id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength: Tweets ? Tweets.length : 0, isFollowed
       }
       this.isLoading = false
     },

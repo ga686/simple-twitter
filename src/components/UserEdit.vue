@@ -78,7 +78,7 @@ export default {
       this.description = this.currentUser.introduction
       this.user = {   
         ...this.user,
-        description: this.description
+        description: this.description ? this.description : ''
       }
     },
     closeModal() {
