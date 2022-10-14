@@ -66,6 +66,7 @@ export default{
   methods: {
     closeModal () {
       this.$emit('close-modal',!this.isShow)
+      this.newContent = ""
     },
     async handleSubmit (tweetId) {
       try{
