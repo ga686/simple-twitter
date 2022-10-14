@@ -1,7 +1,10 @@
 import { apiHelper } from '../utils/helpers'
 
 export default {
-  get(userId){
+  getCurrentUser() {
+    return apiHelper.get(`/api/users`)
+  },
+  getUser(userId){
     return apiHelper.get(`/api/users/${userId}`)
   },
   getTweets(userId) {
