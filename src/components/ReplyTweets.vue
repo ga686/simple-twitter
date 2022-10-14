@@ -6,12 +6,12 @@
           <div class="avatar_image"><img :src="reply.User.avatar | emptyImage" /></div>
           <div>
             <div class="d-flex comment_wrap_body--title align-items-center">
-              <h5 class="size-16">{{ reply.User.name }}</h5>
-              <p class="size-14 ml-1">{{ reply.User.account | account }}</p>
+              <h5 class="size-16"><router-link :to="{name: 'user-page', params: {id: reply.UserId}}">{{ reply.User.name }}</router-link></h5>
+              <p class="size-14 ml-1"><router-link :to="{name: 'user-page', params: {id: reply.UserId}}">{{ reply.User.account | account }}</router-link></p>
               ・
               <span class="size-14">{{ reply.createdAt | fromNow }}</span>
             </div>
-            <div class="d-flex size-14 reply_to">回覆給<router-link :to="{name: 'userpage' ,params: {id: replyTo.User.id }}" class="reply_to-account ml-1">{{replyTo.User.account | account }}</router-link></div>
+            <div class="d-flex size-14 reply_to">回覆給<router-link :to="{name: 'user-page' ,params: {id: replyTo.User.id }}" class="reply_to-account ml-1">{{replyTo.User.account | account }}</router-link></div>
             <div class="comment_wrap_body--content mb-3 mt-1">{{reply.comment}}</div>
           </div>
         </div>
