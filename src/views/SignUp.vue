@@ -11,9 +11,9 @@
           autocomplete="account" required>
       </div>
       <div class="form-label-group" :class="{'overLimit':overlimit}">
-        <label for="name">名稱</label>
+        <label for="name" >名稱</label>
         <input id="name" name="name" v-model="name" type="name" placeholder="請輸入使用者名稱" autocomplete="name"
-          maxlength="50" required>
+          maxlength="51" @blur="checkName(name)" required>
       </div>
       <div class="form-label-group" :class="{'emailDuplicated':emailDuplicated}">
         <label for="email">Email</label>
@@ -55,10 +55,21 @@ export default {
       accountDuplicated: false,
       emailDuplicated: false,
       errorPassword: false,
-      overlimit: false
+      overlimit: false,
     }
   },
   methods: {
+    checkName(name){
+      if(name.length >= 50){
+        Toast.fire({
+          icon: 'warning',
+          title: '字數超過上限50個字'
+        })
+        this.overlimit = true
+        this.disable = true
+        return 
+      }
+    },
     async handleSubmit() {
       try {
         if (!this.account || !this.email || !this.name || !this.password || !this.passwordCheck) {
@@ -103,6 +114,13 @@ export default {
             title: '帳號已被註冊'
           })
           this.accountDuplicated = true
+          return
+        }
+        if (message === "Error: Email already exists!") {
+          Toast.fire({
+            icon: 'error',
+            title: '信箱已被註冊'
+          })
           this.emailDuplicated = true
           return
         }
