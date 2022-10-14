@@ -5,7 +5,7 @@
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">{{following.name}}</h5>
-          <button :class="['btn',{unfollow: !isFollowed}]" @click.prevent.stop="deleteFollowing(following.id)">{{
+          <button class="btn" :class="{unfollow: !isFollowed}" @click.prevent.stop="deleteFollowing(following.id)">{{
           isFollowed ? '正在跟隨' :
           '跟隨'}}</button>
         </div>

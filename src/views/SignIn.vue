@@ -5,12 +5,12 @@
       <h3>登入 Alphitter</h3>
     </div>
     <form class="" @submit.prevent.stop="handleSubmit">
-      <div :class="['form-label-group',{'errorAccount': errorAccount}]">
+      <div class="form-label-group" :class="{'errorAccount': errorAccount}">
         <label for="account">帳號</label>
         <input id="account" name="account" autofocus v-model="account" type="name" placeholder="請輸入帳號"
           autocomplete="account">
       </div>
-      <div :class="['form-label-group',{'errorPassword': errorPassword}]">
+      <div class="form-label-group" :class="{'errorPassword': errorPassword}">
         <label for="password">密碼</label>
         <input id="password" name="password" v-model="password" type="password" placeholder="請輸入密碼"
           autocomplete="password">
@@ -20,7 +20,7 @@
     <div class="other-link d-flex justify-content-end">
       <router-link to='/signUp'>
         <div class="signup-link"><u>註冊</u></div>
-      </router-link>&#x2022;
+      </router-link>
       <router-link to="/admin/signin">
         <div class="admin-link"><u>後台登入</u></div>
       </router-link>
@@ -65,7 +65,6 @@ export default {
         }
 
         localStorage.setItem('token', data.token)
-        localStorage.setItem('currentId', data.user.id)
 
         this.$store.commit('setCurrentUser', data.user)
 

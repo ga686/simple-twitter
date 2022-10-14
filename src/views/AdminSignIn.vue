@@ -5,12 +5,12 @@
       <h3>後台登入</h3>
     </div>
     <form class="" @submit.prevent.stop="handleSubmit">
-      <div :class="['form-label-group',{'errorAccount': errorAccount}]">
+      <div class="form-label-group" :class="{'errorAccount': errorAccount}">
         <label for="account">帳號</label>
         <input id="account" name="account" autofocus v-model="account" type="name" placeholder="請輸入帳號"
           autocomplete="account">
       </div>
-      <div :class="['form-label-group',{'errorPassword': errorPassword}]">
+      <div class="form-label-group" :class="{'errorPassword': errorPassword}">
         <label for="password">密碼</label>
         <input id="password" name="password" v-model="password" type="password" placeholder="請輸入密碼"
           autocomplete="password">

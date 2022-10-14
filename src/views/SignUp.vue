@@ -5,27 +5,27 @@
       <h3>建立你的帳號</h3>
     </div>
     <form class="" @submit.prevent.stop="handleSubmit">
-      <div :class="['form-label-group',{'accountDuplicated':accountDuplicated}]">
+      <div class="form-label-group" :class="{'accountDuplicated':accountDuplicated}">
         <label for="account">帳號</label>
         <input id="account" name="account" autofocus v-model="account" type="name" placeholder="請輸入帳號"
           autocomplete="account" required>
       </div>
-      <div :class="['form-label-group',{'overLimit':overlimit}]">
+      <div class="form-label-group" :class="{'overLimit':overlimit}">
         <label for="name">名稱</label>
         <input id="name" name="name" v-model="name" type="name" placeholder="請輸入使用者名稱" autocomplete="name"
           maxlength="50" required>
       </div>
-      <div :class="['form-label-group',{'emailDuplicated':emailDuplicated}]">
+      <div class="form-label-group" :class="{'emailDuplicated':emailDuplicated}">
         <label for="email">Email</label>
         <input id="email" name="email" v-model="email" type="email" placeholder="請輸入Email" autocomplete="email"
           required>
       </div>
-      <div :class="['form-label-group']">
+      <div class="form-label-group">
         <label for="password">密碼</label>
         <input id="password" name="password" v-model="password" type="password" placeholder="請輸入密碼"
           autocomplete="password" required>
       </div>
-      <div :class="['form-label-group',{'errorPassword': errorPassword}]">
+      <div class="form-label-group" :class="{'errorPassword': errorPassword}">
         <label for="passwordCheck">密碼確認</label>
         <input id="passwordCheck" name="passwordCheck" v-model="passwordCheck" type="password" placeholder="請再次輸入密碼"
           autocomplete="passwordCheck" required>
