@@ -7,9 +7,9 @@
         <div class="comment_wrap_body">
           <div class="d-flex comment_wrap_body--title">
             <h5 class="size-16">
-              <router-link :to="{name:'userpage', params:{id: tweet.userData.id}}">{{tweet.userData.name}}</router-link>
+              <router-link :to="{name:'user-page', params:{id: tweet.userData.id}}">{{tweet.userData.name}}</router-link>
             </h5>
-            <p class="size-14">{{tweet.userData.account | account}}</p>
+            <p class="size-14"><router-link :to="{name:'user-page', params:{id: tweet.userData.id}}">{{tweet.userData.account | account}}</router-link></p>
             ・
             <span class="size-14">{{tweet.createdAt | fromNow }}</span>
           </div>
@@ -18,18 +18,18 @@
           </div>
           <div class="comment_wrap_footer d-flex">
             <div class="comment_wrap_footer--comments-num d-flex mr-10">
-              <div class="icon comment my-auto" @click.stop.prevent="openModal"></div>
+              <div class="icon comment my-auto" @click.prevent.stop="openModal(tweet)"></div>
               <span class="number-wrap">{{tweet.repliedCount}}</span>
             </div>
             <div class="comment_wrap_footer--liked-num d-flex">
-              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}"
-                @click.prevent.stop="deleteLike(tweet)">
+              <div class="icon liked my-auto" :class="{isliked: tweet.isLiked}" @click.prevent.stop="deleteLike(tweet)">
               </div>
               <span class="number-wrap">{{tweet.likedCount}}</span>
             </div>
           </div>
         </div>
       </div>
+      <TweetReply :is-show="isShow" :tweet="targetTweet" @close-modal="closeModal" @refresh-replies="refreshCommentLength"/>
     </template>
   </div>
 </template>
@@ -38,7 +38,8 @@
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import LoadingSpinner from './LoadingSpinner.vue'
+import LoadingSpinner from './LoadingSpinner'
+import TweetReply from '../components/TweetReply'
 import usersAPI from '../apis/users'
 import tweetsAPI from '../apis/tweets'
 import { Toast } from '../utils/helpers'
@@ -49,7 +50,8 @@ export default {
       isShow: false,
       favoriteTweets: [],
       isLoading: false,
-      LikesLength: 0
+      LikesLength: 0,
+      targetTweet: {}
     };
   },
   props: {
@@ -59,9 +61,9 @@ export default {
     }
   },
   mixins: [fromNowFilter, emptyImageFilter, accountFilter],
-  components: { LoadingSpinner },
-  created() {
-    this.fetchLikes(this.initUser.id)
+  components: { 
+    LoadingSpinner,
+    TweetReply
   },
   methods: {
     async fetchLikes(userId) {
@@ -87,6 +89,7 @@ export default {
           icon: 'success',
           title: '收回愛心'
         })
+        this.LikesLength = this.LikesLength - 1
         this.favoriteTweets = this.favoriteTweets.filter(tweet=>tweet.TweetId !== tweetId)
       } catch (err) {
         console.log(err)
@@ -96,17 +99,34 @@ export default {
         })
       }
     },
-    openModal() {
-      return this.isShow = true;
+    openModal(tweet) {
+      console.log('open')
+      const {
+        createdAt,
+        description,
+        TweetId,
+        userData
+      } = tweet
+
+      this.targetTweet.createdAt = createdAt
+      this.targetTweet.description =  description
+      this.targetTweet.id = TweetId
+      this.targetTweet.User = userData
+      return this.isShow = true
     },
     closeModal(show) {
       return this.isShow = show;
+    },
+    refreshCommentLength (tweetId){
+      this.favoriteTweets.filter((tweet) => {
+        if(tweet.TweetId === tweetId){
+          return tweet.repliedCount = tweet.repliedCount + 1
+        }
+      })
     }
   },
-  watch:{
-    LikesLength(){
-      this.fetchLikes(this.initUser.id)
-    }
+  created() {
+    this.fetchLikes(this.initUser.id)
   }
 }
 </script>
