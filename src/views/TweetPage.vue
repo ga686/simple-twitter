@@ -135,7 +135,7 @@ export default{
       }
     },
     getLikedStatus (data) {
-      const result = data.Likes.filter(obj => obj.UserId === JSON.parse(localStorage.getItem('currentId')))       
+      const result = data.Likes.filter(obj => obj.UserId === JSON.parse(this.currentUser.id))       
       if(result.length > 0) {
         data = {
           ...data,
