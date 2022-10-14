@@ -72,7 +72,7 @@ export default {
         const {id, name, Tweets, Followers:followers, Followings:followings} = data
         this.user = {
           ...this.user,
-         id, name, tweetsLength: Tweets.length, followers ,followings
+        id, name, tweetsLength: Tweets.length, followers ,followings
         }
       } catch (err) {
         console.log(err)

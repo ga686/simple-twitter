@@ -41,11 +41,15 @@ export default {
     ...mapState(['currentUser', 'isAuthenticated'])
   },
   created() {
-    this.fetchData(this.initUserId)
+    if(this.initUserId !== -1){
+      this.fetchData(this.initUserId)
+    }
   },
   watch: {
     initFollowers() {
+      if(this.initUserId !== -1){
       this.fetchData(this.initUserId)
+    }
     }
   },
   methods: {
