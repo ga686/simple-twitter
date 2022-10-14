@@ -102,20 +102,6 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
-  watch: {
-    account: function () {
-      this.getCurrentInfo()
-    },
-    email: function () {
-      this.getCurrentInfo()
-    },
-    name: function () {
-      this.getCurrentInfo()
-    },
-    password: function () {
-      this.getCurrentInfo()
-    }
-  },
   created () {
     this.getCurrentInfo()
   }
