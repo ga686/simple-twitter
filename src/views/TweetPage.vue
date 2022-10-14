@@ -12,8 +12,8 @@
             <div class="d-flex">
               <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage" /></div>
               <div class="comment_wrap_body--title">
-                <h5 class="size-16">{{tweet.User.name}}</h5>
-                <p class="size-14">{{tweet.User.account | account}}</p>
+                <h5 class="size-16"><router-link :to="{name: 'user-page', params: {id: tweet.UserId}}">{{tweet.User.name}}</router-link></h5>
+                <p class="size-14"><router-link :to="{name: 'user-page', params: {id: tweet.UserId}}">{{tweet.User.account | account}}</router-link></p>
               </div>
             </div>
             <div class="comment_wrap_body--content size-24 mb-2">{{tweet.description}}</div>
@@ -82,6 +82,7 @@ export default{
         }
         if(this.tweet.id === tweetId){
           this.tweet.isFav = true
+          this.tweet.likedCount = this.tweet.likedCount + 1
         }
       }catch(err){
         console.error(err)
@@ -92,7 +93,6 @@ export default{
       }
     },
     async deleteLike (tweetId) {
-      console.log('delete')
       try{
         const data = tweetsAPI.deleteLike({ tweetId })
         if(data.status === "error"){
@@ -100,6 +100,7 @@ export default{
         }
         if(this.tweet.id === tweetId){
           this.tweet.isFav = false
+          this.tweet.likedCount = this.tweet.likedCount - 1
         }
       }catch(err){
         console.error(err)
