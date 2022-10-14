@@ -27,7 +27,7 @@ import usersAPI from '../apis/users'
 import UserHeader from '@/components/UserHeader.vue';
 
 export default {
-  name: 'userPage',
+  name: 'userFollow',
   components: {
     NavbarLeft,
     SuggestUser,
