@@ -3,7 +3,7 @@
     <div class="comment_wrap detail tweet-list d-flex" >
       <div class="comment_wrap_body" v-for="reply in replies" :key="reply.id">
         <div class="d-flex">
-          <div class="avatar_image"><img :src="reply.User.avatar | emptyImage" /></div>
+          <div class="avatar_image"><router-link :to="{name: 'user-page', params: {id: reply.UserId}}"><img :src="reply.User.avatar | emptyImage" /></router-link></div>
           <div>
             <div class="d-flex comment_wrap_body--title align-items-center">
               <h5 class="size-16"><router-link :to="{name: 'user-page', params: {id: reply.UserId}}">{{ reply.User.name }}</router-link></h5>

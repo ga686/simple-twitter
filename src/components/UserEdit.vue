@@ -28,16 +28,16 @@
           <input class="avatar-edit" type="file" id="avatar" accept="image/*" name="avatar" @change="handleFileChange">
           <img :src="user.avatar | emptyImage" alt="" />
         </div>
-        <div class="user-name">
+        <div class="user-name" :class="{error: user.name.length > 50}">
           <label for="">名稱</label>
-          <input type="text" id="name" name="name" v-model="user.name" maxlength="50" />
+          <input type="text" id="name" name="name" v-model="user.name" maxlength="50"/>
         </div>
-        <p class="input-length">{{user.name.length}}/50</p>
-        <div class="user-description">
+        <p class="input-length" :class="{error: user.name.length > 50}">{{user.name.length}}/50</p>
+        <div class="user-description"  :class="{error: user.introduction.length > 160}">
           <label for="introduction">自我介紹</label>
-          <textarea id="introduction" name="introduction" cols="30" rows="10" v-model="user.description" maxlength="170"></textarea>
+          <textarea id="introduction" name="introduction" cols="30" rows="10" v-model="user.introduction" maxlength="160" required></textarea>
         </div>
-        <p class="input-length">{{user.description.length}}/170</p>
+        <p class="input-length" :class="{error: user.introduction.length > 160}">{{user.introduction.length || 0}}/160</p>
       </form>
     </div>
   </div>
@@ -62,7 +62,7 @@ export default {
   data() {
     return {
       user: {},
-      description: '',
+      introduction: '',
       isProcessing: false
     }
   },
@@ -78,11 +78,13 @@ export default {
       this.description = this.currentUser.introduction
       this.user = {   
         ...this.user,
-        description: this.description ? this.description : ''
+        introduction: this.introduction ? this.introduction : ''
       }
     },
     closeModal() {
       this.$emit('close-modal', !this.isShow)
+      this.user.name = this.initUser.name
+      this.user.introduction = this.initUser.introduction || 'type something here...'
     },
     handleFileChange(e) {
       const { files } = e.target
@@ -100,6 +102,14 @@ export default {
     },
     async handleSubmit(e) {
       try {
+        if(this.user.name.length > 50 || this.user.introduction.length > 160){
+          Toast.fire({
+            icon: 'warning',
+            title: '字數超過限制'
+          })
+          return
+        }
+
         this.isProcessing = true
         const form = e.target
         const formData = new FormData(form)
@@ -115,7 +125,7 @@ export default {
         console.error(err)
         Toast.fire({
           icon: 'warning',
-          title: '無法變更使用者資訊，請稍後再試'
+          title: '無法儲存變更，請稍後再試'
         })
       }
     }

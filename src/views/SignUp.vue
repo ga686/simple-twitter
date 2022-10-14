@@ -13,7 +13,7 @@
       <div class="form-label-group" :class="{'overLimit':overlimit}">
         <label for="name" >名稱</label>
         <input id="name" name="name" v-model="name" type="name" placeholder="請輸入使用者名稱" autocomplete="name"
-          maxlength="51" @blur="checkName(name)" required>
+          maxlength="50" @blur="checkName(name)" required>
       </div>
       <div class="form-label-group" :class="{'emailDuplicated':emailDuplicated}">
         <label for="email">Email</label>

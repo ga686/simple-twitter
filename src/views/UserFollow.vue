@@ -9,8 +9,10 @@
         <div class="user-followers" :class="{active: currentView === 'followings'}"
         @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
-      <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
-      <UserFollowings :initFollowings="user.followings" v-show="currentView === 'followings'" />
+      <div class="scroll">
+        <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
+        <UserFollowings :init-followings="user.followings" v-show="currentView === 'followings'" />
+      </div>
     </div>
     <SuggestUser />
   </main>
@@ -54,6 +56,7 @@ export default {
     const userId = this.$route.params.user
     this.currentView = id
     this.fetchFollow(userId)
+    this.fetchFollowing(userId)
   },
   computed: {
     ...mapState(['currentUser'])
@@ -63,17 +66,29 @@ export default {
     const userId = to.params.user
     this.currentView = id
     this.fetchFollow(userId)
+    this.fetchFollowing(userId)
     next()
   },
   methods: {
     async fetchFollow(userId) {
       try {
         const { data } = await usersAPI.getUser(userId)
-        const {id, name, Tweets, Followers:followers, Followings:followings} = data
+        const {id, name, Tweets, Followers:followers, isFollowed} = data
         this.user = {
           ...this.user,
-        id, name, tweetsLength: Tweets.length, followers ,followings
+        id, name, tweetsLength: Tweets.length, followers , isFollowed
         }
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async fetchFollowing(userId) {
+      try {
+        const { data } = await usersAPI.getFollowings(userId)
+        if (data.status === "error") {
+          throw new Error(data.message)
+        }
+        this.user.followings = data
       } catch (err) {
         console.log(err)
       }

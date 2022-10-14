@@ -10,9 +10,10 @@
           <label for="account">帳號</label>
           <input id="account" name="account" autofocus v-model="account" >
         </div>
-        <div class="form-label-group">
+        <div class="form-label-group" :class="{error: this.name.length > 50}">
           <label for="name">名稱</label>
-          <input id="name" name="name" autofocus v-model="name" type="text">
+          <input id="name" name="name" autofocus v-model="name" type="text" maxlength="50">
+          <span v-if="this.name.length > 50">超過50字</span>
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
@@ -91,7 +92,13 @@ export default {
         this.$router.push({name: "home-page"})
       }catch(err){
         this.isProcessing = false
-        console.error(err)
+        if(err.response.data.message === "Error: Account or email has already exist."){
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號或信箱已註冊'
+          })
+          return
+        }
         Toast.fire({
           icon: 'warning',
           title: '無法更新資料，請稍後再試'

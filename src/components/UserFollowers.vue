@@ -3,13 +3,13 @@
     <div v-for="follower in followers" :key="follower.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="follower.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
-        <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{follower.name}}</h5>
+        <div class="d-flex comment_wrap_body--title align-items-center">
+          <h5 class="size-16" style="line-height: 50px;">{{follower.name}}</h5>
           <button class="btn" :class="{'unfollow': !follower.isFollowed}" @click.prevent.stop="toggleFollow(follower)">{{
           follower.isFollowed ? '正在跟隨' :
           '跟隨'}}</button>
         </div>
-        <div class="comment_wrap_body--content mb-3">{{follower.introduction}}</div>
+        <div class="comment_wrap_body--content mb-3" v-if="follower.introduction">{{follower.introduction}}</div>
       </div>
     </div>
   </div>

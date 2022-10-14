@@ -4,7 +4,7 @@
 
   .scroll{
     overflow: scroll;
-    height: calc(100vh - 75px);
+    height: calc(100vh - 127px);
   }
 
   & .user-header {
@@ -103,10 +103,12 @@
         margin-bottom: 6px;
       }
 
-      & .user-decription {
+      & .user-description {
         margin-bottom: 8px;
         font-weight: 400;
         font-family: "Noto Sans TC";
+        word-break: break-all;
+        font-size: 14px;
       }
 
       .user-follow {

@@ -24,7 +24,7 @@
             <div class="user-info">
               <h5>{{user.name}}</h5>
               <div class="user-account number-wrap">{{user.account | account}}</div>
-              <div class="user-decription number-wrap">{{user.introduction}}</div>
+              <div class="user-description">{{user.introduction}}</div>
               <div class="user-follow d-flex number-wrap">
                 <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
                 <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>

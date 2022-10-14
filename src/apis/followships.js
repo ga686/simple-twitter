@@ -9,5 +9,5 @@ export default {
   },
   deleteFollow ({ userId }) {
     return apiHelper.delete(`/api/followships/${ userId }`)
-  },
+  }
 }

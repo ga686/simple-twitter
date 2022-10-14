@@ -10,7 +10,7 @@
       <div class="scroll">
         <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
           <div class="d-flex">
-            <div class="avatar_image"><img :src="currentUser.avatar" /></div>
+            <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
             <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
           </div>
           <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
@@ -28,6 +28,7 @@ import SuggestUser from '../components/SuggestUser'
 import NewestTweets from '../components/NewestTweets'
 import tweetsAPI from '../apis/tweets'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
 import { Toast } from '../utils/helpers'
 
@@ -45,6 +46,7 @@ export default {
     NewestTweets,
     LoadingSpinner
   },
+  mixins: [emptyImageFilter],
   computed: {
     ...mapState(['currentUser'])
   },

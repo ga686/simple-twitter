@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="tweet.User.avatar | emptyImage " /></div>
+      <div class="avatar_image"><router-link :to="{name:'user-page', params: {id: tweet.UserId}}"><img :src="tweet.User.avatar | emptyImage " /></router-link></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title">
           <h5 class="size-16">

@@ -72,6 +72,7 @@ export default {
 .replyAccount {
   color: var(--secondary-color);
   line-height: 22px;
+  margin-top:10px;
   & a {
     color: var(--brand-color) !important;
   }

@@ -142,6 +142,9 @@
     margin: 80px 16px 4px 16px;
     background-color: var(--input-bg);
     border-bottom: 2px solid var(--border-color);
+    &.error{
+      border-bottom: 2px solid var(--error-color) !important;
+    }
     label {
       font-size: 14px;
       color: var(--dark-80);
@@ -159,6 +162,9 @@
     text-align: end;
     font-size: 12px;
     color: var(--dark-80);
+    &.error{
+      color: var(--error-color) !important;
+    }
   }
   & .user-description {
     display: flex;
@@ -168,6 +174,11 @@
     margin: 8px 16px 4px 16px;
     background-color: var(--input-bg);
     border-bottom: 2px solid var(--border-color);
+    word-break: break-all;
+
+    &.error{
+      border-bottom: 2px solid var(--error-color) !important;
+    }
 
     label {
       font-size: 14px;

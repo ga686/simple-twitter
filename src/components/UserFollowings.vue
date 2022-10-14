@@ -1,15 +1,14 @@
 <template>
   <div>
-    <div v-for="following in followings" :key="following.id" class="comment_wrap d-flex">
+    <div v-for="following in initFollowings" :key="following.followingId" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="following.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
-        <div class="d-flex comment_wrap_body--title">
-          <h5 class="size-16">{{following.name}}</h5>
-          <button class="btn" :class="{unfollow: !isFollowed}" @click.prevent.stop="deleteFollowing(following.id)">{{
-          isFollowed ? '正在跟隨' :
-          '跟隨'}}</button>
+        <div class="d-flex comment_wrap_body--title align-items-center">
+          <h5 class="size-16" style="line-height: 50px;">{{following.name}}</h5>
+          <button class="btn unfollow" v-if="!following.isFollowed"  @click.prevent.stop="addFollowing(following.followingId)">跟隨</button>
+          <button class="btn" v-else @click.prevent.stop="deleteFollowing(following.followingId)">正在跟隨</button>
         </div>
-        <div class="comment_wrap_body--content mb-3">{{following.introduction}}</div>
+        <div class="comment_wrap_body--content mb-3" v-if="following.introduction">{{following.introduction}}</div>
       </div>
     </div>
   </div>
@@ -37,12 +36,7 @@ export default {
     this.fetchData()
   },
   computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
-  },
-  watch: {
-    initFollowings() {
-      this.fetchData()
-    }
+    ...mapState(['currentUser'])
   },
   methods: {
     fetchData() {
@@ -51,14 +45,15 @@ export default {
     async deleteFollowing(userId) {
       try {
         const { data } = await followshipsAPI.deleteFollow({userId})
-        if(data.status !== 'success'){
+        if(data.status === 'error'){
           throw new Error(data.message)
         }
-        Toast.fire({
-          icon: 'success',
-          title: '成功取消追蹤'
+        this.followings.filter((following) => {
+          if(userId === following.followingId){
+            return following.isFollowed = false
+          }
         })
-        this.followings = this.followings.filter(user=>user.id !== userId)
+     
       } catch (err) {
         console.log(err)
         Toast.fire({
@@ -68,6 +63,31 @@ export default {
       }
 
     },
+    async addFollowing(userId) {
+      try{  
+        console.log(userId)
+        const { data } = await followshipsAPI.addFollow(userId)
+        if (data === 'error') {
+          throw new Error(data.message)
+        }
+        this.followings.filter((following) => {
+          if(userId === following.followingId){
+            following.isFollowed = true
+          }
+        })
+      }catch(err){
+        console.error(err)
+        Toast.fire({
+          icon: 'warning',
+          title: '無法加入追蹤，請稍後再試'
+        })
+      }
+    },
+  },
+  watch: {
+    initFollowings: function (){
+      this.fetchData()
+    }
   }
 }
 </script>
