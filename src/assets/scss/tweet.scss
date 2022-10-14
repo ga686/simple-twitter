@@ -1,5 +1,5 @@
 .comment_wrap{
-  padding: 24px 16px;
+  padding: 15px 24px;
   & + .comment_wrap{
     border-top: 1px solid #E6ECF0;
   }
@@ -8,13 +8,22 @@
       color: var(--secondary-color);
       line-height: 16px;
       margin-bottom: 10px;
-      a{
+      h5{
         color: var(--dark-100);
-        margin-right: 8px;
+        margin-right: 8px; 
+        a{color: var(--dark-100);}
+      }
+      p{
+        a{color: var(--secondary-color);}
       }
     }
     &--content{
-      a{color: var(--dark-100);}
+      color: var(--dark-100);
+      line-height: 26px;
+      font-size: 15px;
+      a{
+        color: var(--dark-100);
+      }
     }
     &--time{
       color: var(--secondary-color);
@@ -83,13 +92,13 @@
 // TweetReply
 .reply-span{
   width: 2px;
-  height: 80%;
+  height: calc(100% - 50px);
   background-color: #CCD6DD;
   display: block;
   position: absolute;
   left: calc(50% - 4px);
   transform: translateX(-50%);
-  top: calc(10% + 50px);
+  top: 65px;
 }
 
 .reply_to{
