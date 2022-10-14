@@ -111,7 +111,7 @@ export default {
   methods: {
     async fetchUser(userId) {
       this.isLoading = true
-      const {data} = await usersAPI.get(userId)
+      const {data} = await usersAPI.getUser(userId)
       const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets, isFollowed} = data
       this.user = {
         ...this.user,

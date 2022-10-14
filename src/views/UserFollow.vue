@@ -4,9 +4,9 @@
     <div class="user-page">
       <UserHeader :user='user' />
       <div class="follow-title">
-        <div :class="['user-followers', {active: currentView === 'followers'}]"
+        <div class="user-followers" :class="{active: currentView === 'followers'}"
         @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})" >追蹤者</div>
-        <div :class="['user-followings',{active: currentView === 'followings'}]"
+        <div class="user-followers" :class="{active: currentView === 'followings'}"
         @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
       <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
@@ -68,7 +68,7 @@ export default {
   methods: {
     async fetchFollow(userId) {
       try {
-        const { data } = await usersAPI.get(userId)
+        const { data } = await usersAPI.getUser(userId)
         const {id, name, Tweets, Followers:followers, Followings:followings} = data
         this.user = {
           ...this.user,
