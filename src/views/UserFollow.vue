@@ -9,7 +9,7 @@
         <div class="user-followers" :class="{active: currentView === 'followings'}"
         @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
-      <div class="scroll">
+      <div class="scroll follow">
         <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
         <UserFollowings :init-followings="user.followings" v-show="currentView === 'followings'" />
       </div>
