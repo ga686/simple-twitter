@@ -5,7 +5,7 @@
         <h4>推薦跟隨</h4>
       </div>
       <div class="suggest_user_list-item d-flex" v-for="followship in followships" :key="followship.id">
-        <div class="avatar_image"><img :src="followship.avatar_image | emptyImage"/></div>
+        <div class="avatar_image"><img :src="followship.avatar | emptyImage"/></div>
         <div class="flex-fill suggest_user_list-name">
           <h5><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.name}}</router-link></h5>
           <div class="account_name size-14"><router-link :to="{name: 'user-page', params: {id: followship.id}}">{{followship.account | account}}</router-link></div>
@@ -62,7 +62,7 @@ export default{
             followship.isFollowed = true
           }
         })
-
+        this.$emit('refresh-follow',userId)
       }catch(err){
         console.error(err)
         Toast.fire({
@@ -84,7 +84,7 @@ export default{
             followship.isFollowed = false
           }
         })
-
+        this.$emit('refresh-follow',userId)
       }catch(err){
         console.error(err)
         Toast.fire({
