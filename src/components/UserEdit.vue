@@ -30,7 +30,7 @@
         </div>
         <div class="user-name" :class="{error: user.name.length > 50}">
           <label for="">名稱</label>
-          <input type="text" id="name" name="name" v-model="user.name" maxlength="50"/>
+          <input type="text" id="name" name="name" v-model="user.name" maxlength="50" required/>
         </div>
         <p class="input-length" :class="{error: user.name.length > 50}">{{user.name.length}}/50</p>
         <div class="user-description"  :class="{error: user.introduction.length > 160}">
@@ -104,6 +104,14 @@ export default {
     },
     async handleSubmit(e) {
       try {
+        if(this.user.name.length === 0 || this.user.introduction.length === 0){
+          Toast.fire({
+            icon: 'warning',
+            title: '內容不可空白'
+          })
+          return
+        }
+
         if(this.user.name.length > 50 || this.user.introduction.length > 160){
           Toast.fire({
             icon: 'warning',
@@ -134,8 +142,6 @@ export default {
     defaultBanner(e) {
       if(e.target.classList.value === "icon-edit-done"){
         this.user.coverPhoto = null
-        const target = document.getElementById('coverPhoto')
-        target.value = ""
       }
     }
   },

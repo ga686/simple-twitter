@@ -13,7 +13,6 @@
         <div class="form-label-group" :class="{overLimit: name.length > 50}">
           <label for="name">名稱</label>
           <input id="name" name="name" autofocus v-model="name" type="text" maxlength="50">
-          <span class="warning" v-if="name.length > 50">超過50字</span>
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
