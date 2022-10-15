@@ -1,6 +1,7 @@
 <h1 id="top">Simple-twitter</h1>
 
 ![npm version](https://img.shields.io/badge/npm-v8.11.0-blue?style=flat "npm")
+![node version](https://img.shields.io/badge/node-v16.17.1-impotent?style=flat "node")
 ![vue version](https://img.shields.io/badge/vue-v2.6.14-brightgreen?style=flat "vue")
 
 ## 基於 vue 開發的社群網站，畫面參考twitter
@@ -22,6 +23,8 @@ Vue2 / vuex / vue-router / axios / scss
 ```
 
 # Get Started
+
+### node版本為v16.17.1 
 
 #### 1. 打開終端機
 ```
