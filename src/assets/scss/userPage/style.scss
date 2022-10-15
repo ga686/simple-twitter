@@ -4,7 +4,10 @@
 
   .scroll{
     overflow: scroll;
-    height: calc(100vh - 127px);
+    height: calc(100vh - 75px);
+    &.follow{
+      height: calc(100vh - 127px);
+    }
   }
 
   & .user-header {
