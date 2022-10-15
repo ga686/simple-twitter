@@ -4,26 +4,26 @@
       <div class="navbar_logo"><router-link to="/homepage"><img src="../assets/photos/acLogo.png" /></router-link></div>
       <div class="navbar_item">
         <router-link to="/homepage" class="nav_link">
-          <div class="nav_link-icon home"></div>首頁
+          <div class="nav_link-icon home">首頁</div>
         </router-link>
       </div>
       <div class="navbar_item">
         <router-link :to="{name:'user-page',params:{id:currentUser.id}}" class="nav_link">
-          <div class="nav_link-icon user"></div>個人資料
+          <div class="nav_link-icon user">個人資料</div>
         </router-link>
       </div>
       <div class="navbar_item">
         <router-link to="/settings" class="nav_link">
-          <div class="nav_link-icon setting"></div>設定
+          <div class="nav_link-icon setting">設定</div>
         </router-link>
       </div>
       <div class="navbar_item">
-        <div class="btn" @click.stop.prevent="openModal">推文</div>
+        <div class="btn" @click.stop.prevent="openModal" v-show="fullWidth > 991">推文</div>
       </div>
     </div>
     <div class="navbar_item" @click="logout">
       <div class="nav_link">
-        <div class="nav_link-icon logout" ></div>登出
+        <div class="nav_link-icon logout" >登出</div>
       </div>    
     </div>
     <UserTweetNew :is-show="isShow" @close-modal="closeModal" @refresh-tweet="refreshTweet"/>
@@ -37,7 +37,8 @@ import { mapState } from 'vuex';
 export default {
   data() {
     return {
-      isShow: false
+      isShow: false,
+      fullWidth: 0
     }
   },
   computed: {
@@ -60,7 +61,14 @@ export default {
     refreshTweet (data) {
       this.$emit('return-new-data',data)
     }
-  }
+  },
+  mounted() {
+    this.fullWidth = window.innerWidth
+    window.onresize = () => {
+    this.fullWidth = window.innerWidth
+    }
+  },
+
 }
 </script>
 

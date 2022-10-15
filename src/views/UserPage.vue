@@ -1,6 +1,6 @@
 <template>
   <main class="main-view mx-auto">
-    <NavbarLeft v-if="fullWidth >'991'" />
+    <NavbarLeft />
     <LoadingSpinner v-if="isLoading" />
     <template v-else>
       <div class="user-page">
