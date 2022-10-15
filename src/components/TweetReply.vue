@@ -1,13 +1,14 @@
 <template>
   <div class="modal" :class="{show: isShow}">
     <div class="modal_container mx-auto">
-      <div class="modal_container-header d-flex">
+      <div class="modal_container-header d-flex align-items-center justify-content-between">
         <div class="cancel-btn" @click.stop.prevent="closeModal">
           <i class="fa-solid fa-xmark size-32 close"></i>
           <i class="fa-solid fa-arrow-left size-20 back"></i>
         </div>
+        <button type="submit" class="btn mobile" form="tweet-reply" :disabled="isProcessing">推文</button>
       </div>
-      <div class="comment_wrap d-flex"  v-if="tweet.User">
+      <div class="comment_wrap d-flex" v-if="tweet.User">
         <div class="avatar_wrap">
           <div class="avatar_image">
             <router-link :to="{name: 'user-page', params: {id: tweet.User.id }}">
@@ -33,7 +34,7 @@
           </div>
         </div>
       </div>
-      <form class="tweet_list-box reply d-flex" @submit.prevent.stop="handleSubmit(tweet.id)">
+      <form class="tweet_list-box reply d-flex" id="tweet-reply" @submit.prevent.stop="handleSubmit(tweet.id)">
         <div class="d-flex">
           <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent" maxlength="140"></textarea>
@@ -41,7 +42,7 @@
         <div class="d-flex justify-content-end align-items-center">
           <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
           <p class="input-length error size-12 mx-3" v-else>{{warning}}</p>
-          <button type="submit" class="btn" :disabled="isProcessing">回應</button>
+          <button type="submit" class="btn medium" :disabled="isProcessing">回應</button>
         </div>
       </form>
     </div>
@@ -80,6 +81,7 @@ export default{
     closeModal () {
       this.$emit('close-modal',!this.isShow)
       this.newContent = ""
+      this.showMsg = false
     },
     async handleSubmit (tweetId) {
       try{

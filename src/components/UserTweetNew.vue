@@ -16,7 +16,7 @@
         <div class="d-flex justify-content-end align-items-center">
           <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
           <p class="input-length error size-12 mx-3" v-else>{{warning}}</p>
-          <button type="submit" class="btn" :disabled="isProcessing">推文</button>
+          <button type="submit" class="btn medium" :disabled="isProcessing">推文</button>
         </div>
       </form>
     </div>
@@ -50,6 +50,7 @@ export default{
     closeModal () {
       this.$emit('close-modal',!this.isShow)
       this.newContent = ""
+      this.showMsg = false
     },
     async fetchTweets() {
       try{

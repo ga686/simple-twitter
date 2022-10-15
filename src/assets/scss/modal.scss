@@ -38,8 +38,8 @@
     flex-direction: column;
     height: 90vh;
     textarea{
+      min-height: 211px;
       border-width: 0px;
-      min-height: 100%;
       font-size: 18px;
       resize: none;
       &::placeholder{
@@ -93,8 +93,8 @@
   }
 
   .btn{
-    display: none;
-    &.mobile{display: block;}
+    display: block;
+    &.mobile{display: none;}
   }
 }
 
