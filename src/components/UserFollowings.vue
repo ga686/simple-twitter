@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/tweet.scss';
+@import '../assets/scss/userPage/tweet.scss';
 
 .comment_wrap_body {
   width: 100%;

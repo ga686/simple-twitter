@@ -1,18 +1,19 @@
 <template>
   <main class="main-view mx-auto">
-    <NavbarLeft />
+    <NavbarLeft  v-if="fullWidth > 991"/>
     <div class="user-page">
       <UserHeader :user='user' />
+      <UserProfile :initUserId='user.id' v-if="fullWidth < 991"/>
       <div class="follow-title">
         <div class="user-followers" :class="{active: currentView === 'followers'}"
-        @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})" >追蹤者</div>
+          @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者 </div>
         <div class="user-followers" :class="{active: currentView === 'followings'}"
-        @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
+          @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
       </div>
       <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
       <UserFollowings :initFollowings="user.followings" v-show="currentView === 'followings'" />
     </div>
-    <SuggestUser />
+    <SuggestUser v-if="fullWidth > 991" />
   </main>
 </template>
 <script>
@@ -25,6 +26,7 @@ import UserFollowers from '../components/UserFollowers.vue';
 import UserFollowings from '../components/UserFollowings.vue';
 import usersAPI from '../apis/users'
 import UserHeader from '@/components/UserHeader.vue';
+import UserProfile from '@/components/userProfile.vue';
 
 export default {
   name: 'userFollow',
@@ -33,8 +35,9 @@ export default {
     SuggestUser,
     UserFollowers,
     UserFollowings,
-    UserHeader
-},
+    UserHeader,
+    UserProfile
+  },
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -46,7 +49,8 @@ export default {
         followings: [],
       },
       isShow: false,
-      currentView: ''
+      currentView: '',
+      fullWidth: 0
     }
   },
   created() {
@@ -69,10 +73,10 @@ export default {
     async fetchFollow(userId) {
       try {
         const { data } = await usersAPI.getUser(userId)
-        const {id, name, Tweets, Followers:followers, Followings:followings} = data
+        const { id, name, Tweets, Followers: followers, Followings: followings } = data
         this.user = {
           ...this.user,
-        id, name, tweetsLength: Tweets.length, followers ,followings
+          id, name, tweetsLength: Tweets.length, followers, followings
         }
       } catch (err) {
         console.log(err)
@@ -86,6 +90,12 @@ export default {
     },
     toggleContent(view) {
       this.currentView = view
+    }
+  },
+  mounted() {
+    this.fullWidth = window.innerWidth
+    window.onresize = () => {
+    this.fullWidth = window.innerWidth
     }
   },
   filters: {
@@ -102,7 +112,6 @@ export default {
 .follow-title {
   width: 100%;
   height: 52px;
-  border-top: 1px solid #E6ECF0;
   border-bottom: 1px solid #E6ECF0;
   display: flex;
   align-items: center;

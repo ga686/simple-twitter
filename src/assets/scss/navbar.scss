@@ -68,3 +68,76 @@
     }
   }
 }
+
+@media screen and (min-width: 992px) {
+  .navbar {
+    padding: 13px 16px;
+    width: 178px;
+    flex-direction: column;
+    height: 100vh;
+    &_logo {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .nav_link {
+      display: flex;
+      font-size: 18px;
+      line-height: 26px;
+      font-weight: bold;
+      color: var(--dark-90);
+      padding: 16px 0px;
+  
+      &-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 16px;
+        cursor: pointer;
+  
+        &.home,
+        &.user,
+        &.setting,
+        &.logout {
+          background-size: contain;
+          background-position: center;
+        }
+  
+        &.home {
+          background-image: var(--icon-home);
+        }
+  
+        &.user {
+          background-image: var(--icon-user);
+        }
+  
+        &.setting {
+          background-image: var(--icon-setting);
+        }
+  
+        &.logout {
+          background-image: var(--icon-logout);
+        }
+      }
+  
+      &.router-link-exact-active {
+        color: var(--brand-color);
+  
+        .home {
+          background-image: var(--icon-home-active);
+        }
+  
+        .user {
+          background-image: var(--icon-user-active);
+        }
+  
+        .setting {
+          background-image: var(--icon-setting-active);
+        }
+        .logout {
+          background-image: var(--icon-logout-active);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

@@ -96,11 +96,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/userPage/tweet.scss';
+@import '../assets/scss/tweet.scss';
 
 .comment_wrap_body {
   width: 100%;
 }
+
 .comment_wrap_body--title {
   justify-content: space-between;
   align-items: center;

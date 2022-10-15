@@ -1,11 +1,11 @@
 <template>
   <main class="main-view mx-auto">
-    <NavbarLeft />
-    <LoadingSpinner v-if="isLoading"/>
+    <NavbarLeft v-if="fullWidth >'991'" />
+    <LoadingSpinner v-if="isLoading" />
     <template v-else>
       <div class="user-page">
-        <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
-        <UserHeader :user="user"/>
+        <UserHeader :user="user" />
+        <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser" />
         <div class="scroll">
           <div class="user-profile">
             <div class="user-banner">
@@ -18,16 +18,22 @@
               <div class="btn email" v-show="user.id !== currentUser.id"><a :href="`mailto:${user.email}`"></a></div>
               <div class="btn notify" v-show="user.id !== currentUser.id"></div>
               <div class="user-setting" @click.stop.prevent="openModal" v-show="user.id === currentUser.id">編輯個人資料</div>
-              <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed" @click.prevent.stop="addFollow(user.id)">追蹤</div>
-              <div class="btn" v-if="user.id !== currentUser.id && user.isFollowed" @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
+              <div class="btn unfollow" v-if="user.id !== currentUser.id && !user.isFollowed"
+                @click.prevent.stop="addFollow(user.id)">追蹤</div>
+              <div class="btn" v-if="user.id !== currentUser.id && user.isFollowed"
+                @click.prevent.stop="deleteFollow(user.id)">正在追蹤</div>
             </div>
             <div class="user-info">
               <h5>{{user.name}}</h5>
               <div class="user-account number-wrap">{{user.account | account}}</div>
               <div class="user-decription number-wrap">{{user.introduction}}</div>
               <div class="user-follow d-flex number-wrap">
-                <div class="user-info-following" @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})"><span>{{user.followingCount}}</span> 個跟隨中</div>
-                <div class="user-info-follower" @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})"><span>{{user.followerCount}}</span> 位跟隨者</div>
+                <div class="user-info-following"
+                  @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">
+                  <span>{{user.followingCount}}</span> 個跟隨中</div>
+                <div class="user-info-follower"
+                  @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">
+                  <span>{{user.followerCount}}</span> 位跟隨者</div>
               </div>
             </div>
             <div class="togglePage d-flex">
@@ -40,12 +46,12 @@
             </div>
           </div>
           <UserTweets :initUser="user" v-if="currentContent === 'userTweets'" />
-          <UserReplies :initUser="user" v-if="currentContent === 'userReplies'" />
-          <UserLikes :initUser="user" v-if="currentContent === 'userLikes'" />
+        <UserReplies :initUser="user" v-if="currentContent === 'userReplies'" />
+        <UserLikes :initUser="user" v-if="currentContent === 'userLikes'" />
         </div>
       </div>
     </template>
-    <SuggestUser />
+    <SuggestUser  v-if="fullWidth >'991'"/>
   </main>
 </template>
 <script>
@@ -63,6 +69,7 @@ import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import usersAPI from '../apis/users'
 import UserHeader from '@/components/UserHeader.vue'
+
 export default {
   name: 'userPage',
   components: {
@@ -73,8 +80,8 @@ export default {
     UserTweets,
     UserEdit,
     LoadingSpinner,
-    UserHeader
-},
+    UserHeader,
+  },
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -95,7 +102,8 @@ export default {
       },
       currentContent: 'userTweets',
       isShow: false,
-      isLoading: false
+      isLoading: false,
+      fullWidth: 0
     }
   },
   created() {
@@ -113,8 +121,8 @@ export default {
   methods: {
     async fetchUser(userId) {
       this.isLoading = true
-      const {data} = await usersAPI.getUser(userId)
-      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets, isFollowed} = data
+      const { data } = await usersAPI.getUser(userId)
+      const { id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, Tweets, isFollowed } = data
       this.user = {
         ...this.user,
         id, account, name, email, avatar, coverPhoto, introduction, followerCount, followingCount, tweetsLength: Tweets ? Tweets.length : 0, isFollowed
@@ -130,15 +138,15 @@ export default {
     closeModal(show) {
       return this.isShow = show
     },
-    async addFollow (userId) {
+    async addFollow(userId) {
       try {
         const { data } = await followshipsAPI.addFollow(userId)
 
-        if(data.status === "error"){
+        if (data.status === "error") {
           throw new Error(data.message)
         }
         this.user.isFollowed = true
-      }catch(err){
+      } catch (err) {
         console.error(err)
         Toast.fire({
           icon: 'warning',
@@ -146,15 +154,15 @@ export default {
         })
       }
     },
-    async deleteFollow (userId) {
+    async deleteFollow(userId) {
       try {
-        const { data } = await followshipsAPI.deleteFollow({userId})
+        const { data } = await followshipsAPI.deleteFollow({ userId })
 
-        if(data.status === "error"){
+        if (data.status === "error") {
           throw new Error(data.message)
         }
         this.user.isFollowed = false
-      }catch(err){
+      } catch (err) {
         console.error(err)
         Toast.fire({
           icon: 'warning',
@@ -162,8 +170,14 @@ export default {
         })
       }
     },
-    refreshUser(userId){
+    refreshUser(userId) {
       this.fetchUser(userId)
+    },
+  },
+  mounted() {
+    this.fullWidth = window.innerWidth
+    window.onresize = () => {
+    this.fullWidth = window.innerWidth
     }
   },
   filters: {

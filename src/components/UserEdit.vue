@@ -3,7 +3,8 @@
     <div class="modal_container mx-auto">
       <div class="modal_container-header d-flex">
         <div class="cancel-btn" @click.stop.prevent="closeModal">
-          <i class="fa-solid fa-xmark size-32"></i>
+          <div class="back"></div>
+          <!-- class="fa-solid fa-xmark size-32" -->
         </div>
         <h5>編輯個人資訊</h5><button type="submit" form="profile-box" class="btn" :disabled="isProcessing">儲存</button>
       </div>
