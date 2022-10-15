@@ -1,11 +1,4 @@
 .tweet_list {
-  border-right: 1px solid #E6ECF0;
-  border-left: 1px solid #E6ECF0;
-  
-  .scroll{
-    overflow: scroll;
-    height: calc(100vh - 75px);
-  }
 
   &-title {
       height: 75px;
@@ -24,7 +17,9 @@
       padding: 26px 16px;
       border-bottom: 10px solid #E6ECF0;
       flex-direction: column;
-
+      &.main{
+        display: none;
+      }
       textarea {
         border-width: 0px;
         height: fit-content;
@@ -67,4 +62,85 @@
     &-account-form{
       padding: 24px 23px;
     }
+}
+
+@media(min-width:992px){
+  .tweet_list {
+    flex: 1 0 0;
+    border-left: 1px solid #E6ECF0;
+    border-right: 1px solid #E6ECF0;
+  .scroll{
+    overflow: scroll;
+    height: calc(100vh - 75px);
+  }
+
+  &-title {
+      height: 75px;
+      display: flex;
+      align-items: center;
+      padding-left: 23px;
+      border-bottom: 1px solid #E6ECF0;
+      i{
+        line-height: 35px;
+        margin-right: 19px;
+        cursor: pointer;
+      }
+    }
+
+    &-box {
+      padding: 26px 16px;
+      border-bottom: 10px solid #E6ECF0;
+      flex-direction: column;
+      &.main{
+        display: block;
+      }
+      textarea {
+        border-width: 0px;
+        height: fit-content;
+        font-size: 18px;
+        resize: none;
+
+        &::placeholder {
+          font-size: 18px;
+          font-weight: bold;
+          color: var(--secondary-color)
+        }
+      }
+    }
+    // TweetPage
+    &-detail{
+      &.btn-wrap{
+        padding-bottom: 22px;
+        border-bottom: 1px solid #E6ECF0;
+        .icon-btn{
+          width: 25px;
+          height: 25px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          flex: 0 1 133px;
+          cursor: pointer;
+          &.reply{
+            background-image: var(--icon-comment);
+          }
+          &.liked{
+            background-image: var(--icon-liked);
+            &.isliked{
+              background-image: var(--icon-liked-active);
+            }
+          }
+        }
+      }
+    }
+    // AccountSettings
+    &-account-form{
+      padding: 24px 23px;
+    }
+}
+}
+
+@media(min-width: 1199px){
+  .tweet_list {
+    border-right: 1px solid #E6ECF0;
+  }
 }

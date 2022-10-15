@@ -4,26 +4,27 @@
       <div class="navbar_logo"><router-link to="/homepage"><img src="../assets/photos/acLogo.png" /></router-link></div>
       <div class="navbar_item">
         <router-link to="/homepage" class="nav_link">
-          <div class="nav_link-icon home"></div>首頁
+          <div class="nav_link-icon home"></div><p>首頁</p>
         </router-link>
       </div>
       <div class="navbar_item">
         <router-link :to="{name:'user-page',params:{id:currentUser.id}}" class="nav_link">
-          <div class="nav_link-icon user"></div>個人資料
+          <div class="nav_link-icon user"></div><p>個人資料</p>
         </router-link>
       </div>
-      <div class="navbar_item">
+      <div class="navbar_item settings-wrap">
         <router-link to="/settings" class="nav_link">
-          <div class="nav_link-icon setting"></div>設定
+          <div class="nav_link-icon setting"></div><p>設定</p>
         </router-link>
       </div>
-      <div class="navbar_item">
+      <div class="navbar_item tweet-wrap">
         <div class="btn" @click.stop.prevent="openModal">推文</div>
+        <div class="nav_link-icon tweet" @click.stop.prevent="openModal"></div>
       </div>
     </div>
-    <div class="navbar_item" @click="logout">
+    <div class="navbar_item logout-wrap" @click="logout">
       <div class="nav_link">
-        <div class="nav_link-icon logout" ></div>登出
+        <div class="nav_link-icon logout" ></div><p>登出</p>
       </div>    
     </div>
     <UserTweetNew :is-show="isShow" @close-modal="closeModal" @refresh-tweet="refreshTweet"/>

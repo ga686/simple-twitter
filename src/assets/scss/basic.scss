@@ -39,33 +39,82 @@
   --icon-email: url('~@/assets/icon_email.png');
   --icon-notify: url('~@/assets/icon_notify.png');
   --icon-notify-active: url('~@/assets/icon_notify_active.png');
+  // medium
+  --icon-tweet-medium: url('~@/assets/icon_tweet_medium.png');
+  // mobile
+  --icon-tweet-mobile: url('~@/assets/icon_tweet_mobile.png');
+  --icon-tweet-mobile-active: url('~@/assets/icon_tweet_mobile_active.png');
 }
 
 /* basic setting */
-html{
-  overflow-y: scroll;
-  overscroll-behavior-y: none;
-  height: 100vh;
-}
 
 main{
-  max-width: 1440px;
+  max-width: 337px;
   height: 100%;
   margin: 0 auto;
 }
 
 .main-view{
-  display: grid;
-  grid-template-columns: 400px auto 400px;
-  grid-template-rows: max-content;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #E6ECF0;
+  border-right: 1px solid #E6ECF0;
+  min-height: 100vh;
 }
 
 .admin-view{
   max-width: none;
-  display: grid;
-  grid-template-columns: 400px auto;
 }
 
+@media(min-width:992px){
+  main{
+    max-width:960px;
+    
+  }
+  .main-view{
+    flex-direction: row;
+    border-left: none;
+    border-right: none;
+  }
+  .admin-view{
+    max-width: none;
+    display: grid;
+    grid-template-columns: 108px auto;
+  }
+}
+
+@media(min-width:1199px){
+  main{
+    max-width:1140px
+  }
+
+  html{
+    overflow-y: scroll;
+    overscroll-behavior-y: none;
+    height: 100vh;
+  }
+
+  .main-view{
+    display: grid;
+    grid-template-columns: 300px auto 300px;
+    grid-template-rows: max-content;
+    border-left: none;
+    border-right: none;
+  }
+
+  .admin-view{
+    grid-template-columns: 200px auto;
+  }
+}
+
+@media(min-width:1600px){
+  main{
+    max-width:1400px
+  }
+  .main-view{
+    grid-template-columns: 400px auto 400px;
+  }
+}
 
 /* 使用@each 產出css spacer設定 */
 // font
@@ -401,6 +450,15 @@ $spacers: (
     border-color: #fff;
     color: #fff;
   }
+}
+
+@media( min-width: 992px) {
+  .avatar_image{
+    &.mobile{
+      display: none;
+    }
+  }
+
 }
 
 

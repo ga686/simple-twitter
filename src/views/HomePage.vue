@@ -4,20 +4,21 @@
     <LoadingSpinner v-if="isProcessing"/>
     <template v-else>
       <div class="tweet_list">
-      <div class="tweet_list-title">
-        <h4>首頁</h4>
+        <div class="tweet_list-title d-flex">
+          <div class="avatar_image mobile"><img :src="currentUser.avatar | emptyImage" /></div>
+          <h4>首頁</h4>
+        </div>
+        <div class="scroll">
+          <form class="tweet_list-box main d-flex" @submit.prevent.stop="handleSubmit">
+            <div class="d-flex">
+              <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
+              <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
+            </div>
+            <div class="d-flex justify-content-end"><button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button></div>
+          </form>
+          <NewestTweets :tweets="tweets" @refresh-tweets="fetchTweets"/>
+        </div>
       </div>
-      <div class="scroll">
-        <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
-          <div class="d-flex">
-            <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
-            <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent"></textarea>
-          </div>
-          <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
-        </form>
-        <NewestTweets :tweets="tweets" @refresh-tweets="fetchTweets"/>
-      </div>
-    </div>
     </template>
     <SuggestUser />
   </main>

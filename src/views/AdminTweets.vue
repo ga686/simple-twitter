@@ -14,9 +14,11 @@
               <div>
                 <div class="d-flex admin_box_wrap-title align-items-center">
                   <h5 class="size-16">{{ tweet.userData.name }}</h5>
-                  <p class="size-14 ml-1">{{ tweet.userData.account | account }}</p>
-                  ・
-                  <span class="size-14">{{ tweet.createdAt | fromNow }}</span>
+                  <div class="d-flex">
+                    <p class="size-14 ml-1">{{ tweet.userData.account | account }}</p>
+                    ・
+                    <span class="size-14">{{ tweet.createdAt | fromNow }}</span>
+                  </div>
                 </div>
                 <div class="mb-3 mt-1 admin_box_wrap-content">{{ tweet.description }}</div>
               </div>

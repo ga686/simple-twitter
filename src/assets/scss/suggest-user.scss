@@ -1,4 +1,10 @@
 .suggest_user{
+  display: none;
+}
+
+@media(min-width:992px){
+  .suggest_user{
+  display: block;
   height: 100vh;
   overflow: scroll;
   &_list{
@@ -28,4 +34,5 @@
       }
     }
   }
+}
 }

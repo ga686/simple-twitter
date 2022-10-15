@@ -3,7 +3,8 @@
     <div class="modal_container mx-auto">
       <div class="modal_container-header d-flex">
         <div class="cancel-btn" @click.stop.prevent="closeModal">
-          <i class="fa-solid fa-xmark size-32"></i>
+          <i class="fa-solid fa-xmark size-32 close"></i>
+          <i class="fa-solid fa-arrow-left size-20 back"></i>
         </div>
       </div>
       <div class="comment_wrap d-flex"  v-if="tweet.User">

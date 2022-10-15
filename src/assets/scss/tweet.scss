@@ -6,7 +6,8 @@
   &_body{
     &--title{
       color: var(--secondary-color);
-      line-height: 16px;
+      line-height: 18px;
+      flex-wrap: wrap;
       a{color: var(--secondary-color);}
       h5{
         color: var(--dark-100);

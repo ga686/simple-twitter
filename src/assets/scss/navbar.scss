@@ -1,11 +1,29 @@
 .navbar {
-  padding: 13px 16px;
-  width: 178px;
-  flex-direction: column;
-  height: 100vh;
+  position: fixed;
+  bottom: 0;
+  left: 0;  
+  width: 100%;
+  z-index: 9;
+  &_wrap{
+    display: grid;
+    grid-auto-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+    width: 100%;
+    background-color: #fff;
+    align-items: center;
+    border-top: 1px solid #E6ECF0;
+  }
+
+  &_item{
+    &.logout-wrap, .btn{display: none;}
+    &.tweet-wrap{
+      grid-column: 2/3;
+    }
+  }
+
   &_logo {
-    width: 40px;
-    height: 40px;
+    display: none;
   }
 
   .nav_link {
@@ -15,17 +33,21 @@
     font-weight: bold;
     color: var(--dark-90);
     padding: 16px 0px;
+   
+    p{
+      display: none;
+    }
 
     &-icon {
-      width: 24px;
-      height: 24px;
-      margin-right: 16px;
+      width: 20.75px;
+      height: 20.75px;
       cursor: pointer;
-
+      margin: 0 auto;
       &.home,
       &.user,
       &.setting,
-      &.logout {
+      &.logout,
+      &.tweet {
         background-size: contain;
         background-position: center;
       }
@@ -45,8 +67,11 @@
       &.logout {
         background-image: var(--icon-logout);
       }
-    }
 
+      &.tweet {
+        background-image: var(--icon-tweet-mobile);
+      }
+    }
     &.router-link-exact-active {
       color: var(--brand-color);
 
@@ -61,10 +86,151 @@
       .setting {
         background-image: var(--icon-setting-active);
       }
+
       .logout {
         background-image: var(--icon-logout-active);
         cursor: pointer;
       }
+
+      &.tweet {
+        background-image: var(--icon-tweet-mobile-active);
+      }
     }
   }
+
+  .medium{
+    display: none;
+  }
+}
+
+
+
+
+@media(min-width:992px){
+  .navbar {
+    position: relative;
+    padding: 13px 16px;
+    flex: 0;
+    flex-direction: column;
+    height: 100vh;
+    z-index: 0;
+  &_wrap{
+    display: block;
+    grid-auto-columns: unset;
+    grid-auto-rows: unset;
+    width: auto;
+    background-color: #fff;
+    align-items: center;
+    border-top: none;
+  }
+
+  .medium{
+    display: block;
+  }
+
+  .mobile{
+    display: none;
+  }
+
+  &_item{
+    &.logout-wrap{display: block;}
+    margin-bottom: 32px;
+  }
+
+  &_logo {
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .nav_link {
+    display: flex;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: bold;
+    color: var(--dark-90);
+    padding: 16px 0px;
+   
+    p{
+      display: none;
+    }
+
+    &-icon {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      margin: 0 auto;
+      &.home,
+      &.user,
+      &.setting,
+      &.logout,
+      &.tweet {
+        background-size: contain;
+        background-position: center;
+      }
+
+      &.tweet {
+        background-image: var(--icon-tweet-medium);
+      }
+    }
+  }
+}
+}
+
+
+
+@media(min-width:1199px){
+  .navbar {
+    position: relative;
+    padding: 13px 16px;
+    width: 178px;
+    flex-direction: column;
+    height: 100vh;
+  &_logo {
+    width: 40px;
+    height: 40px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &_item{
+    &.logout-wrap,.btn{display: block;}
+    &.logout-wrap{margin-bottom: 0 ;}
+    margin-bottom: 10px;
+  }
+  
+  &_wrap{
+    display: block;
+  }
+
+  .nav_link {
+    display: flex;
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: bold;
+    color: var(--dark-90);
+    padding: 16px 0px;
+
+    p{display: block;}
+
+    &-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 16px;
+      margin-left: 0;
+      margin-right: 17px;
+      &.home,
+      &.user,
+      &.setting,
+      &.logout {
+        background-size: contain;
+        background-position: center;
+        display: block;
+      }
+
+      &.tweet {
+        display: none;
+      }
+    }
+  }
+}
 }

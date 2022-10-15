@@ -7,9 +7,11 @@
           <h5 class="size-16">
             <router-link :to="{name:'user-page', params: {id: tweet.UserId}}">{{tweet.User.name}}</router-link>
           </h5>
-          <p class="size-14"><router-link :to="{name: 'user-page', params: {id: tweet.UserId}}">{{tweet.User.account | account}}</router-link></p>
-          ・
-          <span class="size-14">{{tweet.createdAt | fromNow }}</span>
+          <div class="d-flex">
+            <p class="size-14"><router-link :to="{name: 'user-page', params: {id: tweet.UserId}}">{{tweet.User.account | account}}</router-link></p>
+            ・
+            <span class="size-14">{{tweet.createdAt | fromNow }}</span>
+          </div>
         </div>
         <div class="comment_wrap_body--content mb-3">
           <router-link :to="{name: 'tweet', params: { id: tweet.id }}">{{tweet.description}}</router-link>

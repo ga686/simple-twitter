@@ -4,18 +4,23 @@
       <div class="navbar_logo"><router-link to="/admin/tweets"><img src="../assets/photos/acLogo.png" /></router-link></div>
       <div class="navbar_item">
         <router-link to="/admin/tweets" class="nav_link">
-          <div class="nav_link-icon home"></div>推文清單
+          <div class="nav_link-icon home"></div><p>推文清單</p>
         </router-link>
       </div>
       <div class="navbar_item">
         <router-link to="/admin/users" class="nav_link">
-          <div class="nav_link-icon user"></div>使用者列表
+          <div class="nav_link-icon user"></div><p>使用者列表</p>
         </router-link>
       </div>
-    </div>
-    <div class="navbar_item" @click="logout">
+      <div class="navbar_item mobile" @click="logout">
       <div class="nav_link">
-        <div class="nav_link-icon logout" ></div>登出
+        <div class="nav_link-icon logout" ></div><p>登出</p>
+      </div>   
+    </div>
+    </div>
+    <div class="navbar_item medium" @click="logout">
+      <div class="nav_link">
+        <div class="nav_link-icon logout" ></div><p>登出</p>
       </div>   
     </div>
   </div>

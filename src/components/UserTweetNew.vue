@@ -1,20 +1,22 @@
 <template>
   <div class="modal" :class="{show: isShow}">
     <div class="modal_container mx-auto">
-      <div class="modal_container-header d-flex">
+      <div class="modal_container-header d-flex align-items-center justify-content-between">
         <div class="cancel-btn" @click.stop.prevent="closeModal">
-          <i class="fa-solid fa-xmark size-32"></i>
+          <i class="fa-solid fa-xmark size-32 close"></i>
+          <i class="fa-solid fa-arrow-left size-20 back"></i>
         </div>
+        <button type="submit" class="btn mobile" form="new-tweet" :disabled="isProcessing">推文</button>
       </div>
-      <form class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
-        <div class="d-flex">
+      <form id="new-tweet" class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
+        <div class="d-flex h-100">
           <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
           <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
         </div>
         <div class="d-flex justify-content-end align-items-center">
           <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
           <p class="input-length error size-12 mx-3" v-else>{{warning}}</p>
-          <button type="submit" class="btn " :disabled="isProcessing">推文</button>
+          <button type="submit" class="btn" :disabled="isProcessing">推文</button>
         </div>
       </form>
     </div>

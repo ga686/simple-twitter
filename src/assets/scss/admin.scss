@@ -16,9 +16,10 @@
     &-title{
       h5{color: var(--dark-100)}
       color: #657786;
+      flex-wrap: wrap;
     }
     &-content{
-      max-width: 350px;
+      max-width: 45vw;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
