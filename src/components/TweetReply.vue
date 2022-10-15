@@ -9,14 +9,20 @@
       <div class="comment_wrap d-flex"  v-if="tweet.User">
         <div class="avatar_wrap">
           <div class="avatar_image">
-            <img :src="tweet.User.avatar | emptyImage" />
+            <router-link :to="{name: 'user-page', params: {id: tweet.User.id }}">
+              <img :src="tweet.User.avatar | emptyImage" />
+            </router-link>
           </div>
           <span class="reply-span"></span>
         </div>
         <div class="comment_wrap_body">
           <div class="d-flex comment_wrap_body--title">
-            <h5 class="size-16">{{ tweet.User.name }}</h5>
-            <p class="size-14">{{ tweet.User.account | account }}</p>
+            <router-link :to="{name: 'user-page', params: {id: tweet.User.id }}">
+              <h5 class="size-16">{{ tweet.User.name }}</h5>
+            </router-link>
+            <router-link :to="{name: 'user-page', params: {id: tweet.User.id }}">
+              <p class="size-14">{{ tweet.User.account | account }}</p>
+            </router-link>
             ・
             <span class="size-14">{{tweet.createdAt | fromNow }}</span>
           </div>
@@ -31,7 +37,11 @@
           <div class="avatar_image"><img :src="currentUser.avatar" /></div>
           <textarea class="flex-fill my-auto" placeholder="推你的推文" v-model="newContent" maxlength="140"></textarea>
         </div>
-        <button type="submit" class="btn ml-auto" :disabled="isProcessing">回應</button>
+        <div class="d-flex justify-content-end align-items-center">
+          <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
+          <p class="input-length error size-12 mx-3" v-else>{{warning}}</p>
+          <button type="submit" class="btn" :disabled="isProcessing">回應</button>
+        </div>
       </form>
     </div>
   </div>
@@ -49,7 +59,9 @@ export default{
   data () {
     return {
       newContent: '',
-      isProcessing: false
+      isProcessing: false,
+      warning: '',
+      showMsg: false
     }
   },
   props: {
@@ -71,12 +83,15 @@ export default{
     async handleSubmit (tweetId) {
       try{
           if (!this.newContent) {
-          Toast.fire({
-            icon: 'warning',
-            title: '內容不可空白'
-          })
-          return
-        }
+            this.showMsg = true
+            this.warning = '內容不可空白'
+            return
+          }
+
+          if (this.newContent.length > 140) {
+            this.showMsg = true
+            return this.warning = '字數不可超過140字'
+          }
         this.isProcessing = true
         const { data } = await tweetsAPI.addReply(tweetId , this.newContent )
         if(data.status === 'error'){

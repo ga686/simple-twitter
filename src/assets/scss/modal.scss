@@ -42,3 +42,10 @@
     padding: 15px 24px;
  }
 }
+
+.input-length{
+  color: var(--dark-80);
+  &.error{
+    color: var(--error-color)
+  }
+}

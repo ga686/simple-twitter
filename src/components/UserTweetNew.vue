@@ -11,7 +11,11 @@
           <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
           <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
         </div>
-        <button type="submit" class="btn ml-auto" :disabled="isProcessing">推文</button>
+        <div class="d-flex justify-content-end align-items-center">
+          <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
+          <p class="input-length error size-12 mx-3" v-else>{{warning}}</p>
+          <button type="submit" class="btn " :disabled="isProcessing">推文</button>
+        </div>
       </form>
     </div>
   </div>
@@ -23,11 +27,14 @@ import { emptyImageFilter } from '@/utils/mixins'
 import { Toast } from '../utils/helpers'
 import tweetsAPI from '../apis/tweets'
 
+
 export default{
   data () {
     return {
       newContent: '',
-      isProcessing: false
+      isProcessing: false,
+      warning: '',
+      showMsg: false
     }
   },
   mixins: [emptyImageFilter ],
@@ -40,6 +47,7 @@ export default{
   methods: {
     closeModal () {
       this.$emit('close-modal',!this.isShow)
+      this.newContent = ""
     },
     async fetchTweets() {
       try{
@@ -61,12 +69,16 @@ export default{
    async handleSubmit () {
       try {
         if (!this.newContent) {
-          Toast.fire({
-            icon: 'warning',
-            title: '內容不可空白'
-          })
+          this.showMsg = true
+          this.warning = '內容不可空白'
           return
         }
+
+        if (this.newContent.length > 140) {
+          this.showMsg = true
+          return this.warning = '字數不可超過140字'
+        }
+        
         this.isProcessing = true
         const description  = this.newContent
         const { data } = await tweetsAPI.postNewTweet({description})
@@ -86,6 +98,13 @@ export default{
         })
       }
    }
+  },
+  watch: {
+    newContent: function () {
+      if (this.newContent.length > 140) {
+        return this.warning = '字數不可超過140字'
+      }
+    }
   },
   computed: {
     ...mapState(['currentUser'])
