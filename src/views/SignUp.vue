@@ -88,7 +88,7 @@ export default {
           return
         }
         const { data } = await authorizationAPI.signUp({
-          account: this.account,
+          account: this.account.toLowerCase(),
           name: this.name,
           email: this.email,
           password: this.password,
