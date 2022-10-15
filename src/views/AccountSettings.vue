@@ -1,7 +1,7 @@
 <template>
   <main class="main-view">
     <NavbarLeft/>
-    <div class="tweet_list">
+    <div class="tweet_list span-2">
       <div class="tweet_list-title">
         <h4>帳戶設定</h4>
       </div>
@@ -156,5 +156,17 @@ export default {
     top: 100%;
     font-size: 12px;
   color: var(--error-color);
+}
+
+@media (min-width: 992px){
+  .span-2{
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1140px){
+  .span-2{
+    grid-column: span 1;
+  }
 }
 </style>

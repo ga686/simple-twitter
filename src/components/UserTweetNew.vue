@@ -11,7 +11,7 @@
       <form id="new-tweet" class="tweet_list-box d-flex" @submit.prevent.stop="handleSubmit">
         <div class="d-flex h-100">
           <div class="avatar_image"><img :src="currentUser.avatar | emptyImage" /></div>
-          <textarea class="flex-fill my-auto" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
+          <textarea class="flex-fill" placeholder="有什麼新鮮事？" v-model="newContent" maxlength="140"></textarea>
         </div>
         <div class="d-flex justify-content-end align-items-center">
           <p class="input-length size-12 mx-3" :class="{error: newContent.length > 140}" v-if="!showMsg">{{ newContent.length }}/140</p>
