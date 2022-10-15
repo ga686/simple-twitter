@@ -62,7 +62,12 @@ export default{
         console.error(err)
         Toast.fire({
           icon: 'error',
-          title: '無法更新推特，請稍後再試'
+          title: '無法更新推文，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+            container: 'sweetalert2-error-pop',
+          },
         })
       }
     },

@@ -78,8 +78,13 @@ export default {
       }catch(err){
         console.error(err)
         Toast.fire({
-          icon: 'warning',
-          title: '無法加入追蹤，請稍後再試'
+          icon: 'error',
+          title: '無法加入追蹤，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+            container: 'sweetalert2-error-pop',
+          },
         })
       }
     },

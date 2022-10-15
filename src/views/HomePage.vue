@@ -67,7 +67,12 @@ export default {
         console.error(err)
         Toast.fire({
           icon: 'error',
-          title: '無法更新推特，請稍後再試'
+          title: '無法更新貼文，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+          container: 'sweetalert2-error-pop',
+          },
         })
       }
     },
@@ -76,8 +81,13 @@ export default {
         if (!this.newContent) {
           Toast.fire({
             icon: 'warning',
-            title: '內容不可空白'
-          })
+            title: '內容不可空白',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-warning-pop',
+            },
+          })  
           return
         }
         this.isProcessing = false
@@ -93,8 +103,13 @@ export default {
         this.isProcessing = false
         console.error(err)
         Toast.fire({
-          icon: 'warning',
-          title: '無法新增貼文，請稍後再試'
+          icon: 'error',
+          title: '無法新增貼文，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+          container: 'sweetalert2-error-pop',
+          },
         })
       }
     },

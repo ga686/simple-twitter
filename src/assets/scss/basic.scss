@@ -373,6 +373,36 @@ $spacers: (
   position: relative;
 }
 
+// alert
+.sweetalert2-warning-pop{
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex;
+  justify-content: center;
+  h2{color: #fff !important;}
+  .swal2-icon.swal2-warning{
+    border-color: #fff;
+    color: #fff;
+  }
+}
+
+.sweetalert2-error-pop{
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  display: flex;
+  justify-content: center;
+  h2{color: #fff !important;}
+  .swal2-icon.swal2-error [class^=swal2-x-mark-line]{
+    background-color: #fff;
+  }
+  .swal2-icon.swal2-error{
+    border-color: #fff;
+    color: #fff;
+  }
+}
+
 
 
 

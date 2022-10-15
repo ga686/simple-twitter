@@ -63,7 +63,12 @@ export default {
       if(name.length >= 50){
         Toast.fire({
           icon: 'warning',
-          title: '字數超過上限50個字'
+          title: '字數超過上限50個字',
+          background: '#FF6600',
+          iconColor: '#fff',
+          customClass: {
+          container: 'sweetalert2-warning-pop',
+          },
         })
         this.overlimit = true
         this.disable = true
@@ -75,14 +80,24 @@ export default {
         if (!this.account || !this.email || !this.name || !this.password || !this.passwordCheck) {
           Toast.fire({
             icon: 'warning',
-            title: '請確認已填寫所有欄位'
+            title: '請確認已填寫所有欄位',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+              container: 'sweetalert2-warning-pop',
+            },
           })
           return
         }
         if (this.name.length >= 50) {
           Toast.fire({
             icon: 'warning',
-            title: '字數超出上限！'
+            title: '字數超出上限！',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+              container: 'sweetalert2-warning-pop',
+            },
           })
           this.overlimit = true
           return
@@ -112,7 +127,12 @@ export default {
         if (message === "Error: Account already exists!") {
           Toast.fire({
             icon: 'error',
-            title: '帳號已被註冊'
+            title: '帳號已被註冊',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-error-pop',
+            },
           })
           this.accountDuplicated = true
           return
@@ -120,7 +140,12 @@ export default {
         if (message === "Error: Email already exists!") {
           Toast.fire({
             icon: 'error',
-            title: '信箱已被註冊'
+            title: '信箱已被註冊',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-error-pop',
+            },
           })
           this.emailDuplicated = true
           return
@@ -128,7 +153,12 @@ export default {
         if (message === "Error: Passwords do not match!") {
           Toast.fire({
             icon: 'error',
-            title: '密碼輸入有誤'
+            title: '密碼輸入有誤',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-error-pop',
+            },
           })
           this.errorPassword = true
         }
@@ -141,10 +171,6 @@ export default {
     },
     name() {
       if(this.name.length >= 50){
-        Toast.fire({
-          icon: 'warning',
-          title: '字數超出上限！'
-        })
         this.overlimit = true
       }
       this.overlimit = false

@@ -107,7 +107,12 @@ export default {
         if(this.user.name.length === 0 || this.user.introduction.length === 0){
           Toast.fire({
             icon: 'warning',
-            title: '內容不可空白'
+            title: '內容不可空白',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-warning-pop',
+            },
           })
           return
         }
@@ -115,7 +120,12 @@ export default {
         if(this.user.name.length > 50 || this.user.introduction.length > 160){
           Toast.fire({
             icon: 'warning',
-            title: '字數超過限制'
+            title: '字數超過限制',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-warning-pop',
+            },
           })
           return
         }
@@ -134,8 +144,13 @@ export default {
         this.isProcessing = false
         console.error(err)
         Toast.fire({
-          icon: 'warning',
-          title: '無法儲存變更，請稍後再試'
+          icon: 'error',
+          title: '無法儲存變更，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+            container: 'sweetalert2-error-pop',
+          },
         })
       }
     },

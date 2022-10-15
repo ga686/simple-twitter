@@ -48,7 +48,12 @@ export default {
         if (!this.account || !this.password) {
           Toast.fire({
             icon: 'warning',
-            title: '請輸入帳號及密碼'
+            title: '請輸入帳號及密碼',
+            background: '#FF6600',
+            iconColor: '#fff',
+            customClass: {
+            container: 'sweetalert2-warning-pop',
+            },
           })
           return
         }
@@ -82,20 +87,35 @@ export default {
 
         if (message === "Error: user permission denied") {
           Toast.fire({
-            icon: 'warning',
-            title: '帳號輸入錯誤'
+            icon: 'error',
+            title: '帳號不存在',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+              container: 'sweetalert2-error-pop',
+            },
           })
           this.errorAccount = true
         } else if (message === "Error: The account is incorrect!") {
           Toast.fire({
-            icon: 'warning',
-            title: '帳號輸入錯誤'
+            icon: 'error',
+            title: '帳號輸入錯誤',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+              container: 'sweetalert2-error-pop',
+            },
           })
           this.errorAccount = true
         } else if (message === "Error: The password is incorrect!") {
           Toast.fire({
-            icon: 'warning',
-            title: '密碼輸入錯誤'
+            icon: 'error',
+            title: '密碼輸入錯誤',
+            background: '#FC5A5A',
+            iconColor: '#fff',
+            customClass: {
+              container: 'sweetalert2-error-pop',
+            },
           })
           this.errorPassword = true
         }

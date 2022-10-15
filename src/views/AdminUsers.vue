@@ -76,8 +76,13 @@ export default {
         this.isProcessing = false
         console.error(err)
         Toast.fire({
-          icon: 'warning',
-          title: '無法取得使用者資料，請稍後再試'
+          icon: 'error',
+          title: '無法取得使用者資料，請稍後再試',
+          background: '#FC5A5A',
+          iconColor: '#fff',
+          customClass: {
+          container: 'sweetalert2-error-pop',
+          },
         })
       }
     }
