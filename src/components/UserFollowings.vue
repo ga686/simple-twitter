@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-for="following in initFollowings" :key="following.followingId" class="comment_wrap d-flex">
-      <div class="avatar_image"><img :src="following.avatar | emptyImage " /></div>
+      <div class="avatar_image"><router-link :to="{name: 'user-page', params: {id: following.followingId}}"><img :src="following.avatar | emptyImage " /></router-link></div>
       <div class="comment_wrap_body">
         <div class="d-flex comment_wrap_body--title align-items-center">
-          <h5 class="size-16" style="line-height: 50px;">{{following.name}}</h5>
+          <router-link :to="{name: 'user-page', params: {id: following.followingId}}"><h5 class="size-16" style="line-height: 50px;">{{following.name}}</h5></router-link>
           <button class="btn unfollow" v-if="!following.isFollowed"  @click.prevent.stop="addFollowing(following.followingId)">跟隨</button>
           <button class="btn" v-else @click.prevent.stop="deleteFollowing(following.followingId)">正在跟隨</button>
         </div>
