@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="sweetalert" v-if="tweets.length === 0">使用者無任何推文</div>
     <div v-for="tweet in tweets" :key="tweet.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="initUser.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
@@ -143,4 +144,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
+.sweetalert{
+margin: 50px 0;
+text-align: center;
+color: var(--secondary-color);
+}
 </style>
