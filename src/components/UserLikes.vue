@@ -2,6 +2,7 @@
   <div>
     <LoadingSpinner v-if="isLoading" />
     <template v-else>
+      <div class="sweetalert" v-if="favoriteTweets.length === 0">使用者無任何喜歡</div>
       <div v-for="tweet in favoriteTweets" :key="tweet.TweetId" class="comment_wrap d-flex">
         <div class="avatar_image"><router-link :to="{name:'user-page', params:{id: tweet.userData.id}}"><img :src="tweet.userData.avatar | emptyImage " /></router-link></div>
         <div class="comment_wrap_body">
@@ -133,4 +134,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/tweet.scss';
+.sweetalert{
+margin: 50px auto;
+text-align: center;
+color: var(--secondary-color);
+}
 </style>

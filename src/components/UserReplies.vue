@@ -2,6 +2,7 @@
   <div>
     <LoadingSpinner v-if=isLoading />
     <template v-else>
+      <div class="sweetalert" v-if="replyTweets.length === 0">使用者無任何回覆</div>
       <div v-for="reply in replyTweets" :key="reply.id" class="comment_wrap d-flex">
       <div class="avatar_image"><img :src="initUser.avatar | emptyImage " /></div>
       <div class="comment_wrap_body">
@@ -76,5 +77,10 @@ export default {
   & a {
     color: var(--brand-color) !important;
   }
+}
+.sweetalert{
+margin: 50px auto;
+text-align: center;
+color: var(--secondary-color);
 }
 </style>
