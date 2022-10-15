@@ -6,7 +6,7 @@
       <div class="user-page">
         <UserEdit :is-show="isShow" :initUser="user" @close-modal="closeModal" @refresh-user="refreshUser"/>
         <UserHeader :user="user"/>
-        <div class="scroll">
+        <div :class="['scroll',{'d-none': isShow}]">
           <div class="user-profile">
             <div class="user-banner">
               <img :src="user.coverPhoto | emptyBanner" alt="">
@@ -185,5 +185,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/userPage/style.scss';
+@import '../assets/scss/userpage/style.scss';
 </style>

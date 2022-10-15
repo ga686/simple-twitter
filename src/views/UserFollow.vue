@@ -1,20 +1,24 @@
 <template>
   <main class="main-view mx-auto">
     <NavbarLeft />
-    <div class="user-page">
-      <UserHeader :user='user' />
-      <div class="follow-title">
-        <div class="user-followers" :class="{active: currentView === 'followers'}"
-        @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})" >追蹤者</div>
-        <div class="user-followers" :class="{active: currentView === 'followings'}"
-        @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
-      </div>
-      <div class="scroll follow">
-        <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
-        <UserFollowings :init-followings="user.followings" v-show="currentView === 'followings'" />
+    <LoadingSpinner v-if="isLoading"/>
+    <div class="user-page" v-else>
+      <UserHeader :user='user'/>
+      <div class="scroll">
+        <UserProfile :initUserId='user.id' v-if="fullWidth < 991" />
+        <div class="follow-title">
+          <div class="user-followers" :class="{active: currentView === 'followers'}"
+            @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
+          <div class="user-followers" :class="{active: currentView === 'followings'}"
+            @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
+        </div>
+        <div class="scroll follow">
+          <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
+          <UserFollowings :init-followings="user.followings" :initUserId="user.id" v-show="currentView === 'followings'" />
+        </div>
       </div>
     </div>
-    <SuggestUser @refresh-follow="refreshFollowship"/>
+    <SuggestUser @refresh-follow="refreshFollowship" />
   </main>
 </template>
 <script>
@@ -26,7 +30,9 @@ import { accountFilter } from './../utils/mixins'
 import UserFollowers from '../components/UserFollowers.vue';
 import UserFollowings from '../components/UserFollowings.vue';
 import usersAPI from '../apis/users'
-import UserHeader from '@/components/UserHeader.vue';
+import UserHeader from '@/components/UserHeader.vue'
+import UserProfile from '@/components/UserProfile.vue';
+import LoadingSpinner from '../components/LoadingSpinner.vue'
 
 export default {
   name: 'userFollow',
@@ -35,8 +41,10 @@ export default {
     SuggestUser,
     UserFollowers,
     UserFollowings,
-    UserHeader
-},
+    UserHeader,
+    UserProfile,
+    LoadingSpinner
+  },
   mixins: [emptyImageFilter, accountFilter],
   data() {
     return {
@@ -48,7 +56,9 @@ export default {
         followings: [],
       },
       isShow: false,
-      currentView: ''
+      currentView: '',
+      fullWidth: 0,
+      isLoading: false
     }
   },
   created() {
@@ -72,12 +82,14 @@ export default {
   methods: {
     async fetchFollow(userId) {
       try {
+        this.isLoading = true
         const { data } = await usersAPI.getUser(userId)
-        const {id, name, Tweets, Followers:followers, isFollowed} = data
+        const { id, name, Tweets, Followers: followers, isFollowed } = data
         this.user = {
           ...this.user,
-        id, name, tweetsLength: Tweets.length, followers , isFollowed
+          id, name, tweetsLength: Tweets.length, followers, isFollowed
         }
+        this.isLoading = false
       } catch (err) {
         console.log(err)
       }
@@ -102,8 +114,14 @@ export default {
     toggleContent(view) {
       this.currentView = view
     },
-    refreshFollowship(userId){
+    refreshFollowship(userId) {
       this.fetchFollowing(userId)
+    }
+  },
+  mounted() {
+    this.fullWidth = window.innerWidth
+    window.onresize = () => {
+    this.fullWidth = window.innerWidth
     }
   },
   filters: {
@@ -147,4 +165,8 @@ export default {
     pointer-events: none;
   }
 }
+
+@media screen and (min-width:992px) {}
+
+@media(min-width: 1199px) {}
 </style>

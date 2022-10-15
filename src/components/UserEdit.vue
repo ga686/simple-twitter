@@ -3,6 +3,7 @@
     <div class="modal_container mx-auto">
       <div class="modal_container-header d-flex">
         <div class="cancel-btn" @click.stop.prevent="closeModal">
+          <div class="link-icon" @click.prevent="back()"></div>
           <i class="fa-solid fa-xmark size-32"></i>
         </div>
         <h5>編輯個人資訊</h5><button type="submit" form="profile-box" class="btn" :disabled="isProcessing">儲存</button>
@@ -88,6 +89,13 @@ export default {
       this.user.coverPhoto = this.initUser.coverPhoto
       this.user.introduction = this.initUser.introduction || 'type something here...'
     },
+    back(){
+      if (this.$route.name !== 'user-follow') {
+        this.$router.back()
+      }else{
+        this.$router.push({name:'user-page', params:{id: this.currentUser.id}})
+      }
+    },
     handleFileChange(e) {
       const { files } = e.target
       if (files.length === 0) {
@@ -156,6 +164,15 @@ export default {
     },
     defaultCover(data) {
       this.user.coverPhoto = data
+    }
+  },
+  watch: {
+    /* eslint-disable */
+    initUser(newvalue, oldValue) {
+      this.user = {
+        ...this.user,
+        ...newvalue
+      }
     }
   },
 }
