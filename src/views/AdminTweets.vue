@@ -75,7 +75,27 @@ export default {
         if(data.status === "error"){
           throw new Error(data.message)
         }
-        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        Toast.fire({
+          title: "<h5 style='color:#fff'>確定刪除嗎？</h5>",
+          icon: "warning",
+          showCancelButton: true, 
+          showConfirmButton: true,
+          confirmButtonColor: "#FF6600",
+          confirmButtonText: "確定刪除！", 
+          cancelButtonText: "取消刪除！",
+          background: "#555",
+          customClass : {
+            title: 'swal2-title-delete'
+          },
+          timer: 5000,
+          closeOnConfirm: false, 
+          closeOnCancel: false  
+        }).then((result) => {
+          if(result.value){
+            this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+          }
+        })
+        
       }catch(err){
         Toast.fire({
           icon: 'error',
