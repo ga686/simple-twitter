@@ -123,6 +123,7 @@ export default {
         this.isProcessing = true
         const form = e.target
         const formData = new FormData(form)
+        formData.set('name', formData.get('name').toLowerCase());
         const { data } = await usersAPI.updateProfile(this.initUser.id, formData)
         if(data.status === "error"){
           throw new Error(data.message)
