@@ -14,7 +14,7 @@
         <UserFollowings :init-followings="user.followings" v-show="currentView === 'followings'" />
       </div>
     </div>
-    <SuggestUser />
+    <SuggestUser @refresh-follow="refreshFollowship"/>
   </main>
 </template>
 <script>
@@ -101,6 +101,9 @@ export default {
     },
     toggleContent(view) {
       this.currentView = view
+    },
+    refreshFollowship(userId){
+      this.fetchFollowing(userId)
     }
   },
   filters: {
