@@ -87,10 +87,11 @@ export default {
           this.overlimit = true
           return
         }
+
         const { data } = await authorizationAPI.signUp({
           account: this.account.toLowerCase(),
           name: this.name,
-          email: this.email,
+          email: this.email.toLowerCase(),
           password: this.password,
           checkPassword: this.passwordCheck
         })
