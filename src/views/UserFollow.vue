@@ -5,14 +5,14 @@
     <div class="user-page" v-else>
       <UserHeader :user='user'/>
       <div class="scroll">
-        <UserProfile :initUserId='user.id' v-if="fullWidth < 991" />
+        <UserProfile :initUserId='user.id' v-if="fullWidth < 991" @isEdit="dnoneTweet"/>
         <div class="follow-title">
           <div class="user-followers" :class="{active: currentView === 'followers'}"
             @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
           <div class="user-followers" :class="{active: currentView === 'followings'}"
             @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
         </div>
-        <div class="scroll follow">
+        <div class="scroll follow" :class="['scroll',{'d-none': !isShow}]">
           <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
           <UserFollowings :init-followings="user.followings" :initUserId="user.id" v-show="currentView === 'followings'" />
         </div>
@@ -96,11 +96,13 @@ export default {
     },
     async fetchFollowing(userId) {
       try {
+        this.isLoading = true
         const { data } = await usersAPI.getFollowings(userId)
         if (data.status === "error") {
           throw new Error(data.message)
         }
         this.user.followings = data
+        this.isLoading = false
       } catch (err) {
         console.log(err)
       }
@@ -116,6 +118,9 @@ export default {
     },
     refreshFollowship(userId) {
       this.fetchFollowing(userId)
+    },
+    dnoneTweet(isShow){
+      this.isShow = isShow
     }
   },
   mounted() {

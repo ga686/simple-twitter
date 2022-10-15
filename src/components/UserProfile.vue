@@ -109,9 +109,11 @@ export default {
       this.currentContent = content
     },
     openModal() {
+      this.$emit('isEdit',this.isShow)
       return this.isShow = true
     },
     closeModal(show) {
+      this.$emit('isEdit',this.isShow)
       return this.isShow = show
     },
     async addFollow(userId) {
