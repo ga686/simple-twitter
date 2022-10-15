@@ -16,7 +16,7 @@
             </label>
             <input class="banner-edit" type="file" id="coverPhoto" accept="image/*" name="coverPhoto"
               @change="handleFileChange">
-            <i class="icon-edit-done" @click.prevent.stop="defaultBanner"></i>
+            <i class="icon-edit-done" @click.prevent.stop="defaultCover(currentUser.coverPhoto)"></i>
           </div>
           <img :src="user.coverPhoto | emptyBanner" alt="" />
         </div>
@@ -154,10 +154,9 @@ export default {
         })
       }
     },
-    defaultBanner(e) {
-      if(e.target.classList.value === "icon-edit-done"){
-        this.user.coverPhoto = null
-      }
+    defaultCover(data) {
+      console.log(data)
+      this.user.coverPhoto = data
     }
   },
 }

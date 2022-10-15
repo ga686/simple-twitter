@@ -174,7 +174,7 @@ export default {
     },
     refreshUser(userId){
       this.fetchUser(userId)
-    }
+    },
   },
   filters: {
     quantifier(length) {
