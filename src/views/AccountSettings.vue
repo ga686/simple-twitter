@@ -10,10 +10,10 @@
           <label for="account">帳號</label>
           <input id="account" name="account" autofocus v-model="account" >
         </div>
-        <div class="form-label-group" :class="{error: this.name.length > 50}">
+        <div class="form-label-group" :class="{overLimit: name.length > 50}">
           <label for="name">名稱</label>
           <input id="name" name="name" autofocus v-model="name" type="text" maxlength="50">
-          <span v-if="this.name.length > 50">超過50字</span>
+          <span class="warning" v-if="name.length > 50">超過50字</span>
         </div>
         <div class="form-label-group">
           <label for="email">Email</label>
@@ -78,6 +78,14 @@ export default {
           })
           return
         }
+
+        if (this.name.length > 50 ) {
+          Toast.fire({
+            icon: 'warning',
+            title: '名稱不可超過50字'
+          })
+          return
+        }
         this.isProcessing = true
         const form = e.target
         const formData = new FormData(form)
@@ -117,5 +125,12 @@ export default {
 
 <style lang="scss" scoped>
 @import '../assets/scss/main.scss';
-@import '../assets/scss/admin-signIn-Up/style.scss'
+@import '../assets/scss/admin-signIn-Up/style.scss';
+
+.warning{
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+  color: var(--error-color);
+}
 </style>
