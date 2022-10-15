@@ -75,7 +75,7 @@ export default {
   methods: {
     fetchUser() {
       this.user = this.initUser
-      this.description = this.currentUser.introduction
+      this.introduction = this.currentUser.introduction
       this.user = {   
         ...this.user,
         introduction: this.introduction ? this.introduction : ''
@@ -155,7 +155,6 @@ export default {
       }
     },
     defaultCover(data) {
-      console.log(data)
       this.user.coverPhoto = data
     }
   },
