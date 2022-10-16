@@ -69,7 +69,7 @@ npm run build
 Demo
 </h1>
 
-### 進入此專案 👉 <a href="https://chingg0.github.io/simple-twitter/">SimpleTwitter</a>
+### 進入此專案 👉 <a href="https://chingg0.github.io/simple-twitter/#/signin">SimpleTwitter</a>
 
 | 預設帳號        | 🔒 account:         |  🔑  password:  |
 | -------------   |:-------------:          |:-------------: |
