@@ -2,7 +2,7 @@
   <div>
     <div v-for="follower in followers" :key="follower.id" class="comment_wrap d-flex">
       <div class="avatar_image"><router-link :to="{name: 'user-page', params: {id: follower.followerId}}"><img :src="follower.avatar | emptyImage " /></router-link></div>
-      <div class="comment_wrap_body">
+      <div class="comment_wrap_body" :class="{'d-none':isShow}">
         <div class="d-flex comment_wrap_body--title align-items-center">
           <router-link :to="{name: 'user-page', params: {id: follower.followerId}}"><h5 class="size-16" style="line-height: 50px;">{{follower.name}}</h5></router-link>
           <button class="btn" :class="{'unfollow': !follower.isFollowed}" @click.prevent.stop="toggleFollow(follower)">{{
@@ -20,6 +20,7 @@ import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
 import followshipsAPI from '../apis/followships'
 import { Toast } from '../utils/helpers'
+import PubSub from 'pubsub-js';
 export default {
   props: {
     initFollowers: {
@@ -35,6 +36,7 @@ export default {
   data() {
     return {
       followers: [],
+      isShow: false
     }
   },
   computed: {
@@ -44,6 +46,11 @@ export default {
     if(this.initUserId !== -1){
       this.fetchData(this.initUserId)
     }
+  },
+  mounted() {
+    PubSub.subscribe('isEdit', (msg, show) => {
+      this.isShow = show
+    })
   },
   watch: {
     initFollowers() {
@@ -96,7 +103,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/scss/tweet.scss';
+@import '../assets/scss/followPage/tweet.scss';
 
 .comment_wrap_body {
   width: 100%;

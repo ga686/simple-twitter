@@ -3,6 +3,7 @@
   position: absolute;
   background-color: #ffffff;
   width: 100%;
+  height: calc(100% + 50px);
   position: absolute;
   pointer-events: none;
   opacity: 0;
@@ -218,6 +219,10 @@
         align-items: center;
         i {
           margin-left: 19.5px;
+          display: unset;
+        }
+        .link-icon {
+          display: none;
         }
         h5 {
           margin-left: 36.5px;

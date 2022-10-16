@@ -49,6 +49,7 @@ import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 import usersAPI from '../apis/users'
+import PubSub from 'pubsub-js';
 
 export default {
   name: 'userProfile',
@@ -109,12 +110,14 @@ export default {
       this.currentContent = content
     },
     openModal() {
-      this.$emit('isEdit',this.isShow)
+      const show = !this.isShow
+      PubSub.publish('isEdit', show)
       return this.isShow = true
     },
-    closeModal(show) {
-      this.$emit('isEdit',this.isShow)
-      return this.isShow = show
+    closeModal() {
+      const show = !this.isShow
+      PubSub.publish('isEdit', show)
+      return this.isShow = false
     },
     async addFollow(userId) {
       try {

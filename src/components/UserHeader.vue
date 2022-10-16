@@ -1,6 +1,6 @@
 <template>
   <div class="user-header d-flex align-item-center">
-    <div class="link-icon" @click.prevent="back"></div>
+    <div class="link-icon" @click.prevent="back()"></div>
     <div class="user-title d-flex justify-content-center">
       <h5 class="user-name">{{user.name}}</h5>
       <div class="user-tweetCounts number-wrap">{{user.tweetsLength | quantifier}}</div>
@@ -19,13 +19,9 @@ export default{
   computed: {
     ...mapState(['currentUser', 'isAuthenticated'])
   },
-  methods: {
+  methods:{
     back(){
-      if (this.$route.name !== 'user-follow') {
-        this.$router.back()
-      }else{
-        this.$router.push({name:'user-page', params:{id: this.currentUser.id}})
-      }
+      this.$router.push('/homepage')
     }
   },
   filters: {

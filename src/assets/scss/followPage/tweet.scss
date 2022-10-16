@@ -1,0 +1,111 @@
+.comment_wrap{
+  padding: 15px 24px;
+  & + .comment_wrap{
+    border-top: 1px solid #E6ECF0;
+  }
+  &_body{
+    &--title{
+      color: var(--secondary-color);
+      line-height: 18px;
+      flex-wrap: wrap;
+      a{color: var(--secondary-color);}
+      h5{
+        color: var(--dark-100);
+        margin-right: 8px; 
+        a{color: var(--dark-100);}
+      }
+      p{
+        a{color: var(--secondary-color);}
+      }
+    }
+    &--content{
+      margin-top: 10px;
+      color: var(--dark-100);
+      line-height: 26px;
+      font-size: 15px;
+      a{
+        color: var(--dark-100);
+      }
+    }
+    &--time{
+      color: var(--secondary-color);
+    }
+  }
+  &_footer{
+    color: var(--secondary-color);
+    .icon{
+      width: 14px;
+      height: 14px;
+      margin-right: 9.5px;
+      cursor: pointer;
+      background-position: center !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
+      &.comment{
+        background: var(--icon-comment);
+      }
+      &.liked{
+        background: var(--icon-liked);
+      }
+      &.liked.isliked{
+        background: var(--icon-liked-active);
+      }
+    }
+    // TweetPage
+    &.detail{
+      border-top: 1px solid #E6ECF0;
+      border-bottom: 1px solid #E6ECF0;
+      height: 60px;
+      line-height: 60px;
+    }
+  }
+  // TweetPage
+  &.detail{
+    flex-direction: column;
+    h5{line-height: 26px;}
+    p{line-height: 22px;}
+    .comment_wrap_body--content{line-height: 26px;}
+    .number-wrap{
+      font-size: 19px;
+      color: var(--dark-100);
+      line-height: inherit;
+      & + p {
+        font-size: 19px;
+        line-height: inherit;
+      }
+    }
+    //ReplyTweets
+    &.tweet-list{
+      padding:  0;
+      .comment_wrap_body--title{
+        margin-bottom: 8px;
+      }
+      .comment_wrap_body{
+        padding-top: 16px;
+        padding-left: 24px;
+        padding-right: 24px;
+        & + .comment_wrap_body{
+          border-top: 1px solid #E6ECF0;
+        }
+      }
+    }
+  }
+}
+// TweetReply
+.reply-span{
+  width: 2px;
+  height: calc(100% - 50px);
+  background-color: #CCD6DD;
+  display: block;
+  position: absolute;
+  left: calc(50% - 4px);
+  transform: translateX(-50%);
+  top: 65px;
+}
+
+.reply_to{
+  font-size: 13px;
+  &-account{
+    color: var(--brand-color);
+  }
+}

@@ -2,18 +2,18 @@
   <main class="main-view mx-auto">
     <NavbarLeft />
     <LoadingSpinner v-if="isLoading"/>
-    <div class="user-page" v-else>
+    <div class="user-page" v-else >
       <UserHeader :user='user'/>
-      <div class="scroll">
-        <UserProfile :initUserId='user.id' v-if="fullWidth < 991" @isEdit="dnoneTweet"/>
+      <div class='scroll'>
+        <UserProfile :initUserId='user.id' v-if="fullWidth < 991"/>
         <div class="follow-title">
           <div class="user-followers" :class="{active: currentView === 'followers'}"
             @click.prevent.stop="$router.push({path: `/user/follow/followers/${user.id}`})">追蹤者</div>
           <div class="user-followers" :class="{active: currentView === 'followings'}"
             @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
         </div>
-        <div class="scroll follow" :class="['scroll',{'d-none': !isShow}]">
-          <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" />
+        <div class="scroll follow">
+          <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'"/>
           <UserFollowings :init-followings="user.followings" :initUserId="user.id" v-show="currentView === 'followings'" />
         </div>
       </div>
@@ -55,7 +55,6 @@ export default {
         followers: [],
         followings: [],
       },
-      isShow: false,
       currentView: '',
       fullWidth: 0,
       isLoading: false
@@ -69,14 +68,16 @@ export default {
     this.fetchFollowing(userId)
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser']),
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params
     const userId = to.params.user
     this.currentView = id
-    this.fetchFollow(userId)
+    if(userId !== -1){
+      this.fetchFollow(userId)
     this.fetchFollowing(userId)
+    }
     next()
   },
   methods: {
@@ -117,10 +118,9 @@ export default {
       this.currentView = view
     },
     refreshFollowship(userId) {
-      this.fetchFollowing(userId)
-    },
-    dnoneTweet(isShow){
-      this.isShow = isShow
+      if(this.userId !== -1){
+        this.fetchFollowing(userId)
+      }
     }
   },
   mounted() {
