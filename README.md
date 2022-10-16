@@ -32,7 +32,7 @@ cd 到你想電腦儲存的位置
 ```
 #### 2. 將專案下載下來 
 ```
-git clone https://github.com/ga686/simple-twitter.git
+git clone https://github.com/ChingG0/simple-twitter.git
 ```
 #### 3. cd 到simple-twitter資料夾
 ```
@@ -69,7 +69,7 @@ npm run build
 Demo
 </h1>
 
-### 進入此專案 👉 <a href="https://ga686.github.io/simple-twitter">SimpleTwitter</a>
+### 進入此專案 👉 <a href="https://chingg0.github.io/simple-twitter/">SimpleTwitter</a>
 
 | 預設帳號        | 🔒 account:         |  🔑  password:  |
 | -------------   |:-------------:          |:-------------: |
