@@ -114,10 +114,10 @@ export default {
       PubSub.publish('isEdit', show)
       return this.isShow = true
     },
-    closeModal() {
+    closeModal(show2) {
       const show = !this.isShow
       PubSub.publish('isEdit', show)
-      return this.isShow = false
+      return this.isShow = show2
     },
     async addFollow(userId) {
       try {
