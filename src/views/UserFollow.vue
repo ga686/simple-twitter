@@ -117,10 +117,9 @@ export default {
     toggleContent(view) {
       this.currentView = view
     },
-    refreshFollowship(userId) {
-      if(this.userId !== -1){
-        this.fetchFollowing(userId)
-      }
+    refreshFollowship() {
+      const { user } = this.$route.params
+      this.fetchFollowing(user)
     }
   },
   mounted() {

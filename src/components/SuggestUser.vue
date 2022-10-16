@@ -62,7 +62,7 @@ export default{
             followship.isFollowed = true
           }
         })
-        this.$emit('refresh-follow',userId)
+        this.$emit('refresh-follow')
       }catch(err){
         Toast.fire({
           icon: 'error',
