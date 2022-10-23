@@ -31,7 +31,7 @@ import tweetsAPI from '../apis/tweets'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
-import { Toast } from '../utils/helpers'
+import { alert } from './../utils/mixins'
 
 export default {
   data() {
@@ -66,29 +66,13 @@ export default {
       }catch(err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法更新貼文，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-          container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法更新貼文，請稍後再試')
       }
     },
     async handleSubmit () {
       try {
         if (!this.newContent) {
-          Toast.fire({
-            icon: 'warning',
-            title: '內容不可空白',
-            background: '#FF6600',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-warning-pop',
-            },
-          })  
+          alert.warning('內容不可空白') 
           return
         }
         this.isProcessing = false
@@ -103,15 +87,7 @@ export default {
       }catch(err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法新增貼文，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-          container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法新增貼文，請稍後再試')
       }
     },
     getLikedStatus (data) {

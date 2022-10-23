@@ -48,7 +48,7 @@ import adminAPI from '../apis/admin'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { emptyImageFilter } from '@/utils/mixins'
 import { accountFilter } from '@/utils/mixins'
-import { Toast } from '@/utils/helpers'
+import { alert } from '@/utils/mixins'
 
 export default {
   data () {
@@ -75,15 +75,7 @@ export default {
       }catch (err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法取得使用者資料，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-          container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法取得使用者資料，請稍後再試')
       }
     }
   },

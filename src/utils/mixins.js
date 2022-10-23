@@ -1,5 +1,6 @@
 import moment from 'moment'
 import banner from "../assets/banner.jpeg"
+import { Toast } from './helpers'
 
 export const fromNowFilter = {
   filters: {
@@ -44,5 +45,36 @@ export const accountFilter = {
     account(account){
       return account = '@' + account
     }
+  }
+}
+
+export const alert = {
+  warning(title){
+    Toast.fire({
+        icon: 'warning',
+        title: title,
+        background: '#FF6600',
+        iconColor: '#fff',
+        customClass: {
+        container: 'sweetalert2-warning-pop',
+      },
+    })
+  },
+  error(title){
+    Toast.fire({
+      icon: 'error',
+      title: title,
+      background: '#FC5A5A',
+      iconColor: '#fff',
+      customClass: {
+        container: 'sweetalert2-error-pop',
+      },
+    })
+  },
+  success(title){
+    Toast.fire({
+      icon: 'success',
+      title: title,
+    })
   }
 }

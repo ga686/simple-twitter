@@ -17,7 +17,7 @@
 import { emptyImageFilter } from '../utils/mixins'
 import { mapState } from 'vuex'
 import followshipsAPI from '../apis/followships'
-import { Toast } from '../utils/helpers'
+import { alert } from '../utils/mixins'
 import PubSub from 'pubsub-js';
 export default {
   props: {
@@ -62,13 +62,10 @@ export default {
             return following.isFollowed = false
           }
         })
-     
+        this.$emit('refresh-following')
       } catch (err) {
         console.log(err)
-        Toast.fire({
-          icon: 'error',
-          title: '取消追蹤失敗，請稍後再試'
-        })
+        alert.error('取消追蹤失敗，請稍後再試')
       }
 
     },
@@ -84,17 +81,10 @@ export default {
             following.isFollowed = true
           }
         })
+        this.$emit('refresh-following')
       }catch(err){
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法加入追蹤，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-            container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法加入追蹤，請稍後再試')
       }
     },
   },

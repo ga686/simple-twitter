@@ -13,26 +13,26 @@
             @click.prevent.stop="$router.push({path: `/user/follow/followings/${user.id}`})">正在追隨</div>
         </div>
         <div class="scroll follow">
-          <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'"/>
-          <UserFollowings :init-followings="user.followings" :initUserId="user.id" v-show="currentView === 'followings'" />
+          <UserFollowers :initFollowers="user.followers" :initUserId="user.id" v-show="currentView === 'followers'" @refresh-following="refreshSuggestUser"/>
+          <UserFollowings :init-followings="user.followings" :initUserId="user.id" v-show="currentView === 'followings'" @refresh-following="refreshSuggestUser"/>
         </div>
       </div>
     </div>
-    <SuggestUser @refresh-follow="refreshFollowship" />
+    <SuggestUser @refresh-follow="refreshFollowship" @return-refresh-status="refreshSuggestUser" :is-refreshed="refresh"/>
   </main>
 </template>
 <script>
-import NavbarLeft from '../components/NavbarLeft.vue';
-import SuggestUser from '../components/SuggestUser.vue';
+import NavbarLeft from '../components/NavbarLeft';
+import SuggestUser from '../components/SuggestUser';
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import UserFollowers from '../components/UserFollowers.vue';
-import UserFollowings from '../components/UserFollowings.vue';
+import UserFollowers from '../components/UserFollowers';
+import UserFollowings from '../components/UserFollowings';
 import usersAPI from '../apis/users'
-import UserHeader from '@/components/UserHeader.vue'
-import UserProfile from '@/components/UserProfile.vue';
-import LoadingSpinner from '../components/LoadingSpinner.vue'
+import UserHeader from '@/components/UserHeader'
+import UserProfile from '@/components/UserProfile';
+import LoadingSpinner from '../components/LoadingSpinner'
 
 export default {
   name: 'userFollow',
@@ -57,7 +57,8 @@ export default {
       },
       currentView: '',
       fullWidth: 0,
-      isLoading: false
+      isLoading: false,
+      refresh: false
     }
   },
   created() {
@@ -120,6 +121,9 @@ export default {
     refreshFollowship() {
       const { user } = this.$route.params
       this.fetchFollowing(user)
+    },
+    refreshSuggestUser() {
+      this.refresh = !this.refresh
     }
   },
   mounted() {

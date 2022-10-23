@@ -26,7 +26,7 @@
 <script>
 import {mapState} from 'vuex'
 import { emptyImageFilter } from '@/utils/mixins'
-import { Toast } from '../utils/helpers'
+import { alert } from '@/utils/mixins'
 import tweetsAPI from '../apis/tweets'
 
 
@@ -63,15 +63,7 @@ export default{
         this.$emit('refresh-tweet',data)
       }catch(err){
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法更新推文，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-            container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法更新推文，請稍後再試')
       }
     },
    async handleSubmit () {
@@ -100,10 +92,7 @@ export default{
       }catch(err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'warning',
-          title: '無法新增貼文，請稍後再試'
-        })
+        alert.error('無法新增貼文，請稍後再試')
       }
    }
   },

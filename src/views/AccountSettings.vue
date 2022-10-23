@@ -38,7 +38,7 @@
 import NavbarLeft from '../components/NavbarLeft'
 import usersAPI from '../apis/users'
 import { mapState } from 'vuex'
-import { Toast } from '../utils/helpers'
+import { alert } from '../utils/mixins'
 
 export default {
   data () {
@@ -63,41 +63,17 @@ export default {
     async handleSubmit (e) {
       try {
         if(this.account.length === 0 | this.name.length === 0 | this.email.length === 0 | this.password.length === 0 | this.passwordConfrim.length === 0){
-          Toast.fire({
-            icon: 'warning',
-            title: '尚有欄位未填寫',
-            background: '#FF6600',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-warning-pop',
-            },
-          })
+          alert.warning('尚有欄位未填寫')
           return
         }
         
         if (this.password !== this.passwordConfrim ) {
-          Toast.fire({
-            icon: 'warning',
-            title: '密碼輸入不一致',
-            background: '#FF6600',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-warning-pop',
-            },
-          })
+          alert.warning('密碼輸入不一致')
           return
         }
 
         if (this.name.length > 50 ) {
-          Toast.fire({
-            icon: 'warning',
-            title: '名稱不可超過50字',
-            background: '#FF6600',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-warning-pop',
-            },
-          })
+          alert.warning('名稱不可超過50字')
           return
         }
         this.isProcessing = true
@@ -115,26 +91,10 @@ export default {
       }catch(err){
         this.isProcessing = false
         if(err.response.data.message === "Error: Account or email has already exist."){
-          Toast.fire({
-            icon: 'error',
-            title: '帳號或信箱已註冊',
-            background: '#FC5A5A',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-error-pop',
-            },
-          })
+          alert.error('帳號或信箱已註冊')
           return
         }
-        Toast.fire({
-          icon: 'error',
-          title: '無法儲存變更，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-            container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法儲存變更，請稍後再試')
       }
     }
   },

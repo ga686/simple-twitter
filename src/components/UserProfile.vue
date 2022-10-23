@@ -44,7 +44,7 @@
 <script>
 import UserEdit from '@/components/UserEdit.vue'
 import followshipsAPI from '@/apis/followships'
-import { Toast } from '@/utils/helpers'
+import { alert } from '@/utils/mixins'
 import { mapState } from 'vuex';
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
@@ -129,10 +129,7 @@ export default {
         this.user.isFollowed = true
       } catch (err) {
         console.error(err)
-        Toast.fire({
-          icon: 'warning',
-          title: '無法加入追蹤，請稍後再試'
-        })
+        alert.error('無法加入追蹤，請稍後再試')
       }
     },
     async deleteFollow(userId) {
@@ -145,10 +142,7 @@ export default {
         this.user.isFollowed = false
       } catch (err) {
         console.error(err)
-        Toast.fire({
-          icon: 'warning',
-          title: '無法移除追蹤，請稍後再試'
-        })
+        alert.error('無法移除追蹤，請稍後再試')
       }
     },
     refreshUser(userId) {

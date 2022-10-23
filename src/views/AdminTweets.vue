@@ -39,6 +39,7 @@ import { emptyImageFilter } from '@/utils/mixins'
 import { fromNowFilter } from '@/utils/mixins'
 import { accountFilter } from '../utils/mixins'
 import { Toast } from '@/utils/helpers'
+import { alert } from '../utils/mixins'
 
 export default {
   data () {
@@ -99,10 +100,7 @@ export default {
         })
         
       }catch(err){
-        Toast.fire({
-          icon: 'error',
-          title: '無法刪除推文，請稍後再試'
-        })
+        alert.error('無法刪除推文，請稍後再試')
       }
     }
   },

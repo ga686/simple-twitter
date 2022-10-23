@@ -30,7 +30,7 @@
 
 <script>
 import authorizationAPI from '../apis/authorization';
-import { Toast } from '../utils/helpers'
+import { alert } from './../utils/mixins'
 
 export default {
   data() {
@@ -46,15 +46,7 @@ export default {
     async handleSubmit() {
       try {
         if (!this.account || !this.password) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請輸入帳號及密碼',
-            background: '#FF6600',
-            iconColor: '#fff',
-            customClass: {
-            container: 'sweetalert2-warning-pop',
-            },
-          })
+          alert.warning('請輸入帳號及密碼')
           return
         }
 
@@ -73,10 +65,7 @@ export default {
 
         this.$store.commit('setCurrentUser', data.user)
 
-        Toast.fire({
-          icon: 'success',
-          title: '登入成功！'
-        })
+        alert.success('登入成功!')
 
         this.$router.push('/homepage')
         this.isProcessing = false
@@ -86,37 +75,13 @@ export default {
         let message = err.response.data.message
 
         if (message === "Error: user permission denied") {
-          Toast.fire({
-            icon: 'error',
-            title: '帳號不存在',
-            background: '#FC5A5A',
-            iconColor: '#fff',
-            customClass: {
-              container: 'sweetalert2-error-pop',
-            },
-          })
+          alert.error('帳號不存在')
           this.errorAccount = true
         } else if (message === "Error: The account is incorrect!") {
-          Toast.fire({
-            icon: 'error',
-            title: '帳號輸入錯誤',
-            background: '#FC5A5A',
-            iconColor: '#fff',
-            customClass: {
-              container: 'sweetalert2-error-pop',
-            },
-          })
+          alert.error('帳號輸入錯誤')
           this.errorAccount = true
         } else if (message === "Error: The password is incorrect!") {
-          Toast.fire({
-            icon: 'error',
-            title: '密碼輸入錯誤',
-            background: '#FC5A5A',
-            iconColor: '#fff',
-            customClass: {
-              container: 'sweetalert2-error-pop',
-            },
-          })
+          alert.error('密碼輸入錯誤')
           this.errorPassword = true
         }
       }

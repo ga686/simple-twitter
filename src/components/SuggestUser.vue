@@ -19,7 +19,7 @@
 
 <script>
 import followshipsAPI from '@/apis/followships'
-import { Toast } from '@/utils/helpers'
+import { alert } from '../utils/mixins'
 import { emptyImageFilter } from '../utils/mixins'
 import { accountFilter } from './../utils/mixins'
 
@@ -27,7 +27,13 @@ export default{
   data () {
     return {
       followships: [],
-      isProcessing: false
+      isProcessing: false,
+      refresh: false,
+    }
+  },
+  props:{
+    isRefreshed: {
+      type: Boolean,
     }
   },
   methods: {
@@ -43,10 +49,7 @@ export default{
       }catch(err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法取得推薦，請稍後再試'
-        })
+        alert.error('無法取得推薦，請稍後再試')
       }
     },
     async addFollow (userId) {
@@ -64,15 +67,7 @@ export default{
         })
         this.$emit('refresh-follow')
       }catch(err){
-        Toast.fire({
-          icon: 'error',
-          title: '無法加入追蹤，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-          container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法加入追蹤，請稍後再試')
       }
     },
     async deleteFollow (userId) {
@@ -91,21 +86,24 @@ export default{
         this.$emit('refresh-follow',userId)
       }catch(err){
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法移除追蹤，請稍後再試',
-          background: '#FC5A5A',
-          iconColor: '#fff',
-          customClass: {
-          container: 'sweetalert2-error-pop',
-          },
-        })
+        alert.error('無法移除追蹤，請稍後再試')
       }
     },
   },
   mixins: [emptyImageFilter,accountFilter],
+  watch: {
+    isRefreshed: function() {
+      this.refresh = this.isRefreshed
+      if(this.refresh){
+        this.fetchFollowShips()
+        this.refresh = false
+        this.$emit('return-refresh-status')
+      }
+    }
+  },
   created () {
     this.fetchFollowShips()
+    return this.refresh = this.isRefreshed
   }
 }
 

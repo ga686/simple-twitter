@@ -38,7 +38,7 @@ import { mapState } from 'vuex'
 import usersAPI from '../apis/users'
 import TweetReply from './TweetReply'
 import tweetsAPI from '../apis/tweets'
-import {Toast} from '../utils/helpers'
+import { alert } from '../utils/mixins'
 
 
 export default {
@@ -95,19 +95,13 @@ export default {
           if (data.status === 'error') {
             throw new Error(data.message)
           }
-          Toast.fire({
-            icon:'success',
-            title: '成功'
-          })
+
           tweet.likedCount += 1
           tweet.isLiked = !tweet.isLiked
         }
         catch (err) {
           console.log(err)
-          Toast.fire({
-            icon:'error',
-            title: '收回讚失敗，請稍後再試'
-          })
+          alert.error('按讚失敗，請稍後再試')
         }
 
       } else if (tweet.isLiked === true) {
@@ -117,18 +111,12 @@ export default {
           if (data.status === 'error') {
             throw new Error(data.message)
           }
-          Toast.fire({
-            icon:'success',
-            title: '收回愛心'
-          })
+
           tweet.isLiked = !tweet.isLiked
           tweet.likedCount -= 1
         } catch (err) {
           console.log(err)
-          Toast.fire({
-            icon:'error',
-            title: '收回讚失敗，請稍後再試'
-          })
+          alert.error('收回讚失敗，請稍後再試')
         }
       }
     },

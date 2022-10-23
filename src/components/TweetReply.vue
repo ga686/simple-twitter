@@ -55,7 +55,7 @@ import { accountFilter } from './../utils/mixins'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { mapState } from 'vuex'
-import { Toast } from '../utils/helpers'
+import { alert } from './../utils/mixins'
 
 export default{
   data () {
@@ -107,10 +107,7 @@ export default{
       }catch(err){
         this.isProcessing = false
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法新增貼文，說稍後再試'
-        })
+        alert.error('無法新增貼文，說稍後再試')
       }
     }
   },

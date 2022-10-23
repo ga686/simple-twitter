@@ -39,7 +39,7 @@ import tweetsAPI from '../apis/tweets'
 import { fromNowFilter } from './../utils/mixins'
 import { emptyImageFilter } from './../utils/mixins'
 import { accountFilter } from './../utils/mixins'
-import { Toast } from '@/utils/helpers'
+import { alert } from './../utils/mixins'
 import { mapState } from 'vuex'
 
 export default {
@@ -82,10 +82,7 @@ export default {
         })
       } catch (err) {
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法加入最愛，請稍後再試'
-        })
+        alert.error('無法加入最愛，請稍後再試')
       }
     },
     async deleteLike(tweetId) {
@@ -102,10 +99,7 @@ export default {
         })
       } catch (err) {
         console.error(err)
-        Toast.fire({
-          icon: 'error',
-          title: '無法刪除最愛，請稍後再試'
-        })
+        alert.error('無法刪除最愛，請稍後再試')
       }
     },
     openModal() {

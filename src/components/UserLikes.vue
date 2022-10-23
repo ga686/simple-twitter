@@ -43,7 +43,7 @@ import LoadingSpinner from './LoadingSpinner'
 import TweetReply from '../components/TweetReply'
 import usersAPI from '../apis/users'
 import tweetsAPI from '../apis/tweets'
-import { Toast } from '../utils/helpers'
+import { alert } from '../utils/mixins'
 
 export default {
   data() {
@@ -77,6 +77,7 @@ export default {
       }
       catch (err) {
         console.log(err)
+        alert.error('按讚失敗，請稍後再試')
       }
     },
     async deleteLike(tweet) {
@@ -86,22 +87,15 @@ export default {
         if (data.status === 'error') {
           throw new Error(data.message)
         }
-        Toast.fire({
-          icon: 'success',
-          title: '收回愛心'
-        })
+
         this.LikesLength = this.LikesLength - 1
         this.favoriteTweets = this.favoriteTweets.filter(tweet=>tweet.TweetId !== tweetId)
       } catch (err) {
         console.log(err)
-        Toast.fire({
-          icon: 'error',
-          title: '收回讚失敗，請稍後再試'
-        })
+        alert.error('收回讚失敗，請稍後再試')
       }
     },
     openModal(tweet) {
-      console.log('open')
       const {
         createdAt,
         description,
